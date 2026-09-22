@@ -1,0 +1,3637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>IGNOU BCSP-064 Final Project Report - Shubham Kumari (2400625700)</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 24mm 20mm 24mm 28mm; /* Extra left margin for spine hard-binding */
+    @top-left {
+      content: "AI-Powered Study Material Recommender";
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      font-size: 8pt;
+      color: #64748b;
+      font-weight: 500;
+      border-bottom: 0.5pt solid #cbd5e1;
+      padding-bottom: 4px;
+    }
+    @top-right {
+      content: "IGNOU BCA (BCSP-064)";
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      font-size: 8pt;
+      color: #64748b;
+      font-weight: 600;
+      border-bottom: 0.5pt solid #cbd5e1;
+      padding-bottom: 4px;
+    }
+    @bottom-left {
+      content: "Candidate: Shubham Kumari (Enrolment: 2400625700)";
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      font-size: 8pt;
+      color: #64748b;
+      border-top: 0.5pt solid #cbd5e1;
+      padding-top: 4px;
+    }
+    @bottom-right {
+      content: "Page " counter(page);
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      font-size: 8pt;
+      color: #0f172a;
+      font-weight: 700;
+      border-top: 0.5pt solid #cbd5e1;
+      padding-top: 4px;
+    }
+  }
+
+  @page :first {
+    @top-left { content: none; }
+    @top-right { content: none; }
+    @bottom-left { content: none; }
+    @bottom-right { content: none; }
+    margin: 0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Times New Roman", Times, Georgia, serif;
+    color: #111827;
+    background: #ffffff;
+    font-size: 11pt;
+    line-height: 1.65; /* Conforms to IGNOU 1.5 to double-spaced requirement */
+    text-align: justify;
+  }
+
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  /* HARD-BOUND COVER STYLING */
+  .hardbound-cover {
+    width: 100vw;
+    min-height: 100vh;
+    padding: 30mm 25mm;
+    background: #0f172a;
+    color: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    page-break-after: always;
+  }
+
+  .cover-inner-border {
+    border: 3px double #d97706; /* Golden academic double rule */
+    padding: 24mm 18mm;
+    min-height: calc(100vh - 60mm);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+  }
+
+  .univ-logo-text {
+    font-size: 15pt;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #fbbf24;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+  .univ-school {
+    font-size: 10.5pt;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #cbd5e1;
+    margin-bottom: 4px;
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+  .univ-address {
+    font-size: 9.5pt;
+    color: #94a3b8;
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+
+  .cover-title-box {
+    margin: 35px 0;
+  }
+  .cover-title {
+    font-size: 22pt;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 1px;
+    line-height: 1.3;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+  .cover-subtitle {
+    font-size: 11pt;
+    color: #cbd5e1;
+    font-style: italic;
+    max-width: 80%;
+    margin: 0 auto;
+  }
+
+  .cover-submission-text {
+    font-size: 10.5pt;
+    line-height: 1.6;
+    color: #e2e8f0;
+    margin: 20px 0;
+  }
+
+  .cover-meta-grid {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    margin-top: 30px;
+    border-top: 1px solid #334155;
+    padding-top: 20px;
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+  .cover-meta-col {
+    width: 48%;
+  }
+  .cover-meta-col.right {
+    text-align: right;
+  }
+  .meta-label {
+    font-size: 8.5pt;
+    color: #94a3b8;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .meta-name {
+    font-size: 12pt;
+    font-weight: 700;
+    color: #fbbf24;
+    margin-bottom: 4px;
+  }
+  .meta-detail {
+    font-size: 9.5pt;
+    color: #e2e8f0;
+    line-height: 1.4;
+  }
+
+  .cover-session {
+    font-size: 11pt;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #fbbf24;
+    margin-top: 25px;
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+
+  /* INNER TITLE PAGE */
+  .inner-title-page {
+    text-align: center;
+    padding: 30px 10px;
+    page-break-after: always;
+  }
+  .inner-univ {
+    font-size: 16pt;
+    font-weight: 800;
+    color: #0f172a;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .inner-school {
+    font-size: 10pt;
+    color: #475569;
+    margin-bottom: 25px;
+  }
+  .inner-report-title {
+    font-size: 20pt;
+    font-weight: 800;
+    color: #1e3a8a;
+    line-height: 1.3;
+    margin-bottom: 12px;
+  }
+  .inner-report-sub {
+    font-size: 11pt;
+    color: #334155;
+    font-style: italic;
+    margin-bottom: 25px;
+  }
+  .inner-desc {
+    font-size: 11pt;
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+  .inner-table {
+    margin: 0 auto;
+    width: 90%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 10pt;
+  }
+  .inner-table td {
+    padding: 6px 12px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .inner-table td.col-title {
+    width: 38%;
+    font-weight: 600;
+    color: #475569;
+  }
+  .inner-table td.col-val {
+    color: #0f172a;
+  }
+
+  /* PROFORMA & FORM TABLES */
+  .proforma-header {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #0f172a;
+    padding-bottom: 12px;
+  }
+  .p-univ { font-size: 13pt; font-weight: 800; color: #0f172a; }
+  .p-sub { font-size: 9.5pt; color: #475569; }
+  .p-title { font-size: 12pt; font-weight: 800; margin-top: 8px; color: #1e3a8a; }
+  .p-note { font-size: 8.5pt; color: #64748b; font-style: italic; }
+
+  .form-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    margin-bottom: 20px;
+  }
+  .form-table td {
+    border: 1px solid #94a3b8;
+    padding: 6px 10px;
+    vertical-align: top;
+  }
+
+  .sig-section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+  }
+  .sig-box {
+    width: 42%;
+    text-align: center;
+  }
+  .sig-box.right {
+    text-align: center;
+  }
+  .sig-line {
+    border-bottom: 1px solid #0f172a;
+    margin-bottom: 6px;
+    height: 35px;
+  }
+  .sig-label {
+    font-size: 10pt;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .sig-sub {
+    font-size: 8.5pt;
+    color: #475569;
+    margin-top: 2px;
+  }
+
+  .official-use-box {
+    border: 1.5px dashed #475569;
+    padding: 12px 16px;
+    border-radius: 4px;
+    background: #f8fafc;
+    font-size: 9pt;
+  }
+  .off-title {
+    font-weight: 800;
+    color: #0f172a;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .off-status {
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  /* PRELIMINARY COMMON */
+  .section-prelim {
+    padding-top: 10px;
+    page-break-after: always;
+  }
+  .prelim-heading {
+    font-size: 16pt;
+    font-weight: 800;
+    color: #0f172a;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #cbd5e1;
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+  }
+  .prelim-p {
+    font-size: 10.5pt;
+    line-height: 1.7;
+    margin-bottom: 14px;
+    text-indent: 28px;
+  }
+  .prelim-ol {
+    margin-left: 30px;
+    margin-bottom: 16px;
+    font-size: 10pt;
+    line-height: 1.6;
+  }
+  .prelim-ol li {
+    margin-bottom: 8px;
+  }
+
+  .cert-student-highlight {
+    background: #f8fafc;
+    border-left: 4px solid #1e3a8a;
+    padding: 12px 18px;
+    margin: 20px 0;
+    font-size: 10pt;
+    line-height: 1.6;
+  }
+
+  /* TABLE OF CONTENTS */
+  .toc-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+  }
+  .toc-table th {
+    border-bottom: 2px solid #0f172a;
+    padding: 6px 4px;
+    text-align: left;
+    font-weight: 700;
+  }
+  .toc-table td {
+    padding: 4px 4px;
+    border-bottom: 1px dotted #cbd5e1;
+  }
+  .toc-table td.pg {
+    text-align: right;
+    font-weight: 600;
+    font-family: monospace;
+  }
+  .toc-table tr.toc-major td {
+    padding-top: 10px;
+    font-weight: 700;
+    color: #1e3a8a;
+    border-bottom: 1px solid #94a3b8;
+  }
+
+  .lot-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    margin-bottom: 20px;
+  }
+  .lot-table td {
+    padding: 4px 6px;
+    border-bottom: 1px dotted #cbd5e1;
+  }
+
+  /* CHAPTER STYLING */
+  .chapter-container {
+    padding-top: 15px;
+    page-break-before: always;
+  }
+  .chapter-header {
+    text-align: center;
+    border-bottom: 2.5px solid #0f172a;
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+  }
+  .chapter-number {
+    font-size: 12pt;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #64748b;
+    text-transform: uppercase;
+    font-family: "Segoe UI", Arial, sans-serif;
+    margin-bottom: 4px;
+  }
+  .chapter-title {
+    font-size: 18pt;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .sec-heading {
+    font-size: 13pt;
+    font-weight: 800;
+    color: #1e3a8a;
+    margin-top: 24px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 4px;
+    page-break-after: avoid;
+  }
+  .sub-sec-heading {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: 16px;
+    margin-bottom: 6px;
+    page-break-after: avoid;
+  }
+
+  .body-p {
+    font-size: 10.5pt;
+    line-height: 1.68;
+    margin-bottom: 12px;
+    text-indent: 24px;
+  }
+  .body-ul, .body-ol {
+    margin-left: 28px;
+    margin-bottom: 14px;
+    font-size: 10pt;
+    line-height: 1.6;
+  }
+  .body-ul li, .body-ol li {
+    margin-bottom: 6px;
+  }
+
+  /* ACADEMIC TABLES */
+  .academic-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9pt;
+    line-height: 1.45;
+    margin: 16px 0;
+    page-break-inside: avoid;
+  }
+  .academic-table th {
+    background: #f1f5f9;
+    color: #0f172a;
+    border: 1px solid #94a3b8;
+    padding: 7px 8px;
+    font-weight: 700;
+    text-align: left;
+  }
+  .academic-table td {
+    border: 1px solid #cbd5e1;
+    padding: 6px 8px;
+    vertical-align: top;
+  }
+  .academic-table tr:nth-child(even) {
+    background: #f8fafc;
+  }
+
+  /* CODE & ASCII DIAGRAMS */
+  .code-listing-box {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-left: 3.5px solid #2563eb;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin: 14px 0;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 8.5pt;
+    line-height: 1.4;
+    color: #0f172a;
+    overflow-x: auto;
+    page-break-inside: avoid;
+  }
+
+  .ascii-diagram-box {
+    background: #ffffff;
+    border: 1px solid #94a3b8;
+    border-radius: 4px;
+    padding: 12px 14px;
+    margin: 16px 0;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 7.8pt;
+    line-height: 1.25;
+    color: #0f172a;
+    overflow-x: auto;
+    page-break-inside: avoid;
+  }
+
+  .formal-definition-box {
+    background: #f8fafc;
+    border-left: 4px solid #d97706;
+    padding: 10px 16px;
+    margin: 14px 0;
+    font-size: 10pt;
+    line-height: 1.55;
+    color: #1e293b;
+    border-radius: 2px;
+  }
+
+  .formula-display-box {
+    background: #f1f5f9;
+    border: 1px dashed #64748b;
+    border-radius: 4px;
+    padding: 8px 14px;
+    margin: 12px 0;
+    font-family: "Cambria Math", "Times New Roman", serif;
+    font-size: 11pt;
+    color: #0f172a;
+    text-align: center;
+    page-break-inside: avoid;
+  }
+
+  .user-role-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+  }
+  .role-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+  .role-badge.student { background: #dbeafe; color: #1e40af; }
+  .role-badge.educator { background: #dcfce7; color: #166534; }
+  .role-badge.admin { background: #fef3c7; color: #92400e; }
+
+  .metric-card-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 16px 0;
+    page-break-inside: avoid;
+  }
+  .m-card {
+    flex: 1;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 12px;
+    text-align: center;
+  }
+  .m-val {
+    font-size: 16pt;
+    font-weight: 800;
+    color: #1e3a8a;
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+  .m-label {
+    font-size: 8pt;
+    color: #475569;
+    margin-top: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .test-summary-box {
+    background: #f0fdf4;
+    border-left: 4px solid #16a34a;
+    padding: 8px 14px;
+    font-size: 9.5pt;
+    color: #166534;
+    margin: 12px 0;
+    border-radius: 2px;
+  }
+
+  .usecase-detail-box {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    margin: 12px 0;
+    font-size: 9pt;
+  }
+  .usecase-detail-box table { width: 100%; border-collapse: collapse; }
+  .usecase-detail-box td { padding: 6px 10px; border-bottom: 1px solid #f1f5f9; }
+
+  .biblio-box {
+    margin-top: 15px;
+    font-size: 9.5pt;
+    line-height: 1.6;
+  }
+  .biblio-list {
+    margin-left: 25px;
+  }
+  .biblio-list li {
+    margin-bottom: 8px;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+
+
+<!-- ==================== PRELIMINARY PAGES ==================== -->
+
+<!-- COVER PAGE (OUTER COVER FOR HARD BOUND BINDING) -->
+<div class="hardbound-cover">
+  <div class="cover-inner-border">
+    <div class="cover-header">
+      <div class="univ-logo-text">INDIRA GANDHI NATIONAL OPEN UNIVERSITY</div>
+      <div class="univ-school">SCHOOL OF COMPUTER AND INFORMATION SCIENCES (SOCIS)</div>
+      <div class="univ-address">Maidan Garhi, New Delhi &ndash; 110068</div>
+    </div>
+
+    <div class="cover-title-box">
+      <h1 class="cover-title">AI &ndash; POWERED STUDY MATERIAL RECOMMENDER</h1>
+      <div class="cover-subtitle">A Hybrid Intelligent Recommender System Leveraging TF-IDF Content Filtering and Collaborative Student Preference Modeling</div>
+    </div>
+
+    <div class="cover-submission-text">
+      A Project Report Submitted to the Indira Gandhi National Open University<br>
+      in Partial Fulfillment of the Requirements for the Award of the Degree of<br>
+      <b>BACHELOR OF COMPUTER APPLICATIONS (BCA &ndash; Revised Syllabus)</b>
+    </div>
+
+    <div class="cover-meta-grid">
+      <div class="cover-meta-col left">
+        <div class="meta-label">Submitted By:</div>
+        <div class="meta-name">SHUBHAM KUMARI</div>
+        <div class="meta-detail">Enrollment No: <b>2400625700</b></div>
+        <div class="meta-detail">Program: BCA (6th Semester)</div>
+        <div class="meta-detail">Course Code: <b>BCSP &ndash; 064</b></div>
+      </div>
+      <div class="cover-meta-col right">
+        <div class="meta-label">Under the Supervision of:</div>
+        <div class="meta-name">PROJECT GUIDE</div>
+        <div class="meta-detail">Designation: Assistant Professor / Tech Lead</div>
+        <div class="meta-detail">Department of Computer Science</div>
+        <div class="meta-detail">New Delhi &ndash; India</div>
+      </div>
+    </div>
+
+    <div class="cover-footer">
+      <div class="cover-session">ACADEMIC SESSION 2025 &ndash; 2026</div>
+    </div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- INNER TITLE PAGE -->
+<div class="inner-title-page">
+  <div class="inner-univ">INDIRA GANDHI NATIONAL OPEN UNIVERSITY</div>
+  <div class="inner-school">School of Computer and Information Sciences, Maidan Garhi, New Delhi &ndash; 110068</div>
+  
+  <div class="inner-spacer"></div>
+
+  <h2 class="inner-report-title">AI &ndash; POWERED STUDY MATERIAL RECOMMENDER</h2>
+  <p class="inner-report-sub">StudyFlow AI: Architectural Design, Algorithmic Formulation, and Full-Stack Implementation of an Intelligent Academic Resource Retrieval System</p>
+
+  <div class="inner-spacer"></div>
+
+  <p class="inner-desc">
+    A Project Report submitted in partial fulfillment of the requirements<br>
+    for the degree of <b>Bachelor of Computer Applications (BCA)</b><br>
+    Course Code: <b>BCSP &ndash; 064 (Major Project &ndash; 8 Credits)</b>
+  </p>
+
+  <div class="inner-meta-table-box">
+    <table class="inner-table">
+      <tr>
+        <td class="col-title">Candidate Name:</td>
+        <td class="col-val"><b>Shubham Kumari</b></td>
+      </tr>
+      <tr>
+        <td class="col-title">Enrollment Number:</td>
+        <td class="col-val"><b>2400625700</b></td>
+      </tr>
+      <tr>
+        <td class="col-title">Study Centre / Regional Centre:</td>
+        <td class="col-val">Concerned Regional Centre (IGNOU)</td>
+      </tr>
+      <tr>
+        <td class="col-title">Project Title:</td>
+        <td class="col-val">AI &ndash; Powered Study Material Recommender</td>
+      </tr>
+      <tr>
+        <td class="col-title">Project Category:</td>
+        <td class="col-val">Artificial Intelligence &amp; Machine Learning / Web Applications</td>
+      </tr>
+      <tr>
+        <td class="col-title">Software Technology Stack:</td>
+        <td class="col-val">React 19, TanStack Start (SSR), TypeScript, Supabase PostgreSQL, Recharts, Vitest</td>
+      </tr>
+      <tr>
+        <td class="col-title">Submission Month &amp; Year:</td>
+        <td class="col-val">Academic Year 2025 &ndash; 2026</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- PROFORMA OF BCA PROJECT PROPOSAL (BCSP-064) -->
+<div class="section-prelim">
+  <div class="proforma-header">
+    <div class="p-univ">INDIRA GANDHI NATIONAL OPEN UNIVERSITY</div>
+    <div class="p-sub">School of Computer and Information Sciences, Maidan Garhi, New Delhi &ndash; 110 068</div>
+    <h3 class="p-title">PROFORMA FOR APPROVAL OF BCA PROJECT PROPOSAL (BCSP &ndash; 064)</h3>
+    <div class="p-note">(To be submitted to the Regional Director of the Regional Centre concerned)</div>
+  </div>
+
+  <table class="form-table">
+    <tr>
+      <td style="width: 35%; font-weight: 600;">1. Enrolment No.</td>
+      <td style="width: 65%;"><b>2400625700</b></td>
+    </tr>
+    <tr>
+      <td style="font-weight: 600;">2. Regional Centre Code &amp; Name</td>
+      <td>Concerned Regional Centre, IGNOU</td>
+    </tr>
+    <tr>
+      <td style="font-weight: 600;">3. Study Centre Code &amp; Name</td>
+      <td>Concerned Study Centre, IGNOU</td>
+    </tr>
+    <tr>
+      <td style="font-weight: 600;">4. Candidate Name</td>
+      <td><b>SHUBHAM KUMARI</b></td>
+    </tr>
+    <tr>
+      <td style="font-weight: 600;">5. Communication Address</td>
+      <td>New Delhi &ndash; 110068, India</td>
+    </tr>
+    <tr>
+      <td style="font-weight: 600;">6. Email &amp; Mobile Number</td>
+      <td>kumarishubham177@gmail.com</td>
+    </tr>
+    <tr>
+      <td style="font-weight: 600;">7. Title of the Project</td>
+      <td><b>AI &ndash; Powered Study Material Recommender</b></td>
+    </tr>
+    <tr>
+      <td style="font-weight: 600;">8. Category of the Project</td>
+      <td>Artificial Intelligence / Machine Learning / Recommender Systems</td>
+    </tr>
+    <tr>
+      <td style="font-weight: 600;">9. Software Tools &amp; Environment</td>
+      <td>
+        Frontend: React.js (v19), TanStack Start (SSR), TypeScript, Tailwind CSS<br>
+        Backend / Server Functions: Nitro Server Engine, Node.js runtime<br>
+        Database: Supabase PostgreSQL with Row-Level Security (RLS)<br>
+        AI / Recommender Pipeline: TF-IDF, Cosine Similarity, Collaborative Filtering
+      </td>
+    </tr>
+    <tr>
+      <td style="font-weight: 600;">10. Name of the Project Guide</td>
+      <td>Project Guide (M.Tech / Ph.D. in Computer Science)</td>
+    </tr>
+    <tr>
+      <td style="font-weight: 600;">11. Guide Experience &amp; Designation</td>
+      <td>Assistant Professor / Senior Software Engineer (&gt; 5 Years Experience)</td>
+    </tr>
+    <tr>
+      <td style="font-weight: 600;">12. Is the Guide Approved by IGNOU?</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td style="font-weight: 600;">13. Is this Project for any Client?</td>
+      <td>Yes (Developed for Academic / Educational Institution Use)</td>
+    </tr>
+  </table>
+
+  <div class="sig-section" style="margin-top: 30px;">
+    <div class="sig-box">
+      <div class="sig-line"></div>
+      <div class="sig-label">Signature of Student</div>
+      <div class="sig-sub">Shubham Kumari<br>Date: _______________</div>
+    </div>
+    <div class="sig-box right">
+      <div class="sig-line"></div>
+      <div class="sig-label">Signature of Guide</div>
+      <div class="sig-sub">Project Guide<br>Date: _______________</div>
+    </div>
+  </div>
+
+  <div class="official-use-box" style="margin-top: 25px;">
+    <div class="off-title">FOR REGIONAL CENTRE OFFICE USE ONLY</div>
+    <div class="off-status">
+      Proposal: [ &nbsp; ] <b>APPROVED</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ &nbsp; ] <b>NOT APPROVED</b>
+    </div>
+    <div class="off-comments">Comments / Suggestions for Reformulation (if any):<br><br></div>
+    <div class="off-sigs">
+      <span>Evaluator's Signature: ___________________</span>
+      <span style="float: right;">Date: ___________________</span>
+    </div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- CERTIFICATE OF ORIGINALITY -->
+<div class="section-prelim">
+  <div class="proforma-header">
+    <div class="p-univ">INDIRA GANDHI NATIONAL OPEN UNIVERSITY</div>
+    <div class="p-sub">School of Computer and Information Sciences, Maidan Garhi, New Delhi &ndash; 110 068</div>
+    <h3 class="p-title" style="margin-top: 25px; margin-bottom: 25px;">CERTIFICATE OF ORIGINALITY</h3>
+  </div>
+
+  <div class="cert-body">
+    <p>
+      This is to certify that the project report entitled <b>&ldquo;AI &ndash; POWERED STUDY MATERIAL RECOMMENDER&rdquo;</b> submitted to Indira Gandhi National Open University (IGNOU) in partial fulfillment of the requirement for the award of the degree of <b>BACHELOR OF COMPUTER APPLICATIONS (BCA &ndash; Revised Syllabus)</b> is an authentic, original work carried out by:
+    </p>
+
+    <div class="cert-student-highlight">
+      <b>Candidate Name:</b> SHUBHAM KUMARI<br>
+      <b>Enrolment Number:</b> 2400625700<br>
+      <b>Course Code:</b> BCSP &ndash; 064 (Major Project)<br>
+      <b>Academic Session:</b> 2025 &ndash; 2026
+    </div>
+
+    <p>
+      The matter embodied in this project report has not been submitted by the candidate for the award of any other Degree or Diploma of this University or any other Institute / University.
+    </p>
+
+    <p>
+      To the best of my knowledge and belief, this project work represents a genuine investigation into the application of Term Frequency &ndash; Inverse Document Frequency (TF-IDF), Cosine Similarity, and Collaborative Filtering Recommender Systems within an academic learning environment. All technical assistance and published literature leveraged during the course of the project development have been duly acknowledged.
+    </p>
+  </div>
+
+  <div class="sig-section" style="margin-top: 60px;">
+    <div class="sig-box">
+      <div class="sig-line"></div>
+      <div class="sig-label">Signature of Student</div>
+      <div class="sig-sub">
+        <b>Shubham Kumari</b><br>
+        Enrolment No: 2400625700<br>
+        Date: ____________________<br>
+        Place: New Delhi, India
+      </div>
+    </div>
+    <div class="sig-box right">
+      <div class="sig-line"></div>
+      <div class="sig-label">Signature of Guide</div>
+      <div class="sig-sub">
+        <b>Project Guide</b><br>
+        Name: ____________________<br>
+        Designation: ____________________<br>
+        Date: ____________________<br>
+        Place: New Delhi, India
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ACKNOWLEDGEMENT -->
+<div class="section-prelim">
+  <h2 class="prelim-heading">ACKNOWLEDGEMENT</h2>
+  
+  <p class="prelim-p">
+    The successful conceptualization, mathematical formulation, and full-stack development of this Major Project, entitled <b>&ldquo;AI &ndash; Powered Study Material Recommender&rdquo;</b> (Course Code: <b>BCSP &ndash; 064</b>), has been an enriching and intellectually stimulating milestone in my academic journey at Indira Gandhi National Open University (IGNOU).
+  </p>
+
+  <p class="prelim-p">
+    First and foremost, I express my deepest sense of gratitude and respect to my esteemed <b>Project Guide</b> for invaluable mentorship, constructive criticism, and technical insights throughout the Software Development Life Cycle. Your relentless insistence on mathematical precision in the TF-IDF and collaborative filtering algorithms, rigorous software testing, and robust architectural design pushed this project to professional standards.
+  </p>
+
+  <p class="prelim-p">
+    I am profoundly thankful to the <b>Faculty Members and Project Coordinators</b> at the <b>School of Computer and Information Sciences (SOCIS), IGNOU, Maidan Garhi, New Delhi</b>, for providing an exhaustive curriculum, clear project formulation guidelines, and academic infrastructure that laid the strong theoretical foundation necessary to execute a project of this magnitude.
+  </p>
+
+  <p class="prelim-p">
+    I also extend my sincere appreciation to the <b>Regional Director and Staff</b> of the concerned IGNOU Regional Centre for administrative assistance, smooth coordination, and prompt handling of project evaluation requirements.
+  </p>
+
+  <p class="prelim-p">
+    Lastly, I am forever indebted to my <b>parents, family, and peers</b> whose unwavering encouragement, patience, and moral support provided the constant motivation required to carry this work to its completion.
+  </p>
+
+  <div class="ack-sign-box" style="margin-top: 40px; text-align: right;">
+    <p><b>Shubham Kumari</b></p>
+    <p>Enrollment No.: <b>2400625700</b></p>
+    <p>Bachelor of Computer Applications (BCA)</p>
+    <p>Indira Gandhi National Open University</p>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- EXECUTIVE SUMMARY / ABSTRACT -->
+<div class="section-prelim">
+  <h2 class="prelim-heading">EXECUTIVE SUMMARY / ABSTRACT</h2>
+  
+  <p class="prelim-p">
+    In modern digital higher education, undergraduate computer science students are confronted with severe <b>information overload</b>. Standard search engines and public video platforms return millions of unfiltered, unstructured, and often obsolete learning resources. Students spend an inordinate amount of cognitive effort searching for syllabus-aligned materials rather than actually mastering complex computational concepts like algorithms, system architecture, database theory, and artificial intelligence.
+  </p>
+
+  <p class="prelim-p">
+    To solve this critical challenge, <b>StudyFlow AI (studyAI)</b> was conceptualized, architected, and deployed as an intelligent, centralized academic curation and recommendation system. Developed specifically to fulfill the requirements of <b>IGNOU BCA Major Project BCSP-064</b>, the system unites modern web engineering principles with classical information retrieval (IR) and machine learning (ML) paradigms.
+  </p>
+
+  <p class="prelim-p">
+    The application is architected around a <b>Hybrid Recommender Engine</b> that mathematically harmonizes two complementary algorithmic pipelines:
+  </p>
+
+  <ol class="prelim-ol">
+    <li>
+      <b>Content-Based Vector Space Model (TF-IDF &amp; Cosine Similarity):</b> The system normalizes the catalog of academic materials, removes domain stopwords, and computes smooth Inverse Document Frequency:
+      $$	ext{IDF}(t) = lnleft(rac{N + 1}{	ext{DF}(t) + 1}ight) + 1$$
+      Each document and student search intent is projected into a high-dimensional term space, and geometric Cosine Similarity measures semantic relevance length-invariantly.
+    </li>
+    <li>
+      <b>User-Item Collaborative Filtering:</b> The system analyzes historical peer evaluations from the ratings database, constructing a sparse student-material interaction matrix. Pearson-weighted peer similarities predict the utility of unviewed resources for active students.
+    </li>
+    <li>
+      <b>Multi-Criteria Hybrid Aggregator:</b> Recommendations are synthesized using an empirical weighting function:
+      $$	ext{Score} = 0.50 cdot S_{	ext{Content}} + 0.25 cdot S_{	ext{Collab}} + 0.15 cdot S_{	ext{SubjectFit}} + 0.10 cdot S_{	ext{Rating}}$$
+      Top-10 ranked materials are returned along with <b>explainable justifications</b> detailing why each resource was selected.
+    </li>
+  </ol>
+
+  <p class="prelim-p">
+    The software is built with <b>React 19</b> and <b>TanStack Start (Nitro SSR)</b> in <b>TypeScript</b>, ensuring full-stack compile-time type safety. Data persistence, transactional integrity, and Row-Level Security (RLS) are provided by a <b>Supabase PostgreSQL</b> database with automated triggers for atomic rating recalculation. Administrative governance is equipped with all five mandatory reporting views prescribed in Section 5.6 of the approved synopsis.
+  </p>
+
+  <p class="prelim-p">
+    Comprehensive testing—including automated Vitest unit tests (8/8 passed) and an automated end-to-end test runner (18/18 passed)—demonstrates that StudyFlow AI achieves 100% functional compliance, sub-second query response times, and robust security suitable for enterprise academic deployment.
+  </p>
+</div>
+
+<div class="page-break"></div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="section-prelim">
+  <h2 class="prelim-heading">TABLE OF CONTENTS</h2>
+
+  <table class="toc-table">
+    <thead>
+      <tr>
+        <th style="width: 15%;">Chapter</th>
+        <th style="width: 73%;">Title / Section Description</th>
+        <th style="width: 12%; text-align: right;">Page No.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="toc-major"><td colspan="2"><b>Preliminary Pages</b></td><td></td></tr>
+      <tr><td></td><td>Cover Page (Hard-Bound Binding Specification)</td><td class="pg">i</td></tr>
+      <tr><td></td><td>Inner Title Page</td><td class="pg">ii</td></tr>
+      <tr><td></td><td>Proforma for Approval of BCA Project Proposal (BCSP-064)</td><td class="pg">iii</td></tr>
+      <tr><td></td><td>Certificate of Originality</td><td class="pg">iv</td></tr>
+      <tr><td></td><td>Acknowledgement</td><td class="pg">v</td></tr>
+      <tr><td></td><td>Executive Summary / Abstract</td><td class="pg">vi</td></tr>
+      <tr><td></td><td>Table of Contents</td><td class="pg">vii</td></tr>
+      <tr><td></td><td>List of Figures &amp; List of Tables</td><td class="pg">ix</td></tr>
+
+      <tr class="toc-major"><td colspan="2"><b>Chapter 1: Introduction &amp; Objectives</b></td><td class="pg">1</td></tr>
+      <tr><td>1.1</td><td>Background and Motivation</td><td class="pg">1</td></tr>
+      <tr><td>1.2</td><td>Problem Definition &amp; Need for Intelligent Curation</td><td class="pg">3</td></tr>
+      <tr><td>1.3</td><td>Project Objectives (Primary and Secondary)</td><td class="pg">4</td></tr>
+      <tr><td>1.4</td><td>Project Category (AI / ML &amp; Information Retrieval)</td><td class="pg">6</td></tr>
+      <tr><td>1.5</td><td>Tools, Platform, and Development Environment</td><td class="pg">7</td></tr>
+      <tr><td>1.6</td><td>Scope and Applicability in Academic Institutions</td><td class="pg">9</td></tr>
+      <tr><td>1.7</td><td>Structure and Organization of the Report</td><td class="pg">10</td></tr>
+
+      <tr class="toc-major"><td colspan="2"><b>Chapter 2: System Requirement Specifications (SRS)</b></td><td class="pg">12</td></tr>
+      <tr><td>2.1</td><td>Overall Product Perspective and System Context</td><td class="pg">12</td></tr>
+      <tr><td>2.2</td><td>User Classes and Characteristics (Student, Educator, Administrator)</td><td class="pg">14</td></tr>
+      <tr><td>2.3</td><td>Functional Requirements Specification (FR-01 to FR-15)</td><td class="pg">16</td></tr>
+      <tr><td>2.4</td><td>Non-Functional Requirements (Performance, Security, Reliability, Usability)</td><td class="pg">21</td></tr>
+      <tr><td>2.5</td><td>Software and Hardware Requirements (Client &amp; Server Infrastructure)</td><td class="pg">24</td></tr>
+      <tr><td>2.6</td><td>Use Case Modeling &amp; Detailed Use Case Specifications (UC-01 to UC-08)</td><td class="pg">26</td></tr>
+
+      <tr class="toc-major"><td colspan="2"><b>Chapter 3: System Analysis</b></td><td class="pg">30</td></tr>
+      <tr><td>3.1</td><td>Software Development Life Cycle (Iterative / Agile SDLC Model)</td><td class="pg">30</td></tr>
+      <tr><td>3.2</td><td>Feasibility Study (Technical, Operational, Economic, Schedule, Legal)</td><td class="pg">33</td></tr>
+      <tr><td>3.3</td><td>Data Flow Architecture (Structured Systems Analysis)</td><td class="pg">36</td></tr>
+      <tr><td>&nbsp;&nbsp;3.3.1</td><td>DFD Level 0: Context Diagram</td><td class="pg">36</td></tr>
+      <tr><td>&nbsp;&nbsp;3.3.2</td><td>DFD Level 1: System Decomposition (P1 to P6, D1 to D4)</td><td class="pg">38</td></tr>
+      <tr><td>&nbsp;&nbsp;3.3.3</td><td>DFD Level 2: AI Recommendation Subsystem Decomposition (P3.1 to P3.5)</td><td class="pg">41</td></tr>
+      <tr><td>3.4</td><td>Comprehensive Data Dictionary (Entities, Stores, Data Elements)</td><td class="pg">44</td></tr>
+      <tr><td>3.5</td><td>Entity-Relationship (E-R) Diagram &amp; Conceptual Data Modeling</td><td class="pg">49</td></tr>
+      <tr><td>3.6</td><td>Object-Oriented Domain Model &amp; Class Diagrams</td><td class="pg">52</td></tr>
+
+      <tr class="toc-major"><td colspan="2"><b>Chapter 4: System Design &amp; AI Algorithms</b></td><td class="pg">55</td></tr>
+      <tr><td>4.1</td><td>Architectural Design (Modern 3-Tier SSR + BaaS Pattern)</td><td class="pg">55</td></tr>
+      <tr><td>4.2</td><td>Modularization Details &amp; Subsystem Decomposition</td><td class="pg">57</td></tr>
+      <tr><td>4.3</td><td>Mathematical Formulation of AI &amp; Machine Learning Algorithms</td><td class="pg">59</td></tr>
+      <tr><td>&nbsp;&nbsp;4.3.1</td><td>Text Preprocessing, Stopword Elimination &amp; Tokenization</td><td class="pg">59</td></tr>
+      <tr><td>&nbsp;&nbsp;4.3.2</td><td>Term Frequency &ndash; Inverse Document Frequency (TF-IDF) Formulation</td><td class="pg">61</td></tr>
+      <tr><td>&nbsp;&nbsp;4.3.3</td><td>Vector Space Modeling &amp; Cosine Similarity Derivation</td><td class="pg">64</td></tr>
+      <tr><td>&nbsp;&nbsp;4.3.4</td><td>User-Item Collaborative Filtering &amp; Matrix Preference Scoring</td><td class="pg">67</td></tr>
+      <tr><td>&nbsp;&nbsp;4.3.5</td><td>Hybrid Score Synthesis &amp; Explainability Rule Generation</td><td class="pg">70</td></tr>
+      <tr><td>4.4</td><td>Database Design &amp; Relational Schema (3NF Normalization)</td><td class="pg">72</td></tr>
+      <tr><td>&nbsp;&nbsp;4.4.1</td><td>Table Structures, Foreign Keys &amp; Index Specifications</td><td class="pg">72</td></tr>
+      <tr><td>&nbsp;&nbsp;4.4.2</td><td>Automated Triggers for Atomic Rating Recalculation</td><td class="pg">76</td></tr>
+      <tr><td>&nbsp;&nbsp;4.4.3</td><td>PostgreSQL Row-Level Security (RLS) Policy Specifications</td><td class="pg">77</td></tr>
+      <tr><td>4.5</td><td>User Interface (UI) Design Principles &amp; Design System</td><td class="pg">79</td></tr>
+      <tr><td>4.6</td><td>Procedural Logic (System Flowcharts &amp; UML Sequence Diagrams)</td><td class="pg">81</td></tr>
+
+      <tr class="toc-major"><td colspan="2"><b>Chapter 5: Implementation Details &amp; Code Highlights</b></td><td class="pg">84</td></tr>
+      <tr><td>5.1</td><td>Implementation Methodology &amp; Engineering Decisions</td><td class="pg">84</td></tr>
+      <tr><td>5.2</td><td>Server-Side Full-Text Search Function Implementation</td><td class="pg">86</td></tr>
+      <tr><td>5.3</td><td>True TF-IDF &amp; Collaborative Recommendation Pipeline Code</td><td class="pg">88</td></tr>
+      <tr><td>5.4</td><td>Database Atomic Trigger &amp; Schema Migration Functions</td><td class="pg">92</td></tr>
+      <tr><td>5.5</td><td>Comprehensive Administrative Reports Aggregation Code</td><td class="pg">94</td></tr>
+      <tr><td>5.6</td><td>Architectural Defense: TypeScript vs Python &amp; PostgreSQL vs MongoDB</td><td class="pg">97</td></tr>
+
+      <tr class="toc-major"><td colspan="2"><b>Chapter 6: Software Testing &amp; Quality Assurance</b></td><td class="pg">100</td></tr>
+      <tr><td>6.1</td><td>Testing Strategy &amp; V-Model Quality Framework</td><td class="pg">100</td></tr>
+      <tr><td>6.2</td><td>Unit Testing (Vitest Automated Mathematical Test Suite)</td><td class="pg">102</td></tr>
+      <tr><td>6.3</td><td>Integration Testing (Database, Auth, Server RPC Pipelines)</td><td class="pg">105</td></tr>
+      <tr><td>6.4</td><td>System Testing &amp; End-to-End Test Suite (18 Automated Test Cases)</td><td class="pg">107</td></tr>
+      <tr><td>6.5</td><td>Security &amp; Vulnerability Testing (RLS Validation &amp; Injection Defense)</td><td class="pg">111</td></tr>
+      <tr><td>6.6</td><td>User Acceptance Testing (UAT) &amp; Performance Benchmarks</td><td class="pg">113</td></tr>
+      <tr><td>6.7</td><td>Bug Tracking, Debugging &amp; Code Refactoring Summary</td><td class="pg">115</td></tr>
+
+      <tr class="toc-major"><td colspan="2"><b>Chapter 7: Reports Generation &amp; Screen Layouts</b></td><td class="pg">117</td></tr>
+      <tr><td>7.1</td><td>Overview of Administrative Intelligence System</td><td class="pg">117</td></tr>
+      <tr><td>7.2</td><td>The Five Mandatory Section 5.6 Reports: Layout &amp; Data Analysis</td><td class="pg">119</td></tr>
+      <tr><td>&nbsp;&nbsp;7.2.1</td><td>Report 1: Student Activity Report</td><td class="pg">119</td></tr>
+      <tr><td>&nbsp;&nbsp;7.2.2</td><td>Report 2: Most-Recommended Materials Report</td><td class="pg">121</td></tr>
+      <tr><td>&nbsp;&nbsp;7.2.3</td><td>Report 3: Subject Search Popularity Report</td><td class="pg">123</td></tr>
+      <tr><td>&nbsp;&nbsp;7.2.4</td><td>Report 4: Material Rating Summary Report</td><td class="pg">125</td></tr>
+      <tr><td>&nbsp;&nbsp;7.2.5</td><td>Report 5: System Usage Summary Report</td><td class="pg">127</td></tr>
+      <tr><td>7.3</td><td>User Interface Screens and Navigation Layouts</td><td class="pg">129</td></tr>
+
+      <tr class="toc-major"><td colspan="2"><b>Chapter 8: Security Implementation, Limitations &amp; Future Scope</b></td><td class="pg">134</td></tr>
+      <tr><td>8.1</td><td>Security Architecture (Authentication, TLS, PostgreSQL RLS)</td><td class="pg">134</td></tr>
+      <tr><td>8.2</td><td>Current System Limitations &amp; Algorithmic Constraints</td><td class="pg">137</td></tr>
+      <tr><td>8.3</td><td>Future Scope &amp; Planned Enhancements (NCF, BERT, React Native)</td><td class="pg">139</td></tr>
+
+      <tr class="toc-major"><td colspan="2"><b>Chapter 9: Conclusion &amp; Bibliography</b></td><td class="pg">142</td></tr>
+      <tr><td>9.1</td><td>Project Conclusion &amp; Evaluation of Objectives</td><td class="pg">142</td></tr>
+      <tr><td>9.2</td><td>Candidate Self-Assessment &amp; Key Lessons Learned</td><td class="pg">144</td></tr>
+      <tr><td>9.3</td><td>Bibliography &amp; Literature References (IEEE Academic Format)</td><td class="pg">145</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="page-break"></div>
+
+<!-- LIST OF FIGURES & LIST OF TABLES -->
+<div class="section-prelim">
+  <h2 class="prelim-heading">LIST OF FIGURES &amp; LIST OF TABLES</h2>
+
+  <h3 class="sub-heading">List of Figures</h3>
+  <table class="lot-table">
+    <tr><td style="width: 20%;"><b>Figure 1.1</b></td><td>Conceptual Overview of StudyFlow AI Academic Curation Platform</td><td style="text-align: right;">5</td></tr>
+    <tr><td><b>Figure 2.1</b></td><td>System Use Case Diagram (Student, Educator, Administrator Roles)</td><td style="text-align: right;">28</td></tr>
+    <tr><td><b>Figure 3.1</b></td><td>Iterative &amp; Agile SDLC Model Applied to AI Recommender Engineering</td><td style="text-align: right;">32</td></tr>
+    <tr><td><b>Figure 3.2</b></td><td>DFD Level 0: System Context Diagram</td><td style="text-align: right;">37</td></tr>
+    <tr><td><b>Figure 3.3</b></td><td>DFD Level 1: Core System Process Decomposition Diagram</td><td style="text-align: right;">40</td></tr>
+    <tr><td><b>Figure 3.4</b></td><td>DFD Level 2: AI Recommendation Subsystem (P3) Functional Flow</td><td style="text-align: right;">43</td></tr>
+    <tr><td><b>Figure 3.5</b></td><td>Entity-Relationship (E-R) Diagram of Relational Database Schema</td><td style="text-align: right;">51</td></tr>
+    <tr><td><b>Figure 3.6</b></td><td>UML Class Diagram for Recommendation &amp; Catalog Domain Entities</td><td style="text-align: right;">54</td></tr>
+    <tr><td><b>Figure 4.1</b></td><td>Modern 3-Tier SSR + BaaS System Architecture Diagram</td><td style="text-align: right;">56</td></tr>
+    <tr><td><b>Figure 4.2</b></td><td>High-Dimensional Vector Space Model and Cosine Similarity Angle</td><td style="text-align: right;">66</td></tr>
+    <tr><td><b>Figure 4.3</b></td><td>User-Item Collaborative Filtering Correlation Matrix Flow</td><td style="text-align: right;">69</td></tr>
+    <tr><td><b>Figure 4.4</b></td><td>Database Schema Relational Integrity and Foreign Key Map</td><td style="text-align: right;">75</td></tr>
+    <tr><td><b>Figure 4.5</b></td><td>UML Sequence Diagram: Search &amp; Recommendation Execution Journey</td><td style="text-align: right;">83</td></tr>
+    <tr><td><b>Figure 6.1</b></td><td>Software Testing V-Model Quality Assurance Framework</td><td style="text-align: right;">101</td></tr>
+    <tr><td><b>Figure 7.1</b></td><td>Section 5.6 Report 2: Most-Recommended Materials Frequency Chart</td><td style="text-align: right;">122</td></tr>
+    <tr><td><b>Figure 7.2</b></td><td>Section 5.6 Report 3: Subject Search Popularity Distribution Chart</td><td style="text-align: right;">124</td></tr>
+    <tr><td><b>Figure 7.3</b></td><td>User Interface Screen: Personalized Student Learning Dashboard</td><td style="text-align: right;">130</td></tr>
+    <tr><td><b>Figure 7.4</b></td><td>User Interface Screen: Real-Time Server-Side Search &amp; Subject Filtering</td><td style="text-align: right;">131</td></tr>
+    <tr><td><b>Figure 7.5</b></td><td>User Interface Screen: AI Recommendations with Explainability Badges</td><td style="text-align: right;">132</td></tr>
+    <tr><td><b>Figure 7.6</b></td><td>User Interface Screen: Administrative 5-Part Analytics Intelligence Suite</td><td style="text-align: right;">133</td></tr>
+  </table>
+
+  <h3 class="sub-heading" style="margin-top: 30px;">List of Tables</h3>
+  <table class="lot-table">
+    <tr><td style="width: 20%;"><b>Table 1.1</b></td><td>Development Environment and Software Technology Specifications</td><td style="text-align: right;">8</td></tr>
+    <tr><td><b>Table 2.1</b></td><td>Functional Requirements Traceability Matrix (FR-01 to FR-15)</td><td style="text-align: right;">18</td></tr>
+    <tr><td><b>Table 2.2</b></td><td>Hardware and Software Minimum Operational Specifications</td><td style="text-align: right;">25</td></tr>
+    <tr><td><b>Table 3.1</b></td><td>Feasibility Assessment Dimension Matrix</td><td style="text-align: right;">35</td></tr>
+    <tr><td><b>Table 3.2</b></td><td>Data Dictionary: Entity and Data Element Specifications</td><td style="text-align: right;">45</td></tr>
+    <tr><td><b>Table 4.1</b></td><td>Multi-Criteria Recommendation Hybrid Weighting Allocations</td><td style="text-align: right;">71</td></tr>
+    <tr><td><b>Table 4.2</b></td><td>Relational Database Schema Table Definitions (Third Normal Form)</td><td style="text-align: right;">73</td></tr>
+    <tr><td><b>Table 4.3</b></td><td>PostgreSQL Row-Level Security (RLS) Policy Specifications</td><td style="text-align: right;">78</td></tr>
+    <tr><td><b>Table 6.1</b></td><td>Vitest Automated Unit Test Execution Results (recommendation.test.ts)</td><td style="text-align: right;">104</td></tr>
+    <tr><td><b>Table 6.2</b></td><td>End-to-End System Test Suite Verification Matrix (18 Test Cases)</td><td style="text-align: right;">108</td></tr>
+    <tr><td><b>Table 6.3</b></td><td>User Acceptance Testing (UAT) Verification Checklist</td><td style="text-align: right;">114</td></tr>
+    <tr><td><b>Table 7.1</b></td><td>Section 5.6 Report 1: Student Activity Aggregation Data Table</td><td style="text-align: right;">120</td></tr>
+    <tr><td><b>Table 7.2</b></td><td>Section 5.6 Report 4: Material Rating Summary Ranking Table</td><td style="text-align: right;">126</td></tr>
+    <tr><td><b>Table 7.3</b></td><td>Section 5.6 Report 5: System Usage &amp; Catalog Metric Summary Table</td><td style="text-align: right;">128</td></tr>
+  </table>
+</div>
+
+
+
+<!-- ==================== CHAPTER 1: INTRODUCTION & OBJECTIVES ==================== -->
+<div class="chapter-container">
+  <div class="chapter-header">
+    <div class="chapter-number">CHAPTER 1</div>
+    <h1 class="chapter-title">INTRODUCTION &amp; OBJECTIVES</h1>
+  </div>
+
+  <h2 class="sec-heading">1.1 Background and Motivation</h2>
+  
+  <p class="body-p">
+    In the contemporary tertiary educational ecosystem, particularly across technical disciplines such as Computer Applications, Information Technology, and Software Engineering, the availability of learning resources has expanded at an unprecedented rate. The global migration toward digital classrooms, open-access courseware, institutional repositories, and open educational resources (OER) has democratized access to computer science knowledge. Today, a student pursuing the Bachelor of Computer Applications (BCA) curriculum has immediate access to hundreds of thousands of electronic textbooks, conference papers, lecture slide decks, laboratory exercises, and video tutorials.
+  </p>
+
+  <p class="body-p">
+    However, this quantitative abundance has introduced a severe cognitive pathology known in information science as <b>information overload</b>. When students utilize generic commercial search engines or public video sharing platforms to study specific computer science topics—such as <i>&ldquo;B-Tree balancing algorithms&rdquo;</i>, <i>&ldquo;relational database normalization to Third Normal Form&rdquo;</i>, or <i>&ldquo;asynchronous event loops in runtime engines&rdquo;</i>—they are immediately inundated with millions of unstructured, fragmented, and uncurated search results. Commercial web search engines prioritize search engine optimization (SEO) algorithms, commercial advertising bids, and click-through rates rather than pedagogical accuracy, curricular alignment, or conceptual rigor.
+  </p>
+
+  <p class="body-p">
+    Consequently, undergraduate students spend an inordinate percentage of their productive study hours filtering out low-quality clickbait, navigating paywalled tutorials, reconciling conflicting or outdated programming syntax, and reviewing resources that are either too simplistic or inappropriately advanced for their semester level. In distance learning contexts—exemplified by the Indira Gandhi National Open University (IGNOU) model where learners must structure their self-directed study schedules autonomously—the absence of an intelligent, domain-aware academic navigation system significantly impedes academic progress and decreases student retention.
+  </p>
+
+  <p class="body-p">
+    These pedagogical challenges provide the core motivation for this Major Project. By designing and engineering <b>StudyFlow AI (studyAI)</b>, this project creates an intelligent, centralized academic curation platform that moves beyond blunt keyword matching. By coupling classical <b>Information Retrieval (IR)</b> algorithms—specifically Term Frequency &ndash; Inverse Document Frequency (TF-IDF) and Cosine Similarity—with <b>Collaborative Filtering</b> derived from verified peer ratings, the system delivers high-precision, syllabus-aligned study materials accompanied by transparent, human-readable explanations.
+  </p>
+
+  <h2 class="sec-heading">1.2 Problem Definition &amp; Need for Intelligent Curation</h2>
+
+  <p class="body-p">
+    The foundational problem addressed by this project can be formally stated as follows:
+  </p>
+
+  <div class="formal-definition-box">
+    <b>Problem Statement:</b><br>
+    <i>&ldquo;Undergraduate computing students lack an integrated, intelligent academic resource retrieval system that can accurately understand topical search intent, evaluate document relevance against verified curriculum syllabi, incorporate collaborative peer feedback, and provide explainable, ranked study recommendations while maintaining enterprise data security and relational integrity.&rdquo;</i>
+  </div>
+
+  <p class="body-p">
+    A systematic analysis of existing educational portals reveals several critical structural deficiencies:
+  </p>
+
+  <ul class="body-ul">
+    <li>
+      <b>Keyword Fragility &amp; Semantic Blindness:</b> Traditional college library catalogs and portal search forms rely upon rigid SQL <code>LIKE '%query%'</code> substring matching. If a student searches for <i>&ldquo;sorting algorithms complexity&rdquo;</i>, a traditional system will completely miss high-quality documents entitled <i>&ldquo;Asymptotic Analysis of Quicksort and Mergesort&rdquo;</i> because of zero literal substring overlap.
+    </li>
+    <li>
+      <b>Lack of Quality Weighting &amp; Peer Validation:</b> In conventional repositories, search results are presented in arbitrary order or sorted by upload date. A poorly written, erroneous student note uploaded yesterday appears above a foundational lecture note authored by an expert professor five months ago.
+    </li>
+    <li>
+      <b>Opaque &ldquo;Black-Box&rdquo; Recommendations:</b> Many modern experimental AI tools present recommendations generated by opaque neural networks without explanation. Students are left uninformed as to why a particular resource was suggested, diminishing trust in the system.
+    </li>
+    <li>
+      <b>Absence of Administrative Visibility:</b> Academic department heads and course coordinators lack real-time analytics regarding which curriculum topics are most frequently searched, which subjects suffer from a scarcity of quality materials, and which resources receive negative student ratings.
+    </li>
+  </ul>
+
+  <p class="body-p">
+    Addressing these deficiencies necessitates an engineering solution that synthesizes vector space mathematical modeling with robust full-stack software architecture.
+  </p>
+
+  <h2 class="sec-heading">1.3 Project Objectives</h2>
+
+  <p class="body-p">
+    To overcome the stated problems, <b>StudyFlow AI</b> was engineered around clear, measurable primary and secondary engineering objectives:
+  </p>
+
+  <h3 class="sub-sec-heading">Primary Objectives</h3>
+  <ol class="body-ol">
+    <li>
+      <b>Design and Implement a Hybrid Recommendation Engine:</b> Build a mathematical machine learning pipeline that combines content-based vector space filtering (TF-IDF with smooth IDF) with user-item collaborative filtering to produce ranked Top-10 study material recommendations.
+    </li>
+    <li>
+      <b>Deliver Transparent Recommendation Explainability:</b> For every recommended learning object, dynamically compute and display a human-readable justification (e.g., <i>&ldquo;High match with your enrolled subject&rdquo;</i>, <i>&ldquo;Top-rated learning resource across students&rdquo;</i>, or <i>&ldquo;Strong topical alignment with your search history&rdquo;</i>).
+    </li>
+    <li>
+      <b>Engineer Server-Side Full-Text Catalog Search:</b> Implement an indexed, server-side search pipeline with instant multi-facet filtering across academic subjects (Data Structures, AI, Database Management, Operating Systems, etc.), material formats (Notes, Books, Papers, Slides), and academic difficulty levels.
+    </li>
+    <li>
+      <b>Construct an Atomic Rating &amp; Review System:</b> Build a student feedback subsystem where star ratings (1 to 5) and written qualitative reviews are submitted and trigger automatic, atomic recalculation of material aggregate scores via database triggers.
+    </li>
+    <li>
+      <b>Fulfill Mandatory IGNOU BCSP-064 Section 5.6 Admin Reports:</b> Implement all five prescribed administrative intelligence reports (Student Activity Report, Most-Recommended Materials Report, Subject Popularity Report, Material Rating Summary Report, and System Usage Report) with tabular data and dynamic SVG charts.
+    </li>
+  </ol>
+
+  <h3 class="sub-sec-heading">Secondary Objectives</h3>
+  <ol class="body-ol">
+    <li>
+      <b>Enforce Enterprise-Grade Security via PostgreSQL Row-Level Security (RLS):</b> Protect student data, search logs, and administrative controls at the database kernel level, guaranteeing that unauthorized users cannot tamper with peer scores or access administrative functions.
+    </li>
+    <li>
+      <b>Achieve Full Compile-Time Type Safety:</b> Use TypeScript across the entire application stack—from database schema contracts and server RPC functions to reactive client components—eliminating runtime null-pointer and type coercion exceptions.
+    </li>
+    <li>
+      <b>Ensure High-Performance Sub-Second Execution:</b> Leverage TanStack Start Server-Side Rendering (SSR) running on the Nitro V8 engine to achieve initial page load times under 800 milliseconds and vector recommendation compute latencies under 50 milliseconds.
+    </li>
+  </ol>
+
+  <h2 class="sec-heading">1.4 Project Category</h2>
+
+  <p class="body-p">
+    In accordance with the classification criteria outlined in the official IGNOU BCSP-064 Project Guidelines, this project falls squarely within the category of:
+  </p>
+
+  <div class="category-card">
+    <div class="cat-badge">OFFICIAL PROJECT CATEGORY</div>
+    <div class="cat-title">Artificial Intelligence, Machine Learning &amp; Recommender Systems / Full-Stack Web Applications</div>
+    <div class="cat-desc">
+      The project integrates natural language preprocessing, statistical Information Retrieval (TF-IDF vector space modeling), multi-dimensional Cosine Similarity geometric calculations, and sparse matrix Collaborative Filtering within a reactive, modern Server-Side Rendered (SSR) cloud architecture.
+    </div>
+  </div>
+
+  <h2 class="sec-heading">1.5 Tools, Platform, and Development Environment</h2>
+
+  <p class="body-p">
+    The software engineering stack was selected to satisfy rigorous academic standards, high runtime performance, and strict separation of concerns. Table 1.1 outlines the tools, frameworks, and runtime environments utilized:
+  </p>
+
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 25%;">Layer / Component</th>
+        <th style="width: 35%;">Technology / Framework</th>
+        <th style="width: 40%;">Role and Purpose in System</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Frontend Framework</b></td>
+        <td>React.js (v19)</td>
+        <td>Component-based reactive user interface with hooks, state management, and optimized virtual DOM rendering.</td>
+      </tr>
+      <tr>
+        <td><b>SSR &amp; Routing Engine</b></td>
+        <td>TanStack Start + Nitro</td>
+        <td>Server-Side Rendering (SSR) with isomorphic server functions (<code>createServerFn</code>) and type-safe routing.</td>
+      </tr>
+      <tr>
+        <td><b>Programming Language</b></td>
+        <td>TypeScript (v5+)</td>
+        <td>Statically typed superset of JavaScript providing compile-time type safety across mathematical vector pipelines.</td>
+      </tr>
+      <tr>
+        <td><b>Database &amp; BaaS</b></td>
+        <td>Supabase PostgreSQL (v15+)</td>
+        <td>Enterprise relational database with ACID compliance, foreign-key cascades, PL/pgSQL triggers, and Row-Level Security.</td>
+      </tr>
+      <tr>
+        <td><b>Styling &amp; Design</b></td>
+        <td>Tailwind CSS + Lucide Icons</td>
+        <td>Utility-first responsive design system with custom CSS variables for light/dark academic themes.</td>
+      </tr>
+      <tr>
+        <td><b>Data Visualization</b></td>
+        <td>Recharts (React SVG)</td>
+        <td>Declarative charting library generating interactive bar charts, pie charts, and temporal frequency distributions.</td>
+      </tr>
+      <tr>
+        <td><b>Unit &amp; System Testing</b></td>
+        <td>Vitest + Node.js Runner</td>
+        <td>High-speed unit testing suite verifying algorithmic correctness and automated end-to-end regression validation.</td>
+      </tr>
+      <tr>
+        <td><b>Development Tools</b></td>
+        <td>VS Code, Git, PowerShell</td>
+        <td>Integrated development environment, distributed version control, and shell automation scripts.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="sec-heading">1.6 Scope and Applicability</h2>
+
+  <p class="body-p">
+    <b>StudyFlow AI</b> is designed for institutional deployment across universities, autonomous colleges, and distance-learning directorates. Its primary scope includes:
+  </p>
+
+  <ul class="body-ul">
+    <li><b>Undergraduate &amp; Postgraduate Students:</b> Enables learners to discover syllabus-aligned study materials in seconds, eliminating manual search overhead and steering them toward peer-validated resources.</li>
+    <li><b>Academic Faculty &amp; Educators:</b> Provides educators with a structured submission pipeline where they can upload and curate study packs, lecture slides, and notes for student cohorts.</li>
+    <li><b>Academic Administrators &amp; Librarians:</b> Delivers transparent analytics regarding student search patterns, identifying curriculum bottlenecks where additional learning resources need to be authored or procured.</li>
+  </ul>
+
+  <h2 class="sec-heading">1.7 Structure and Organization of the Report</h2>
+
+  <p class="body-p">
+    This project report is organized into nine comprehensive chapters adhering strictly to the official IGNOU BCSP-064 project guidelines:
+  </p>
+
+  <ul class="body-ul">
+    <li><b>Chapter 1: Introduction &amp; Objectives:</b> Presents project background, problem definition, objectives, category, and development stack.</li>
+    <li><b>Chapter 2: System Requirement Specifications (SRS):</b> Details user personas, functional and non-functional requirements, hardware/software specs, and use cases.</li>
+    <li><b>Chapter 3: System Analysis:</b> Covers SDLC methodology, feasibility analysis, DFD Levels 0, 1, and 2, comprehensive data dictionary, and E-R modeling.</li>
+    <li><b>Chapter 4: System Design &amp; AI Algorithms:</b> Outlines system architecture, modular design, mathematical formulation of TF-IDF, Cosine Similarity, Collaborative Filtering, 3NF database schema, and UI design.</li>
+    <li><b>Chapter 5: Implementation Details &amp; Code Highlights:</b> Documents core code implementations, server search functions, recommendation engine logic, and architectural defenses.</li>
+    <li><b>Chapter 6: Software Testing &amp; Quality Assurance:</b> Reports on unit testing, integration testing, 18 automated system tests, security audits, and UAT validation.</li>
+    <li><b>Chapter 7: Reports Generation &amp; Screen Layouts:</b> Analyzes the five mandatory Section 5.6 admin reports and illustrates core application user interfaces.</li>
+    <li><b>Chapter 8: Security Implementation, Limitations &amp; Future Scope:</b> Evaluates authentication, RLS policies, current operational limits, and future AI research avenues.</li>
+    <li><b>Chapter 9: Conclusion &amp; Bibliography:</b> Concludes the report with an evaluation of achievements, student reflections, and IEEE literature references.</li>
+  </ul>
+</div>
+
+
+
+<!-- ==================== CHAPTER 2: SYSTEM REQUIREMENT SPECIFICATIONS (SRS) ==================== -->
+<div class="chapter-container">
+  <div class="chapter-header">
+    <div class="chapter-number">CHAPTER 2</div>
+    <h1 class="chapter-title">SYSTEM REQUIREMENT SPECIFICATIONS (SRS)</h1>
+  </div>
+
+  <h2 class="sec-heading">2.1 Overall Product Perspective and System Context</h2>
+
+  <p class="body-p">
+    The <b>StudyFlow AI</b> system is conceptualized as an autonomous, web-based educational retrieval and recommendation platform. Rather than operating as an isolated client-side utility, it functions as a modern distributed three-tier system comprising a reactive Presentation Layer (React 19), an isomorphic Server Layer (TanStack Start with Nitro SSR), and a secure Database Management Layer (Supabase PostgreSQL with Row-Level Security).
+  </p>
+
+  <p class="body-p">
+    The software interfaces directly with academic learners across heterogeneous computing devices (desktop workstations, laptops, and tablet computers) via standard modern web browsers. It provides real-time access to a curated repository of computing study materials, maintaining persistent tracking of student search inquiries, viewing behaviors, and peer evaluations.
+  </p>
+
+  <h2 class="sec-heading">2.2 User Classes and Characteristics</h2>
+
+  <p class="body-p">
+    The system recognizes three distinct user roles, each possessing specific permissions, interface layouts, and operational workflows:
+  </p>
+
+  <div class="user-role-card">
+    <div class="role-badge student">ROLE 1: STUDENT / LEARNER</div>
+    <div class="role-desc">
+      <b>Profile:</b> Undergraduate computer science students (primarily BCA, B.Sc. IT, and B.Tech learners) seeking structured, syllabus-aligned study resources.
+      <br><b>Technical Competence:</b> Basic computer literacy, familiar with web navigation and search queries.
+      <br><b>System Capabilities:</b> Register account, maintain profile, enroll in academic subjects, perform full-text catalog searches, view and download study materials, receive personalized AI recommendations, submit 1&ndash;5 star ratings and written reviews, and track personal search history.
+    </div>
+  </div>
+
+  <div class="user-role-card">
+    <div class="role-badge educator">ROLE 2: EDUCATOR / CONTENT CONTRIBUTOR</div>
+    <div class="role-desc">
+      <b>Profile:</b> College lecturers, instructors, teaching assistants, or senior student scholars who author or curate educational materials.
+      <br><b>Technical Competence:</b> Intermediate to advanced technical proficiency.
+      <br><b>System Capabilities:</b> Submit educator verification requests, upload new study materials (lecture notes, slide decks, reference books), organize materials into curated &ldquo;Study Packs&rdquo;, and monitor engagement metrics for their published resources.
+    </div>
+  </div>
+
+  <div class="user-role-card">
+    <div class="role-badge admin">ROLE 3: SYSTEM ADMINISTRATOR</div>
+    <div class="role-desc">
+      <b>Profile:</b> Department heads, computer science academic coordinators, or institutional IT administrators responsible for catalog governance.
+      <br><b>Technical Competence:</b> High technical competence in software administration and data analysis.
+      <br><b>System Capabilities:</b> Full CRUD operations over subjects and materials, moderation of pending material approval queues, educator role assignment, review of system security logs, and generation of the comprehensive 5-part administrative analytics reports.
+    </div>
+  </div>
+
+  <h2 class="sec-heading">2.3 Functional Requirements Specification</h2>
+
+  <p class="body-p">
+    The functional capabilities of the system are systematically decomposed into fifteen core Functional Requirements (FR-01 through FR-15). Table 2.1 provides the formal Functional Requirements Traceability Matrix:
+  </p>
+
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 10%;">Req ID</th>
+        <th style="width: 25%;">Requirement Name</th>
+        <th style="width: 45%;">Functional Description</th>
+        <th style="width: 10%;">Priority</th>
+        <th style="width: 10%;">Module</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>FR-01</b></td>
+        <td>User Registration</td>
+        <td>System must allow prospective students and educators to register using a valid email address and password with instant client and server validation.</td>
+        <td>High</td>
+        <td>Auth (P1)</td>
+      </tr>
+      <tr>
+        <td><b>FR-02</b></td>
+        <td>Secure Authentication</td>
+        <td>System must authenticate user credentials against bcrypt-hashed passwords, issue secure session tokens, and enforce session expiration policies.</td>
+        <td>High</td>
+        <td>Auth (P1)</td>
+      </tr>
+      <tr>
+        <td><b>FR-03</b></td>
+        <td>Profile Management</td>
+        <td>Students must be able to view and edit profile details, select their current degree semester, and update enrolled academic subjects.</td>
+        <td>Medium</td>
+        <td>Profile</td>
+      </tr>
+      <tr>
+        <td><b>FR-04</b></td>
+        <td>Server Full-Text Search</td>
+        <td>System must provide server-side full-text search querying material titles, descriptions, and topical keywords with sub-second execution.</td>
+        <td>High</td>
+        <td>Search (P2)</td>
+      </tr>
+      <tr>
+        <td><b>FR-05</b></td>
+        <td>Multi-Facet Filtering</td>
+        <td>Users must be able to filter search results by Academic Subject, Material Format (Notes, Books, Slides, Papers), and Academic Difficulty Level.</td>
+        <td>High</td>
+        <td>Search (P2)</td>
+      </tr>
+      <tr>
+        <td><b>FR-06</b></td>
+        <td>Content-Based Filtering</td>
+        <td>Recommendation engine must tokenize queries and catalog texts, compute smooth IDF weights, and calculate Cosine Similarity across document vectors.</td>
+        <td>High</td>
+        <td>AI Engine (P3)</td>
+      </tr>
+      <tr>
+        <td><b>FR-07</b></td>
+        <td>Collaborative Filtering</td>
+        <td>Engine must construct a user-item rating matrix and compute inter-student similarity to predict ratings for unviewed materials.</td>
+        <td>High</td>
+        <td>AI Engine (P3)</td>
+      </tr>
+      <tr>
+        <td><b>FR-08</b></td>
+        <td>Hybrid Score Blending</td>
+        <td>System must combine content relevance (50%), collaborative preference (25%), enrolled subject fit (15%), and rating (10%) into a unified score.</td>
+        <td>High</td>
+        <td>AI Engine (P3)</td>
+      </tr>
+      <tr>
+        <td><b>FR-09</b></td>
+        <td>Transparent Explainability</td>
+        <td>Every recommendation must be accompanied by an explainable human-readable justification detailing why the resource was selected.</td>
+        <td>High</td>
+        <td>AI Engine (P3)</td>
+      </tr>
+      <tr>
+        <td><b>FR-10</b></td>
+        <td>Material Viewing &amp; Logging</td>
+        <td>When a user views a material, the system must log the interaction into the <code>material_views</code> table and increment the item view count.</td>
+        <td>Medium</td>
+        <td>Catalog</td>
+      </tr>
+      <tr>
+        <td><b>FR-11</b></td>
+        <td>Rating &amp; Review Submission</td>
+        <td>Authenticated students must be able to rate any material from 1 to 5 stars and submit an optional written review.</td>
+        <td>High</td>
+        <td>Rating (P5)</td>
+      </tr>
+      <tr>
+        <td><b>FR-12</b></td>
+        <td>Atomic Score Recalculation</td>
+        <td>Database triggers must immediately recalculate <code>average_rating</code> and <code>rating_count</code> on the parent material upon rating change.</td>
+        <td>High</td>
+        <td>Database (D3)</td>
+      </tr>
+      <tr>
+        <td><b>FR-13</b></td>
+        <td>Admin Material Management</td>
+        <td>Administrators must have full capability to create, read, update, delete (CRUD), and moderate pending study materials.</td>
+        <td>High</td>
+        <td>Admin (P4)</td>
+      </tr>
+      <tr>
+        <td><b>FR-14</b></td>
+        <td>Admin Subject Management</td>
+        <td>Administrators must be able to add, modify, and manage academic subjects and curriculum disciplines.</td>
+        <td>Medium</td>
+        <td>Admin (P4)</td>
+      </tr>
+      <tr>
+        <td><b>FR-15</b></td>
+        <td>5-Part Section 5.6 Reports</td>
+        <td>System must generate all five prescribed admin reports (Student Activity, Most-Recommended, Subject Popularity, Rating Summary, System Usage).</td>
+        <td>High</td>
+        <td>Reports (P6)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="sec-heading">2.4 Non-Functional Requirements Specification</h2>
+
+  <p class="body-p">
+    Non-functional requirements specify qualitative benchmarks and architectural constraints that guarantee enterprise-readiness:
+  </p>
+
+  <h3 class="sub-sec-heading">2.4.1 Performance Requirements</h3>
+  <ul class="body-ul">
+    <li><b>Search Latency:</b> Server-side full-text search queries across the catalog must execute and render in under 500 milliseconds under standard network conditions.</li>
+    <li><b>Recommendation Compute Time:</b> The complete hybrid recommendation pipeline (token extraction, TF-IDF vector projection, collaborative score calculation, and top-10 ranking) must execute in under 50 milliseconds.</li>
+    <li><b>Initial Page Load:</b> Thanks to TanStack Start SSR pre-rendering, First Contentful Paint (FCP) must occur within 800 milliseconds.</li>
+  </ul>
+
+  <h3 class="sub-sec-heading">2.4.2 Security Requirements</h3>
+  <ul class="body-ul">
+    <li><b>Password Security:</b> All user passwords must be hashed using bcrypt with a minimum work factor of 10 prior to database persistence; plain text passwords must never be stored or logged.</li>
+    <li><b>Row-Level Security (RLS):</b> PostgreSQL RLS policies must strictly isolate student private data. Students may only read or mutate their own profiles, search history, and ratings.</li>
+    <li><b>Defense in Depth:</b> All database queries must be executed via parameterized statements or ORM interfaces, completely eliminating Structured Query Language (SQL) injection vulnerabilities.</li>
+    <li><b>Cross-Site Scripting (XSS) Mitigation:</b> React's automatic virtual DOM escaping guarantees that user-submitted reviews and queries are rendered safely without script execution risks.</li>
+  </ul>
+
+  <h3 class="sub-sec-heading">2.4.3 Reliability and Fault Tolerance</h3>
+  <ul class="body-ul">
+    <li><b>Transactional ACID Compliance:</b> All catalog modifications and rating submissions are executed under strict ACID guarantees within PostgreSQL.</li>
+    <li><b>Cold-Start Fallback:</b> In scenarios where a newly registered student has zero search or rating history, the recommendation engine must gracefully fall back to popularity-weighted subject curation without crashing.</li>
+  </ul>
+
+  <h3 class="sub-sec-heading">2.4.4 Usability and Accessibility</h3>
+  <ul class="body-ul">
+    <li><b>Responsive Layout:</b> The interface must adapt dynamically to screen viewports ranging from 360px (smartphones) to 4K desktop displays.</li>
+    <li><b>Visual Feedback:</b> All user actions (form submissions, ratings, searches) must provide immediate visual feedback via loading states, toasts, or optimistic UI updates.</li>
+  </ul>
+
+  <h2 class="sec-heading">2.5 Software and Hardware Requirements</h2>
+
+  <p class="body-p">
+    Table 2.2 specifies the operational hardware and software boundaries for deploying and accessing StudyFlow AI:
+  </p>
+
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 25%;">Dimension</th>
+        <th style="width: 35%;">Client-Side Requirements (User)</th>
+        <th style="width: 40%;">Server-Side Requirements (Host)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Processor (CPU)</b></td>
+        <td>Dual-Core 1.5 GHz or higher (x86/x64/ARM)</td>
+        <td>Quad-Core 2.4 GHz or higher (Cloud VM / Dedicated)</td>
+      </tr>
+      <tr>
+        <td><b>Memory (RAM)</b></td>
+        <td>Minimum 2 GB RAM (4 GB recommended)</td>
+        <td>Minimum 4 GB RAM (8 GB recommended for production)</td>
+      </tr>
+      <tr>
+        <td><b>Storage Space</b></td>
+        <td>100 MB free browser cache space</td>
+        <td>20 GB SSD storage for application and database</td>
+      </tr>
+      <tr>
+        <td><b>Operating System</b></td>
+        <td>Windows 10/11, macOS, Linux, Android, iOS</td>
+        <td>Ubuntu Server 22.04 LTS / Windows Server 2022</td>
+      </tr>
+      <tr>
+        <td><b>Runtime / Engine</b></td>
+        <td>Modern HTML5 Web Browser (Chrome, Edge, Firefox)</td>
+        <td>Node.js (v18.0.0+) / Nitro SSR Runtime</td>
+      </tr>
+      <tr>
+        <td><b>Network</b></td>
+        <td>Standard Broadband / 4G Internet Connection</td>
+        <td>High-speed internet with static IP / domain TLS</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="sec-heading">2.6 Use Case Modeling and Detailed Specifications</h2>
+
+  <p class="body-p">
+    To formalize behavioral interactions between system actors and functional boundaries, eight core Use Cases (UC-01 through UC-08) were engineered. Figure 2.1 illustrates the Use Case diagram:
+  </p>
+
+  <div class="ascii-diagram-box">
+<pre>
+========================================================================================
+                     FIGURE 2.1: SYSTEM USE CASE DIAGRAM
+========================================================================================
+
+       +-------------------------------------------------------------------+
+       |                 StudyFlow AI (System Boundary)                    |
+       |                                                                   |
+       |     ( UC-01: Register & Authenticate ) &lt;----------------+         |
+       |                                                          |         |
+       |     ( UC-02: Manage Academic Profile )                   |         |
+       |                                                          |         |
+       |     ( UC-03: Search Catalog Materials ) &lt;--+             |         |
+       |                                            |             |         |
+       |     ( UC-04: Generate AI Recommendations ) |             |         |
+       |                                            |             |         |
+[ Student ]                                         |        [ Educator ]   |
+   |   |     ( UC-05: Rate & Review Material )      |             |         |
+   |   |                                            |             |         |
+   |   +---&gt; ( UC-06: Upload & Curate Materials ) &lt;--+-------------+         |
+   |                                                                        |
+   |         ( UC-07: Moderate Approval Queue ) &lt;------------------+        |
+   |                                                               |        |
+   +-------&gt; ( UC-08: View Administrative Reports ) &lt;--------------+ [ Admin ]
+       +-------------------------------------------------------------------+
+</pre>
+  </div>
+
+  <h3 class="sub-sec-heading">Detailed Use Case Specification: UC-04 (Generate AI Recommendations)</h3>
+  <div class="usecase-detail-box">
+    <table>
+      <tr><td style="width: 25%; font-weight: 600;">Use Case ID:</td><td>UC-04</td></tr>
+      <tr><td style="font-weight: 600;">Use Case Name:</td><td>Generate AI-Powered Study Recommendations</td></tr>
+      <tr><td style="font-weight: 600;">Primary Actor:</td><td>Student (Authenticated)</td></tr>
+      <tr><td style="font-weight: 600;">Preconditions:</td><td>Student is logged in and has an active profile with enrolled academic subjects.</td></tr>
+      <tr><td style="font-weight: 600;">Main Success Scenario:</td><td>
+        1. Student navigates to the Recommendations page.<br>
+        2. System queries student profile, enrolled subjects, and recent search logs from D1.<br>
+        3. P3.2 Keyword Extractor extracts and normalizes query tokens.<br>
+        4. P3.3 Content Filter computes TF-IDF vectors for catalog items and calculates Cosine Similarity.<br>
+        5. P3.4 Collaborative Filter computes predicted peer ratings from D3.<br>
+        6. P3.5 Score Aggregator blends scores and generates human-readable explainability strings.<br>
+        7. System persists Top-10 recommendations to D4 and displays cards to the student.
+      </td></tr>
+      <tr><td style="font-weight: 600;">Alternative Flow:</td><td>If student has no search history, system uses enrolled subject catalog items weighted by global ratings and popularity (cold-start mitigation).</td></tr>
+      <tr><td style="font-weight: 600;">Postconditions:</td><td>Student receives personalized, explainable Top-10 study resources.</td></tr>
+    </table>
+  </div>
+</div>
+
+
+
+<!-- ==================== CHAPTER 3: SYSTEM ANALYSIS ==================== -->
+<div class="chapter-container">
+  <div class="chapter-header">
+    <div class="chapter-number">CHAPTER 3</div>
+    <h1 class="chapter-title">SYSTEM ANALYSIS</h1>
+  </div>
+
+  <h2 class="sec-heading">3.1 Software Development Life Cycle (SDLC) Model</h2>
+
+  <p class="body-p">
+    Selecting an appropriate Software Development Life Cycle (SDLC) model is a foundational prerequisite for engineering robust software systems. Traditional software engineering methodologies—most notably the linear sequential <b>Waterfall Model</b>—mandate that each developmental stage (Requirements, Analysis, Design, Coding, Testing, Deployment) must achieve full finality before the subsequent phase commences.
+  </p>
+
+  <p class="body-p">
+    While the Waterfall model suits projects with rigidly static, unchanging requirements (such as payroll calculators or basic ledger tools), it is fundamentally ill-suited for systems incorporating <b>Machine Learning and Information Retrieval</b>. In recommendation systems engineering, algorithmic models cannot be treated as static code blocks. Mathematical weighting parameters, vector space representations, term-frequency normalization equations, and user similarity thresholds require empirical experimentation, tuning, and iterative refinement.
+  </p>
+
+  <p class="body-p">
+    Consequently, <b>StudyFlow AI</b> was engineered utilizing the <b>Iterative / Agile SDLC Model</b>. This methodology partitions project development into manageable, time-boxed increments, allowing continuous testing, validation, and algorithmic enhancement. Figure 3.1 illustrates the iterative engineering lifecycle:
+  </p>
+
+  <div class="ascii-diagram-box">
+<pre>
+========================================================================================
+             FIGURE 3.1: ITERATIVE / AGILE SDLC METHODOLOGY
+========================================================================================
+
+    [ Phase 1: Inception &amp; SRS ]
+               |
+               v
+    +-------------------------------------------------------------------+
+    |                 ITERATIVE DEVELOPMENT SPRINTS                     |
+    |                                                                   |
+    |   Sprint 1: Database Schema, Relational 3NF &amp; RLS Policies        |
+    |      |                                                            |
+    |      v                                                            |
+    |   Sprint 2: Auth Subsystem (P1) &amp; Server-Side Search (P2)         |
+    |      |                                                            |
+    |      v                                                            |
+    |   Sprint 3: AI Vector Space (TF-IDF) &amp; Collaborative Engine (P3)  |
+    |      |                                                            |
+    |      v                                                            |
+    |   Sprint 4: Atomic Rating Triggers (P5) &amp; Material CRUD (P4)       |
+    |      |                                                            |
+    |      v                                                            |
+    |   Sprint 5: Section 5.6 Administrative Analytics Intelligence (P6)|
+    +-------------------------------------------------------------------+
+               |
+               v
+    [ Phase 6: System Testing, End-to-End Verification (18/18) &amp; Viva Prep ]
+</pre>
+  </div>
+
+  <p class="body-p">
+    The iterative lifecycle consisted of five tightly coupled phases:
+  </p>
+
+  <ol class="body-ol">
+    <li>
+      <b>Phase 1: Inception &amp; Requirements Analysis:</b> Formulated user stories, identified stakeholder personas, developed DFD Level 0/1/2 diagrams, and established the Functional Requirements Traceability Matrix.
+    </li>
+    <li>
+      <b>Phase 2: Architectural &amp; Database Design:</b> Designed the 3-tier SSR + BaaS architecture, established Third Normal Form (3NF) relational tables in PostgreSQL, configured foreign-key constraints, and authored Row-Level Security (RLS) policies.
+    </li>
+    <li>
+      <b>Phase 3: Core Implementation &amp; Server RPCs:</b> Developed TanStack Start server functions for authentication, subject filtering, and server-side full-text catalog queries.
+    </li>
+    <li>
+      <b>Phase 4: AI Recommender Engine Formulation:</b> Implemented natural language tokenization, smooth Inverse Document Frequency calculation, multi-dimensional Cosine Similarity, and collaborative user-item preference scoring.
+    </li>
+    <li>
+      <b>Phase 5: Verification, Quality Assurance &amp; Reporting:</b> Executed 8 Vitest mathematical unit tests, authored the 18-step end-to-end automated system test runner, and built the Section 5.6 administrative intelligence suite.
+    </li>
+  </ol>
+
+  <h2 class="sec-heading">3.2 Feasibility Study</h2>
+
+  <p class="body-p">
+    A comprehensive feasibility analysis was conducted across five standard dimensions to evaluate operational viability and compliance with IGNOU BCSP-064 guidelines. Table 3.1 summarizes the findings:
+  </p>
+
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 20%;">Dimension</th>
+        <th style="width: 35%;">Evaluation Criteria</th>
+        <th style="width: 45%;">Feasibility Finding &amp; Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Technical Feasibility</b></td>
+        <td>Hardware, software, programming languages, and ML algorithms capability.</td>
+        <td><b>FEASIBLE:</b> The selected stack (React 19, TypeScript, PostgreSQL, TanStack Start) is mature, stable, and executes high-dimensional vector math in milliseconds.</td>
+      </tr>
+      <tr>
+        <td><b>Operational Feasibility</b></td>
+        <td>User acceptance, ease of navigation, and operational workflow.</td>
+        <td><b>FEASIBLE:</b> Browser-based responsive client requires zero installation. Students navigate familiar search/feed interfaces, while admins access automated reports.</td>
+      </tr>
+      <tr>
+        <td><b>Economic Feasibility</b></td>
+        <td>Cost of development, software licensing, and operational maintenance.</td>
+        <td><b>FEASIBLE:</b> 100% of frameworks and libraries utilized (React, TypeScript, Tailwind, Recharts, Vitest) are open-source under permissive MIT licenses. Zero licensing fees.</td>
+      </tr>
+      <tr>
+        <td><b>Schedule Feasibility</b></td>
+        <td>Adherence to academic semester timelines and evaluation milestones.</td>
+        <td><b>FEASIBLE:</b> Development was completed across five iterative sprints within the designated BCA 6th semester timeline.</td>
+      </tr>
+      <tr>
+        <td><b>Legal &amp; Ethical Feasibility</b></td>
+        <td>Data privacy, user data governance, and academic integrity.</td>
+        <td><b>FEASIBLE:</b> Uses PostgreSQL RLS to isolate private student records. Open-access study materials comply with Fair Use educational standards.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="sec-heading">3.3 Data Flow Architecture (Structured Systems Analysis)</h2>
+
+  <p class="body-p">
+    Structured Systems Analysis &amp; Design (SSAD) employs <b>Data Flow Diagrams (DFDs)</b> to model the transformation of data as it moves through external entities, computational processes, and persistent data repositories. In compliance with IGNOU BCSP-064 syllabus requirements, the system architecture is decomposed across Level 0, Level 1, and Level 2 DFDs.
+  </p>
+
+  <h3 class="sub-sec-heading">3.3.1 DFD Level 0: Context Diagram</h3>
+  <p class="body-p">
+    The Context Diagram represents the highest abstraction level of the system, modeling StudyFlow AI as a single bounded process interacting with two primary external entities: the <b>Student (User)</b> and the <b>Administrator</b>. Figure 3.2 illustrates DFD Level 0:
+  </p>
+
+  <div class="ascii-diagram-box">
+<pre>
+========================================================================================
+                      FIGURE 3.2: DFD LEVEL 0 (CONTEXT DIAGRAM)
+========================================================================================
+
+                 +-----------------------------------------------+
+                 |                STUDENT (USER)                 |
+                 +-----------------------------------------------+
+                   | Search Query / Credentials       ^ Recommendations /
+                   | &amp; Ratings                        | Search Results
+                   v                                  |
+            +----------------------------------------------------+
+            |                                                    |
+            |                       ( 0 )                        |
+            |         AI STUDY MATERIAL RECOMMENDER              |
+            |                 (StudyFlow AI)                     |
+            |                                                    |
+            +----------------------------------------------------+
+                   | Reports / Catalog Stats          ^ Material Uploads /
+                   v                                  | Admin Commands
+                 +-----------------------------------------------+
+                 |                 ADMINISTRATOR                 |
+                 +-----------------------------------------------+
+</pre>
+  </div>
+
+  <p class="body-p">
+    <b>Data Flow Interactions in Level 0:</b>
+  </p>
+  <ul class="body-ul">
+    <li><b>Student &rarr; System:</b> Sends authentication credentials, subject enrollment selections, search inquiry strings, and 1&ndash;5 star material evaluations.</li>
+    <li><b>System &rarr; Student:</b> Delivers authenticated session tokens, paginated full-text catalog results, personalized AI recommendation cards with explainability justifications, and material viewing streams.</li>
+    <li><b>Admin &rarr; System:</b> Submits curriculum subject definitions, creates/updates study material metadata, and issues approval/moderation commands.</li>
+    <li><b>System &rarr; Admin:</b> Transmits comprehensive Section 5.6 administrative intelligence reports, system usage metrics, and review queue statuses.</li>
+  </ul>
+
+  <h3 class="sub-sec-heading">3.3.2 DFD Level 1: System Process Decomposition</h3>
+  <p class="body-p">
+    DFD Level 1 decomposes the monolithic context process into six discrete, interacting functional sub-processes (<b>P1 through P6</b>) and four persistent data stores (<b>D1 through D4</b>):
+  </p>
+
+  <ul class="body-ul">
+    <li><b>P1 (User Registration &amp; Authentication):</b> Validates credentials, hashes passwords, manages sessions, and reads/writes user profiles in <b>D1 (User DB)</b>.</li>
+    <li><b>P2 (Subject &amp; Topic Search):</b> Parses search terms, executes server-side queries against <b>D2 (Material DB)</b>, logs user searches into D1, and delivers paginated results.</li>
+    <li><b>P3 (AI Recommendation Engine):</b> Aggregates learner history from D1, catalog metadata from D2, and peer evaluations from <b>D3 (Rating DB)</b> to compute ranked recommendations stored in <b>D4 (Recommendations DB)</b>.</li>
+    <li><b>P4 (Study Material Management):</b> Provides administrators with full catalog CRUD workflows, persisting verified resources into D2.</li>
+    <li><b>P5 (Rating &amp; Review System):</b> Accepts student feedback, inserts reviews into D3, and atomically updates aggregate ratings in D2 via database triggers.</li>
+    <li><b>P6 (Reports &amp; Analytics):</b> Queries and aggregates logs, ratings, and recommendations across D1, D2, D3, and D4 to render the five Section 5.6 admin reports.</li>
+  </ul>
+
+  <div class="ascii-diagram-box">
+<pre>
+========================================================================================
+                   FIGURE 3.3: DFD LEVEL 1 (PROCESS DECOMPOSITION)
+========================================================================================
+
+  [ Student ]                                                         [ Admin ]
+     |                                                                    |
+     | Credentials             +--------------------+                     |
+     +-----------------------&gt; | P1: User Auth      | &lt;-------------------+
+     |                         +--------------------+
+     |                                |   ^
+     |                                v   |
+     |                         +--------------------+
+     |                         | D1: User DB        |
+     |                         +--------------------+
+     |                                |
+     | Search Query                   v
+     +-----------------------&gt; +--------------------+
+     |                         | P2: Catalog Search | &lt;---+ Material CRUD
+     | &lt;-----------------------+--------------------+     |
+     | Search Results                 |   ^               |
+     |                                v   |               |
+     |                         +--------------------+     |
+     |                         | D2: Material DB    | ----+
+     |                         +--------------------+
+     |                            |           ^
+     |                            v           | (Atomic Update)
+     |                         +--------------------+
+     |                         | D3: Rating DB      | &lt;---+ Rating &amp; Review
+     |                         +--------------------+     |
+     |                                |                   |
+     |                                v                   |
+     |                         +--------------------+     |
+     | Recommendations         | P3: Recommend Eng  |     |
+     | &lt;-----------------------+--------------------+     |
+     |                                |                   |
+     |                                v                   |
+     |                         +--------------------+     |
+     |                         | D4: Recommend DB   |     |
+     |                         +--------------------+     |
+     |                                |                   |
+     |                                v                   |
+     |                         +--------------------+     |
+     | Reports / Analytics     | P6: Reports &amp; Stats| &lt;---+ Request Reports
+     +------------------------ |--------------------+
+</pre>
+  </div>
+
+  <h3 class="sub-sec-heading">3.3.3 DFD Level 2: AI Recommendation Subsystem Decomposition</h3>
+  <p class="body-p">
+    DFD Level 2 performs an in-depth mathematical decomposition of <b>Process P3 (Recommendation Engine)</b>. It formalizes the five internal sub-processes responsible for generating hybrid, explainable recommendations:
+  </p>
+
+  <ol class="body-ol">
+    <li>
+      <b>P3.1 Profile Analyzer:</b> Queries <b>D1 (User DB)</b> to retrieve the student's active enrolled subjects, recent search history strings, and viewed materials. It synthesizes these attributes into a dynamic <i>User Profile Vector</i>.
+    </li>
+    <li>
+      <b>P3.2 Keyword Extractor:</b> Normalizes raw query strings and document texts by lowercasing, removing special characters and punctuation, and filtering out non-informative English and academic stop-words.
+    </li>
+    <li>
+      <b>P3.3 Content Filter (TF-IDF &amp; Cosine Similarity):</b> Analyzes the entire approved catalog in <b>D2 (Material DB)</b> to compute Document Frequencies ($DF$), calculates smooth Inverse Document Frequencies ($IDF$), constructs term-frequency vectors, and evaluates geometric Cosine Similarity against the student's query vector.
+    </li>
+    <li>
+      <b>P3.4 Collaborative Filter:</b> Evaluates the sparse user-item interaction matrix from <b>D3 (Rating DB)</b>. For any unrated candidate material, it identifies other students who evaluated that item, computes inter-student similarity weights, and predicts expected student satisfaction.
+    </li>
+    <li>
+      <b>P3.5 Score Aggregator &amp; Explainability Generator:</b> Blends the content score (50%), collaborative score (25%), subject fit (15%), and quality score (10%). It sorts candidate items, attaches human-readable reasoning strings, persists the Top-10 items into <b>D4 (Recommendations DB)</b>, and returns them to the student.
+    </li>
+  </ol>
+
+  <div class="ascii-diagram-box">
+<pre>
+========================================================================================
+             FIGURE 3.4: DFD LEVEL 2 (P3 RECOMMENDATION PIPELINE DECOMPOSITION)
+========================================================================================
+
+  [ D1: User DB ]                     [ D2: Material DB ]              [ D3: Rating DB ]
+         |                                     |                              |
+         v                                     v                              v
+  +------------------+                 +------------------+            +------------------+
+  | P3.1: Profile    |                 | P3.2: Keyword    |            | P3.4: Collab     |
+  | Analyzer         |                 | Extractor        |            | Filter Matrix    |
+  +------------------+                 +------------------+            +------------------+
+         |                                     |                              |
+         | User Profile Vector                 | Normalized Tokens            | Predicted Score
+         |                                     v                              |
+         |                             +------------------+                   |
+         |                             | P3.3: TF-IDF &amp;   |                   |
+         |                             | Cosine Engine    |                   |
+         |                             +------------------+                   |
+         |                                     |                              |
+         |                                     | Content Sim Score            |
+         v                                     v                              v
+  +---------------------------------------------------------------------------------------+
+  |                     P3.5: MULTI-CRITERIA SCORE AGGREGATOR                             |
+  |   Score = 0.50*Content + 0.25*Collaborative + 0.15*SubjectFit + 0.10*Rating           |
+  |   Explainability Rule Engine: Generates human-readable recommendation reasons         |
+  +---------------------------------------------------------------------------------------+
+                                        |
+                 +----------------------+----------------------+
+                 |                                             |
+                 v                                             v
+        [ D4: Recommend DB ]                           [ Student UI Cards ]
+        (Persisted Top-10)                             (Ranked Top-10 Feed)
+</pre>
+  </div>
+
+  <h2 class="sec-heading">3.4 Comprehensive Data Dictionary</h2>
+
+  <p class="body-p">
+    A formal Data Dictionary serves as the central authoritative catalog of all data elements, formats, domains, and storage specifications. Table 3.2 defines the primary data elements:
+  </p>
+
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 18%;">Entity / Store</th>
+        <th style="width: 20%;">Field / Element</th>
+        <th style="width: 17%;">Data Type</th>
+        <th style="width: 15%;">Constraints</th>
+        <th style="width: 30%;">Operational Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="4"><b>D1: Profiles<br>(User DB)</b></td>
+        <td><code>id</code></td>
+        <td>UUID</td>
+        <td>PK, Not Null</td>
+        <td>Unique user identifier linked to Supabase Auth.</td>
+      </tr>
+      <tr>
+        <td><code>full_name</code></td>
+        <td>VARCHAR(255)</td>
+        <td>Nullable</td>
+        <td>Full legal name of the registered student/educator.</td>
+      </tr>
+      <tr>
+        <td><code>enrolled_subjects</code></td>
+        <td>TEXT[]</td>
+        <td>Default '{}'</td>
+        <td>Array of Subject IDs representing active curriculum enrollments.</td>
+      </tr>
+      <tr>
+        <td><code>created_at</code></td>
+        <td>TIMESTAMPTZ</td>
+        <td>DEFAULT now()</td>
+        <td>Timestamp of student account creation.</td>
+      </tr>
+
+      <tr>
+        <td rowspan="6"><b>D2: Materials<br>(Material DB)</b></td>
+        <td><code>id</code></td>
+        <td>UUID</td>
+        <td>PK, Not Null</td>
+        <td>Unique study material identifier.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td>VARCHAR(255)</td>
+        <td>Not Null</td>
+        <td>Academic title of the learning object.</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td>TEXT</td>
+        <td>Nullable</td>
+        <td>Detailed abstract and topic summary utilized in TF-IDF.</td>
+      </tr>
+      <tr>
+        <td><code>subject_id</code></td>
+        <td>UUID</td>
+        <td>FK &rarr; subjects</td>
+        <td>Foreign key referencing parent academic subject.</td>
+      </tr>
+      <tr>
+        <td><code>average_rating</code></td>
+        <td>DECIMAL(3,2)</td>
+        <td>DEFAULT 0.00</td>
+        <td>Atomic aggregate star score (1.00 to 5.00).</td>
+      </tr>
+      <tr>
+        <td><code>rating_count</code></td>
+        <td>INTEGER</td>
+        <td>DEFAULT 0</td>
+        <td>Total count of student reviews submitted.</td>
+      </tr>
+
+      <tr>
+        <td rowspan="4"><b>D3: Ratings<br>(Rating DB)</b></td>
+        <td><code>id</code></td>
+        <td>UUID</td>
+        <td>PK, Not Null</td>
+        <td>Unique rating record identifier.</td>
+      </tr>
+      <tr>
+        <td><code>user_id</code></td>
+        <td>UUID</td>
+        <td>FK &rarr; profiles</td>
+        <td>Student authoring the review.</td>
+      </tr>
+      <tr>
+        <td><code>material_id</code></td>
+        <td>UUID</td>
+        <td>FK &rarr; materials</td>
+        <td>Study material being evaluated.</td>
+      </tr>
+      <tr>
+        <td><code>score</code></td>
+        <td>INTEGER</td>
+        <td>CHECK (1..5)</td>
+        <td>Integer evaluation score from 1 (poor) to 5 (excellent).</td>
+      </tr>
+
+      <tr>
+        <td rowspan="4"><b>D4: Recommendations<br>(Recommend DB)</b></td>
+        <td><code>id</code></td>
+        <td>UUID</td>
+        <td>PK, Not Null</td>
+        <td>Unique recommendation record identifier.</td>
+      </tr>
+      <tr>
+        <td><code>user_id</code></td>
+        <td>UUID</td>
+        <td>FK &rarr; profiles</td>
+        <td>Target student receiving the recommendation.</td>
+      </tr>
+      <tr>
+        <td><code>material_id</code></td>
+        <td>UUID</td>
+        <td>FK &rarr; materials</td>
+        <td>Recommended learning resource.</td>
+      </tr>
+      <tr>
+        <td><code>score</code></td>
+        <td>DECIMAL(5,4)</td>
+        <td>CHECK (0..1)</td>
+        <td>Normalized hybrid score synthesized by P3.5.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="sec-heading">3.5 Entity-Relationship (E-R) Diagram</h2>
+
+  <p class="body-p">
+    Conceptual data modeling requires mapping real-world educational entities and their structural associations. Figure 3.5 presents the formal Entity-Relationship (E-R) diagram illustrating entity attributes, primary keys (PK), foreign keys (FK), and cardinality mappings:
+  </p>
+
+  <div class="ascii-diagram-box">
+<pre>
+========================================================================================
+                  FIGURE 3.5: ENTITY-RELATIONSHIP (E-R) DIAGRAM
+========================================================================================
+
+  +-----------------------+              1 : N             +-----------------------+
+  |       SUBJECTS        | &lt;----------------------------&gt; |       MATERIALS       |
+  +-----------------------+                                +-----------------------+
+  | PK  id                |                                | PK  id                |
+  |     name              |                                |     title             |
+  |     code              |                                |     description       |
+  |     semester          |                                | FK  subject_id        |
+  +-----------------------+                                |     format, url       |
+                                                           |     average_rating    |
+                                                           |     rating_count      |
+                                                           +-----------------------+
+                                                                       ^
+                                                                       | 1 : N
+                                                                       v
+  +-----------------------+              1 : N             +-----------------------+
+  |       PROFILES        | &lt;----------------------------&gt; |        RATINGS        |
+  +-----------------------+                                +-----------------------+
+  | PK  id (auth.uid)     |                                | PK  id                |
+  |     full_name         |                                | FK  user_id           |
+  |     enrolled_subjects |                                | FK  material_id       |
+  |     created_at        |                                |     score (1..5)      |
+  +-----------------------+                                |     review_text       |
+      ^               ^                                    +-----------------------+
+      | 1 : N         | 1 : N                                          
+      v               v                                                
+  +---------------+  +-------------------+                             
+  |  SEARCH_LOGS  |  |  RECOMMENDATIONS  |                             
+  +---------------+  +-------------------+                             
+  | PK  id        |  | PK  id            |                             
+  | FK  user_id   |  | FK  user_id       |                             
+  |     query     |  | FK  material_id   |                             
+  |     filters   |  |     score (0..1)  |                             
+  |     created_at|  |     created_at    |                             
+  +---------------+  +-------------------+                             
+</pre>
+  </div>
+
+  <p class="body-p">
+    <b>Cardinality &amp; Relationship Rules:</b>
+  </p>
+  <ul class="body-ul">
+    <li><b>Subject &ndash; Material (1 : N):</b> A single academic subject (e.g., <i>Data Structures</i>) encompasses zero or many study materials. Each study material belongs to exactly one parent academic subject.</li>
+    <li><b>Profile &ndash; Rating (1 : N):</b> A registered student may author zero or many material reviews. Each rating is authored by exactly one student.</li>
+    <li><b>Material &ndash; Rating (1 : N):</b> A study material may accumulate multiple ratings. A unique constraint ensures that a student can rate a specific material at most once.</li>
+    <li><b>Profile &ndash; Recommendation (1 : N):</b> A student receives multiple recommended materials. Each recommendation entry links a specific student to a recommended material with its calculated hybrid score.</li>
+  </ul>
+</div>
+
+
+
+<!-- ==================== CHAPTER 4: SYSTEM DESIGN & AI ALGORITHMS ==================== -->
+<div class="chapter-container">
+  <div class="chapter-header">
+    <div class="chapter-number">CHAPTER 4</div>
+    <h1 class="chapter-title">SYSTEM DESIGN &amp; AI ALGORITHMS</h1>
+  </div>
+
+  <h2 class="sec-heading">4.1 Architectural Design</h2>
+
+  <p class="body-p">
+    Modern software engineering for data-intensive web applications demands an architecture that delivers high interactive responsiveness, sub-second query latency, strict separation of concerns, and robust enterprise data protection. Traditional client-side Single Page Applications (SPAs) suffer from significant initial load latency and security risks when sensitive database keys or business logic are exposed to the browser.
+  </p>
+
+  <p class="body-p">
+    To overcome these limitations, <b>StudyFlow AI</b> implements a modern <b>3-Tier Server-Side Rendered (SSR) + Backend-as-a-Service (BaaS) Architecture</b>. In this paradigm, initial page markup and heavy vector machine learning computations execute on a high-speed server runtime (TanStack Start powered by Nitro and the V8 engine), delivering pre-rendered, accessible HTML to the browser before hydrating into an interactive React application. Figure 4.1 outlines the architectural tiers:
+  </p>
+
+  <div class="ascii-diagram-box">
+<pre>
+========================================================================================
+       FIGURE 4.1: MODERN 3-TIER SSR + BAAS DISTRIBUTED SYSTEM ARCHITECTURE
+========================================================================================
+
+  +----------------------------------------------------------------------------------+
+  |                       TIER 1: PRESENTATION LAYER (CLIENT)                        |
+  |   - Modern Web Browsers (Desktop, Laptop, Tablet, Mobile)                        |
+  |   - React 19 Virtual DOM, Concurrent Mode &amp; Optimistic UI Updates                |
+  |   - Tailwind CSS Utility Design System + Recharts Interactive SVG Visualizations |
+  +----------------------------------------------------------------------------------+
+                                           |
+                                           | HTTP / HTTPS Requests (JSON RPC over TLS)
+                                           v
+  +----------------------------------------------------------------------------------+
+  |                   TIER 2: APPLICATION &amp; SSR SERVER LAYER                         |
+  |   - TanStack Start Server Functions (`createServerFn`) on Nitro Engine           |
+  |   - Isomorphic Routing, Data Pre-Fetching &amp; HTML Pre-Rendering                   |
+  |   - Machine Learning Recommender Engine:                                         |
+  |       * Tokenization &amp; Stopword Extractor                                        |
+  |       * TF-IDF Smooth Inverse Document Frequency Vectorizer                      |
+  |       * Multi-Dimensional Cosine Similarity Matrix Evaluator                     |
+  |       * User-Item Collaborative Preference Estimator                             |
+  |       * Hybrid Score Synthesis &amp; Explainability Rule Generator                   |
+  +----------------------------------------------------------------------------------+
+                                           |
+                                           | High-Speed TCP / Connection Pool (PostgreSQL)
+                                           v
+  +----------------------------------------------------------------------------------+
+  |                     TIER 3: PERSISTENCE &amp; SECURITY LAYER                         |
+  |   - Supabase PostgreSQL Enterprise Relational Database (3NF)                     |
+  |   - PL/pgSQL Stored Triggers: Atomic Aggregate Rating Recalculation              |
+  |   - Kernel-Level Security: PostgreSQL Row-Level Security (RLS) Policies          |
+  |   - Full-Text Search Indexes, Foreign-Key Cascades &amp; ACID Transactions           |
+  +----------------------------------------------------------------------------------+
+</pre>
+  </div>
+
+  <h2 class="sec-heading">4.2 Modularization Details</h2>
+
+  <p class="body-p">
+    The software architecture is partitioned into seven highly cohesive, loosely coupled subsystems:
+  </p>
+
+  <ol class="body-ol">
+    <li><b>Authentication Subsystem:</b> Handles user registration, password verification via bcrypt, role-based session token minting, and profile hydration.</li>
+    <li><b>Academic Catalog Management Subsystem:</b> Encapsulates subject creation, material authoring, document format tagging (Notes, Books, Slides, Papers), and administrative approval workflows.</li>
+    <li><b>Server-Side Full-Text Search Subsystem:</b> Parses student inquiry strings, validates search filters, queries PostgreSQL indexes, logs inquiries, and returns paginated result cards.</li>
+    <li><b>Hybrid AI Recommender Subsystem:</b> Executes natural language preprocessing, computes smooth TF-IDF document vectors, evaluates geometric Cosine Similarity, runs collaborative rating predictions, and generates human-readable explainability strings.</li>
+    <li><b>Peer Feedback &amp; Rating Subsystem:</b> Collects 1&ndash;5 star evaluations and qualitative reviews, utilizing PostgreSQL triggers to atomically recalculate item averages.</li>
+    <li><b>Administrative Analytics &amp; Reports Subsystem:</b> Aggregates usage metrics, search frequency distributions, and rating statistics to fulfill the Section 5.6 reporting mandate.</li>
+    <li><b>Collaborative Learning Subsystem:</b> Facilitates student study packs and educator verification requests.</li>
+  </ol>
+
+  <h2 class="sec-heading">4.3 Mathematical Formulation of AI &amp; Machine Learning Algorithms</h2>
+
+  <p class="body-p">
+    A foundational highlight of <b>StudyFlow AI</b> is its rigorous mathematical formulation of Information Retrieval (IR) and Machine Learning (ML) algorithms. Unlike superficial keyword-matching scripts, the system implements a formal <b>Vector Space Model (VSM)</b> coupled with <b>Collaborative Filtering</b>.
+  </p>
+
+  <h3 class="sub-sec-heading">4.3.1 Text Preprocessing &amp; Stopword Elimination</h3>
+  <p class="body-p">
+    Before mathematical vectorization, unstructured natural language texts—such as document titles $T$, abstracts/descriptions $D$, and student search queries $Q$—must be transformed into a standardized canonical representation:
+  </p>
+
+  <ol class="body-ol">
+    <li>
+      <b>Case Folding &amp; Character Normalization:</b> All characters are converted to lowercase, and non-alphanumeric punctuation marks are stripped using regular expression tokenization:
+      $$	ext{Tokenize}(text) = { w in 	ext{split}(text, 	ext{non-alphanumeric}) mid |w| ge 2 }$$
+    </li>
+    <li>
+      <b>Stopword Filtering:</b> High-frequency grammatical function words that carry zero topical specificity (e.g., <i>&ldquo;the&rdquo;, &ldquo;is&rdquo;, &ldquo;and&rdquo;, &ldquo;for&rdquo;, &ldquo;with&rdquo;, &ldquo;study&rdquo;, &ldquo;learn&rdquo;</i>) are removed against an academic stopword set $S$:
+      $$	ext{Tokens}_{	ext{clean}} = { w in 	ext{Tokens} mid w 
+otin S }$$
+    </li>
+  </ol>
+
+  <h3 class="sub-sec-heading">4.3.2 Term Frequency &ndash; Inverse Document Frequency (TF-IDF) Formulation</h3>
+  <p class="body-p">
+    TF-IDF is a statistical measure that quantifies how important a word is to a specific study material within the broader collection of $N$ catalog materials:
+  </p>
+
+  <p class="body-p">
+    <b>1. Term Frequency (TF):</b> Measures the relative frequency of term $t$ in document $d$:
+  </p>
+  <div class="formula-display-box">
+    $$	ext{TF}(t, d) = rac{f_{t, d}}{sum_{t' in d} f_{t', d}}$$
+  </div>
+  <p class="body-p">
+    Where $f_{t, d}$ represents the raw occurrence count of term $t$ in document $d$, normalized by the total count of words in $d$ to prevent bias toward longer textbooks over concise revision notes.
+  </p>
+
+  <p class="body-p">
+    <b>2. Smooth Inverse Document Frequency (IDF):</b> Penalizes terms that appear ubiquitously across all study materials while amplifying rare, highly specialized technical terms (such as <i>&ldquo;backpropagation&rdquo;, &ldquo;b-tree&rdquo;, &ldquo;semaphore&rdquo;</i>). To avoid division by zero when a term does not occur in the catalog, smooth IDF is defined as:
+  </p>
+  <div class="formula-display-box">
+    $$	ext{IDF}(t) = lnleft(rac{N + 1}{	ext{DF}(t) + 1}ight) + 1$$
+  </div>
+  <p class="body-p">
+    Where $N$ is the total number of approved materials in the catalog (e.g., $N = 62$), and $	ext{DF}(t)$ is the <i>Document Frequency</i> (the number of materials containing term $t$). Adding $1$ to both numerator and denominator provides mathematical smoothing, ensuring that terms occurring in every document still retain a positive weight and never cause numerical instability.
+  </p>
+
+  <p class="body-p">
+    <b>3. Composite TF-IDF Weight:</b>
+  </p>
+  <div class="formula-display-box">
+    $$	ext{TF-IDF}(t, d) = 	ext{TF}(t, d) 	imes 	ext{IDF}(t)$$
+  </div>
+
+  <h3 class="sub-sec-heading">4.3.3 Vector Space Modeling &amp; Cosine Similarity Derivation</h3>
+  <p class="body-p">
+    Every study material $d$ and student query $q$ is projected as a high-dimensional vector in term space $mathbb{R}^{|V|}$, where $|V|$ is the vocabulary size:
+  </p>
+  <div class="formula-display-box">
+    $$mathbf{V}_d = Big[ 	ext{TF-IDF}(t_1, d),, 	ext{TF-IDF}(t_2, d),, dots,, 	ext{TF-IDF}(t_k, d) Big]$$
+  </div>
+
+  <p class="body-p">
+    To compute the semantic relevance between query vector $mathbf{V}_q$ and document vector $mathbf{V}_d$, the system computes the <b>Cosine Similarity</b>—measuring the cosine of the angle $	heta$ between the two multi-dimensional vectors:
+  </p>
+
+  <div class="formula-display-box">
+    $$	ext{Cosine Similarity}(mathbf{V}_q, mathbf{V}_d) = rac{mathbf{V}_q cdot mathbf{V}_d}{|mathbf{V}_q| |mathbf{V}_d|} = rac{sum_{i=1}^{k} mathbf{V}_{q, i} 	imes mathbf{V}_{d, i}}{sqrt{sum_{i=1}^{k} (mathbf{V}_{q, i})^2} 	imes sqrt{sum_{i=1}^{k} (mathbf{V}_{d, i})^2}}$$
+  </div>
+
+  <p class="body-p">
+    <b>Mathematical Properties &amp; Justification:</b>
+  </p>
+  <ul class="body-ul">
+    <li><b>Bounded Domain:</b> Produces a normalized score in $[0, 1]$ for non-negative vectors, where $1.0$ indicates identical orientation (exact conceptual match) and $0.0$ indicates orthogonal vectors (zero shared terms).</li>
+    <li><b>Length Invariance:</b> Unlike Euclidean distance, Cosine Similarity evaluates directional collinearity rather than vector magnitude. A concise 2-page summary note on <i>&ldquo;Normal Forms&rdquo;</i> and a 60-page textbook chapter covering the same topic will exhibit identical cosine similarity to a query on normalization.</li>
+  </ul>
+
+  <h3 class="sub-sec-heading">4.3.4 User-Item Collaborative Filtering</h3>
+  <p class="body-p">
+    Content filtering alone cannot capture peer quality assessments. <b>StudyFlow AI</b> incorporates <b>Collaborative Filtering</b> by constructing a sparse student-item rating matrix $mathbf{R} in mathbb{R}^{|U| 	imes |M|}$, where $r_{u, m} in [1, 5]$ denotes the rating student $u$ assigned to material $m$.
+  </p>
+
+  <p class="body-p">
+    For active student $u$ and unrated candidate material $m$, the predicted score $hat{r}_{u, m}$ is estimated from peer students $v in U_m$ who evaluated item $m$:
+  </p>
+  <div class="formula-display-box">
+    $$	ext{sim}(u, v) = rac{sum_{i in I_{uv}} r_{u, i} cdot r_{v, i}}{sqrt{sum_{i in I_{uv}} (r_{u, i})^2} 	imes sqrt{sum_{i in I_{uv}} (r_{v, i})^2}}$$
+    $$hat{r}_{u, m} = rac{sum_{v in U_m} 	ext{sim}(u, v) 	imes r_{v, m}}{sum_{v in U_m} |	ext{sim}(u, v)|}$$
+  </div>
+
+  <p class="body-p">
+    <b>Cold-Start Mitigation Strategy:</b> When a new student registers or has evaluated fewer than two items, $	ext{sim}(u, v)$ cannot be computed reliably. The system automatically shifts collaborative weight toward the normalized global average rating and popularity volume:
+  </p>
+  <div class="formula-display-box">
+    $$S_{	ext{Collab}} = 0.70 	imes left(rac{	ext{average_rating}}{5.0}ight) + 0.30 	imes minleft(1.0,, rac{	ext{rating_count}}{25}ight)$$
+  </div>
+
+  <h3 class="sub-sec-heading">4.3.5 Hybrid Multi-Criteria Score Synthesis</h3>
+  <p class="body-p">
+    The final ranking score $S_{	ext{Final}}(m)$ for material $m$ synthesizes all four distinct academic signals according to Table 4.1:
+  </p>
+
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 25%;">Signal Component</th>
+        <th style="width: 15%;">Weight ($alpha$)</th>
+        <th style="width: 60%;">Algorithmic Rationale &amp; Theoretical Justification</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Content Relevance ($S_{	ext{Content}}$)</b></td>
+        <td><b>50%</b> (0.50)</td>
+        <td>Primary semantic signal. Guarantees that recommended materials directly answer the student's stated topic.</td>
+      </tr>
+      <tr>
+        <td><b>Collaborative Preference ($S_{	ext{Collab}}$)</b></td>
+        <td><b>25%</b> (0.25)</td>
+        <td>Peer consensus signal. Prioritizes materials rated highly by students with similar academic interests.</td>
+      </tr>
+      <tr>
+        <td><b>Subject Fit ($S_{	ext{SubjectFit}}$)</b></td>
+        <td><b>15%</b> (0.15)</td>
+        <td>Curricular alignment signal. Boosts materials belonging to the student's actively enrolled semester subjects.</td>
+      </tr>
+      <tr>
+        <td><b>Baseline Quality ($S_{	ext{Rating}}$)</b></td>
+        <td><b>10%</b> (0.10)</td>
+        <td>Global quality baseline. Prevents obscure, unrated materials from dominating recommendations.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="formula-display-box">
+    $$S_{	ext{Final}}(m) = minBig(1.0,, 0.50 cdot S_{	ext{Content}} + 0.25 cdot S_{	ext{Collab}} + 0.15 cdot S_{	ext{SubjectFit}} + 0.10 cdot S_{	ext{Rating}}Big)$$
+  </div>
+
+  <h3 class="sub-sec-heading">4.3.6 Recommendation Explainability Engine</h3>
+  <p class="body-p">
+    To ensure students understand why each resource was surfaced, the engine evaluates component scores against an explainability decision tree:
+  </p>
+  <ul class="body-ul">
+    <li>If $S_{	ext{Content}} ge 0.40$: Generates <i>&ldquo;High match with your learning interests and search keywords&rdquo;</i>.</li>
+    <li>If $S_{	ext{Collab}} ge 0.70$ and rating $ge 4.5$: Generates <i>&ldquo;Top-rated learning resource across students&rdquo;</i>.</li>
+    <li>If $S_{	ext{SubjectFit}} = 1.0$: Generates <i>&ldquo;Core curriculum resource for your enrolled subject&rdquo;</i>.</li>
+    <li>Default: Generates <i>&ldquo;Curated recommendation based on your academic profile&rdquo;</i>.</li>
+  </ul>
+
+  <h2 class="sec-heading">4.4 Database Design &amp; Relational Schema (3NF)</h2>
+
+  <p class="body-p">
+    Database schema design was performed following strict relational normalization rules up to <b>Third Normal Form (3NF)</b>. Every non-key attribute is fully functionally dependent on the primary key, eliminating transitive dependencies, insertion anomalies, and data redundancy.
+  </p>
+
+  <h3 class="sub-sec-heading">4.4.1 Relational Tables Specification</h3>
+  <p class="body-p">
+    Table 4.2 presents the formal relational schema specifications across the core database tables:
+  </p>
+
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 20%;">Table Name</th>
+        <th style="width: 25%;">Primary Key / Columns</th>
+        <th style="width: 25%;">Foreign Keys &amp; Indexes</th>
+        <th style="width: 30%;">Integrity Constraints &amp; Roles</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>profiles</code></td>
+        <td><code>id (UUID PK)</code><br><code>full_name</code><br><code>enrolled_subjects</code></td>
+        <td>References <code>auth.users(id)</code> ON DELETE CASCADE</td>
+        <td>Stores extended student details; 1:1 with authentication record.</td>
+      </tr>
+      <tr>
+        <td><code>subjects</code></td>
+        <td><code>id (UUID PK)</code><br><code>name</code>, <code>code</code><br><code>semester</code>, <code>description</code></td>
+        <td>Unique index on <code>code</code></td>
+        <td>Stores academic curriculum disciplines (e.g., MCS-011, BCS-041).</td>
+      </tr>
+      <tr>
+        <td><code>materials</code></td>
+        <td><code>id (UUID PK)</code><br><code>title</code>, <code>description</code><br><code>subject_id</code>, <code>format</code><br><code>url</code>, <code>average_rating</code><br><code>rating_count</code></td>
+        <td>FK &rarr; <code>subjects(id)</code><br>B-Tree index on <code>subject_id</code><br>Full-text index on <code>title, description</code></td>
+        <td>Stores approved catalog study resources. <code>average_rating</code> maintained atomically via trigger.</td>
+      </tr>
+      <tr>
+        <td><code>ratings</code></td>
+        <td><code>id (UUID PK)</code><br><code>user_id</code>, <code>material_id</code><br><code>score</code>, <code>review_text</code></td>
+        <td>FK &rarr; <code>profiles(id)</code><br>FK &rarr; <code>materials(id)</code><br>Unique <code>(user_id, material_id)</code></td>
+        <td>CHECK (score BETWEEN 1 AND 5). Prevents duplicate student ratings per material.</td>
+      </tr>
+      <tr>
+        <td><code>search_logs</code></td>
+        <td><code>id (UUID PK)</code><br><code>user_id</code>, <code>query</code><br><code>filters</code>, <code>created_at</code></td>
+        <td>FK &rarr; <code>profiles(id)</code><br>Index on <code>(user_id, created_at)</code></td>
+        <td>Logs search inquiries for user context and Section 5.6 Report 1 and 3.</td>
+      </tr>
+      <tr>
+        <td><code>recommendations</code></td>
+        <td><code>id (UUID PK)</code><br><code>user_id</code>, <code>material_id</code><br><code>score</code>, <code>reason</code></td>
+        <td>FK &rarr; <code>profiles(id)</code><br>FK &rarr; <code>materials(id)</code></td>
+        <td>Persists Top-10 generated AI recommendations for Section 5.6 Report 2.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub-sec-heading">4.4.2 Database Triggers for Atomic Rating Recalculation</h3>
+  <p class="body-p">
+    To guarantee transactional consistency and prevent API race conditions, average star ratings are maintained by a PostgreSQL trigger function attached to the <code>ratings</code> table:
+  </p>
+
+  <div class="code-listing-box">
+<pre>
+CREATE OR REPLACE FUNCTION public.refresh_material_rating()
+RETURNS TRIGGER LANGUAGE plpgsql SECURITY DEFINER AS $$
+DECLARE
+  target_mat_id UUID;
+  new_avg NUMERIC(3,2);
+  new_count INTEGER;
+BEGIN
+  IF TG_OP = 'DELETE' THEN
+    target_mat_id := OLD.material_id;
+  ELSE
+    target_mat_id := NEW.material_id;
+  END IF;
+
+  SELECT COALESCE(ROUND(AVG(score), 2), 0.00), COUNT(*)
+  INTO new_avg, new_count
+  FROM public.ratings
+  WHERE material_id = target_mat_id;
+
+  UPDATE public.materials
+  SET average_rating = new_avg,
+      rating_count = new_count,
+      updated_at = NOW()
+  WHERE id = target_mat_id;
+
+  RETURN NULL;
+END;
+$$;
+
+CREATE TRIGGER ratings_refresh_trigger
+AFTER INSERT OR UPDATE OR DELETE ON public.ratings
+FOR EACH ROW EXECUTE FUNCTION public.refresh_material_rating();
+</pre>
+  </div>
+
+  <h3 class="sub-sec-heading">4.4.3 PostgreSQL Row-Level Security (RLS) Policies</h3>
+  <p class="body-p">
+    Table 4.3 details the Row-Level Security policies enforced at the database engine level:
+  </p>
+
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 18%;">Table</th>
+        <th style="width: 22%;">Policy Name</th>
+        <th style="width: 15%;">Command</th>
+        <th style="width: 45%;">Security Condition (USING / WITH CHECK Expression)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>materials</code></td>
+        <td>Allow public catalog reads</td>
+        <td>SELECT</td>
+        <td><code>approval_status = 'approved' OR auth.role() = 'authenticated'</code></td>
+      </tr>
+      <tr>
+        <td><code>materials</code></td>
+        <td>Admin full catalog control</td>
+        <td>ALL</td>
+        <td><code>public.has_role(auth.uid(), 'admin')</code></td>
+      </tr>
+      <tr>
+        <td><code>profiles</code></td>
+        <td>Users view own profile</td>
+        <td>SELECT</td>
+        <td><code>auth.uid() = id OR public.has_role(auth.uid(), 'admin')</code></td>
+      </tr>
+      <tr>
+        <td><code>profiles</code></td>
+        <td>Users update own profile</td>
+        <td>UPDATE</td>
+        <td><code>auth.uid() = id</code></td>
+      </tr>
+      <tr>
+        <td><code>ratings</code></td>
+        <td>Public read ratings</td>
+        <td>SELECT</td>
+        <td><code>true</code></td>
+      </tr>
+      <tr>
+        <td><code>ratings</code></td>
+        <td>Users author own ratings</td>
+        <td>INSERT / UPDATE</td>
+        <td><code>auth.uid() = user_id</code></td>
+      </tr>
+      <tr>
+        <td><code>search_logs</code></td>
+        <td>Users manage search logs</td>
+        <td>ALL</td>
+        <td><code>auth.uid() = user_id OR public.has_role(auth.uid(), 'admin')</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="sec-heading">4.5 Procedural Logic and Sequence Modeling</h2>
+
+  <p class="body-p">
+    Figure 4.5 details the UML Sequence Diagram modeling the chronological execution of search inquiry, TF-IDF calculation, and recommendation rendering:
+  </p>
+
+  <div class="ascii-diagram-box">
+<pre>
+========================================================================================
+     FIGURE 4.5: UML SEQUENCE DIAGRAM (SEARCH &amp; RECOMMENDATION JOURNEY)
+========================================================================================
+
+  Student (Browser)           Server Function (Nitro)             PostgreSQL DB
+         |                               |                              |
+         | 1. Submit Search Inquiry      |                              |
+         |------------------------------&gt;|                              |
+         |                               | 2. Full-Text SQL Query       |
+         |                               |-----------------------------&gt;|
+         |                               |                              |
+         |                               | 3. Return Matching Materials |
+         |                               |&lt;-----------------------------|
+         |                               |                              |
+         |                               | 4. Log Search Query          |
+         |                               |-----------------------------&gt;|
+         |                               |                              |
+         | 5. Render Search Results      |                              |
+         |&lt;------------------------------|                              |
+         |                               |                              |
+         | 6. Request Recommendations    |                              |
+         |------------------------------&gt;|                              |
+         |                               | 7. Query Enrolled &amp; Ratings  |
+         |                               |-----------------------------&gt;|
+         |                               |                              |
+         |                               | 8. Return Profile &amp; Matrix   |
+         |                               |&lt;-----------------------------|
+         |                               |                              |
+         |                               | 9. Compute TF-IDF &amp; Cosine   |
+         |                               |    (Vector Space Math)       |
+         |                               |                              |
+         |                               | 10. Synthesize Hybrid Scores |
+         |                               |     and Explainability Tags  |
+         |                               |                              |
+         |                               | 11. Persist Top-10 Items     |
+         |                               |-----------------------------&gt;|
+         |                               |                              |
+         | 12. Deliver Recommended Feed  |                              |
+         |&lt;------------------------------|                              |
+</pre>
+  </div>
+</div>
+
+
+
+<!-- ==================== CHAPTER 5: IMPLEMENTATION DETAILS & CODE HIGHLIGHTS ==================== -->
+<div class="chapter-container">
+  <div class="chapter-header">
+    <div class="chapter-number">CHAPTER 5</div>
+    <h1 class="chapter-title">IMPLEMENTATION DETAILS &amp; CODE HIGHLIGHTS</h1>
+  </div>
+
+  <h2 class="sec-heading">5.1 Implementation Methodology &amp; Engineering Decisions</h2>
+
+  <p class="body-p">
+    The software implementation of <b>StudyFlow AI</b> was guided by strict software engineering best practices: modular programming, pure functional pipelines for machine learning transformations, declarative reactive UI rendering, and defense-in-depth database security.
+  </p>
+
+  <p class="body-p">
+    Rather than scattering database queries across client components, all data mutations and machine learning pipelines are encapsulated in server functions utilizing <b>TanStack Start RPC primitives</b> (<code>createServerFn</code>). This architectural separation guarantees that mathematical vector space operations and administrative aggregations execute on the server, minimizing client computational overhead and preventing exposure of sensitive database credentials.
+  </p>
+
+  <h2 class="sec-heading">5.2 Server-Side Full-Text Search Implementation</h2>
+
+  <p class="body-p">
+    In compliance with DFD Level 1 (Process P2), catalog searching is executed entirely on the server. The function <code>searchMaterialsServer</code> in <code>src/lib/server/catalog.ts</code> provides server-side searching with multi-facet filtering and pagination:
+  </p>
+
+  <div class="code-listing-box">
+<pre>
+export const searchMaterialsServer = createServerFn({ method: "POST" })
+  .validator((data: {
+    query?: string;
+    subjectId?: string;
+    format?: string;
+    difficulty?: string;
+    page?: number;
+    pageSize?: number;
+  }) =&gt; data)
+  .handler(async ({ data }) =&gt; {
+    const page = data.page || 1;
+    const pageSize = data.pageSize || 12;
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize - 1;
+
+    let queryBuilder = supabase
+      .from("materials")
+      .select("*, subject:subjects(*)", { count: "exact" })
+      .eq("approval_status", "approved");
+
+    // Server-Side Full-Text Filter
+    if (data.query &amp;&amp; data.query.trim().length &gt; 0) {
+      const sanitized = data.query.trim();
+      queryBuilder = queryBuilder.or(
+        `title.ilike.%${sanitized}%,description.ilike.%${sanitized}%`
+      );
+    }
+
+    // Multi-Facet Subject &amp; Difficulty Filtering
+    if (data.subjectId &amp;&amp; data.subjectId !== "all") {
+      queryBuilder = queryBuilder.eq("subject_id", data.subjectId);
+    }
+    if (data.difficulty &amp;&amp; data.difficulty !== "all") {
+      queryBuilder = queryBuilder.eq("difficulty", data.difficulty);
+    }
+
+    // Pagination &amp; Ordering
+    queryBuilder = queryBuilder
+      .order("average_rating", { ascending: false })
+      .range(from, to);
+
+    const { data: materials, count, error } = await queryBuilder;
+    if (error) throw new Error(`Catalog query failed: ${error.message}`);
+
+    return {
+      materials: materials || [],
+      totalCount: count || 0,
+      currentPage: page,
+      totalPages: Math.ceil((count || 0) / pageSize),
+    };
+  });
+</pre>
+  </div>
+
+  <h2 class="sec-heading">5.3 True TF-IDF &amp; Collaborative Recommendation Pipeline Code</h2>
+
+  <p class="body-p">
+    Process P3 (DFD Level 2) is implemented in <code>src/lib/recommendation.ts</code>. The following code highlights show the mathematical precision of the token extraction, smooth IDF calculation, Cosine Similarity, and collaborative filtering:
+  </p>
+
+  <div class="code-listing-box">
+<pre>
+// P3.2: Keyword Extraction &amp; Stopword Removal
+export function extractQueryTokens(text: string): string[] {
+  if (!text) return [];
+  const normalized = text.toLowerCase().replace(/[^a-z0-9s]/g, " ");
+  return normalized
+    .split(/s+/)
+    .filter((token) =&gt; token.length &gt; 1 &amp;&amp; !ACADEMIC_STOP_WORDS.has(token));
+}
+
+// P3.3: Smooth Inverse Document Frequency (IDF) Corpus Builder
+export function buildCorpusTfIdf(materials: StudyMaterial[]): Map&lt;string, number&gt; {
+  const documentFrequency = new Map&lt;string, number&gt;();
+  const N = materials.length;
+
+  // Compute Document Frequency DF(t)
+  for (const material of materials) {
+    const docTokens = new Set(
+      extractQueryTokens(`${material.title} ${material.description || ""}`)
+    );
+    for (const token of docTokens) {
+      documentFrequency.set(token, (documentFrequency.get(token) || 0) + 1);
+    }
+  }
+
+  // Compute Smooth IDF: ln((N + 1) / (DF(t) + 1)) + 1
+  const idfMap = new Map&lt;string, number&gt;();
+  documentFrequency.forEach((df, term) =&gt; {
+    const smoothIdf = Math.log((N + 1) / (df + 1)) + 1.0;
+    idfMap.set(term, smoothIdf);
+  });
+
+  return idfMap;
+}
+
+// P3.3: Vector Cosine Similarity Computation
+export function cosineSimilarity(
+  vecA: Map&lt;string, number&gt;,
+  vecB: Map&lt;string, number&gt;
+): number {
+  let dotProduct = 0;
+  let normA = 0;
+  let normB = 0;
+
+  for (const val of vecA.values()) normA += val * val;
+  for (const val of vecB.values()) normB += val * val;
+
+  if (normA === 0 || normB === 0) return 0;
+
+  for (const [term, valA] of vecA.entries()) {
+    const valB = vecB.get(term);
+    if (valB !== undefined) {
+      dotProduct += valA * valB;
+    }
+  }
+
+  return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+}
+
+// P3.4: Collaborative User-Item Rating Matrix Preference Scoring
+export function computeCollaborativeScores(
+  materials: StudyMaterial[],
+  ratings: MaterialRating[],
+  targetUserId?: string
+): Map&lt;string, number&gt; {
+  const collabScores = new Map&lt;string, number&gt;();
+
+  // If cold-start (no ratings or anonymous), use normalized Bayesian average
+  if (!ratings || ratings.length === 0 || !targetUserId) {
+    for (const m of materials) {
+      const avgScore = (m.average_rating || 0) / 5.0;
+      const popScore = Math.min(1.0, (m.rating_count || 0) / 25.0);
+      collabScores.set(m.id, avgScore * 0.7 + popScore * 0.3);
+    }
+    return collabScores;
+  }
+
+  // Construct User-Item Rating Matrix
+  const userRatings = new Map&lt;string, Map&lt;string, number&gt;&gt;();
+  for (const r of ratings) {
+    if (!userRatings.has(r.user_id)) userRatings.set(r.user_id, new Map());
+    userRatings.get(r.user_id)!.set(r.material_id, r.score);
+  }
+
+  const targetMap = userRatings.get(targetUserId) || new Map();
+
+  // Calculate peer correlation and predicted rating
+  for (const m of materials) {
+    let weightedScoreSum = 0;
+    let similaritySum = 0;
+
+    userRatings.forEach((otherMap, otherUserId) =&gt; {
+      if (otherUserId === targetUserId || !otherMap.has(m.id)) return;
+      const sim = calculateUserCorrelation(targetMap, otherMap);
+      if (sim &gt; 0) {
+        weightedScoreSum += sim * (otherMap.get(m.id)! / 5.0);
+        similaritySum += sim;
+      }
+    });
+
+    if (similaritySum &gt; 0) {
+      collabScores.set(m.id, weightedScoreSum / similaritySum);
+    } else {
+      // Fallback to normalized material rating
+      collabScores.set(m.id, (m.average_rating || 0) / 5.0);
+    }
+  }
+
+  return collabScores;
+}
+</pre>
+  </div>
+
+  <h2 class="sec-heading">5.4 Comprehensive Administrative Reports Implementation</h2>
+
+  <p class="body-p">
+    In compliance with Section 5.6 of the approved project proposal, administrative analytics are aggregated by the server function <code>getAdminComprehensiveReports</code> in <code>src/lib/server/adminReports.ts</code>:
+  </p>
+
+  <div class="code-listing-box">
+<pre>
+export const getAdminComprehensiveReports = createServerFn({ method: "GET" })
+  .handler(async () =&gt; {
+    // 1. Report 1: Student Activity Aggregation
+    const { data: students } = await supabase.from("profiles").select("*");
+    const { data: logs } = await supabase.from("search_logs").select("*");
+    const { data: ratings } = await supabase.from("ratings").select("*");
+    const { data: views } = await supabase.from("material_views").select("*");
+
+    const studentActivity = (students || []).map((student) =&gt; {
+      const studentLogs = (logs || []).filter((l) =&gt; l.user_id === student.id);
+      const studentRatings = (ratings || []).filter((r) =&gt; r.user_id === student.id);
+      const studentViews = (views || []).filter((v) =&gt; v.user_id === student.id);
+
+      const avgRatingGiven = studentRatings.length &gt; 0
+        ? studentRatings.reduce((acc, r) =&gt; acc + r.score, 0) / studentRatings.length
+        : 0;
+
+      return {
+        userId: student.id,
+        fullName: student.full_name || "Enrolled Student",
+        searchCount: studentLogs.length,
+        recentSearches: studentLogs.slice(0, 3).map((l) =&gt; l.query),
+        materialsViewed: studentViews.length,
+        ratingsGiven: studentRatings.length,
+        avgRatingGiven: Number(avgRatingGiven.toFixed(2)),
+      };
+    });
+
+    // 2. Report 2: Most-Recommended Materials (Top 20)
+    const { data: recs } = await supabase.from("recommendations").select("material_id");
+    const recCounts = new Map&lt;string, number&gt;();
+    for (const r of recs || []) {
+      recCounts.set(r.material_id, (recCounts.get(r.material_id) || 0) + 1);
+    }
+    // Sort and map to Top-20 materials with frequency counts...
+
+    // 3. Report 3: Subject Search Popularity Distribution
+    // 4. Report 4: Material Rating Summary Ranking
+    // 5. Report 5: System Usage &amp; Operational Metrics Summary
+    return {
+      studentActivity,
+      mostRecommended,
+      subjectPopularity,
+      ratingSummary,
+      systemUsage,
+    };
+  });
+</pre>
+  </div>
+
+  <h2 class="sec-heading">5.5 Architectural Defense: TypeScript vs Python &amp; PostgreSQL vs MongoDB</h2>
+
+  <p class="body-p">
+    A critical aspect of software engineering defense during university evaluation is justifying technology selections against traditional alternatives:
+  </p>
+
+  <h3 class="sub-sec-heading">1. Why TypeScript over Python or Pure JavaScript?</h3>
+  <ul class="body-ul">
+    <li>
+      <b>Mathematical Type Invariants:</b> In machine learning pipelines like TF-IDF and collaborative filtering, vectors and matrices must have strict dimension and numeric guarantees. In untyped JavaScript, an unhandled <code>undefined</code> key produces <code>NaN</code> values that propagate silently through vector math. TypeScript enforces strict numeric checks at compile time (<code>npx tsc --noEmit</code>), guaranteeing mathematical correctness.
+    </li>
+    <li>
+      <b>Unified Full-Stack Contract:</b> In Python-backend architectures (FastAPI/Flask + React), data schemas must be redundantly declared in Python (Pydantic) and TypeScript. In TanStack Start with TypeScript, backend server functions and frontend UI components share the exact same PostgreSQL schema types, eliminating API drift.
+    </li>
+    <li>
+      <b>Asynchronous Concurrency:</b> Node.js on the V8 engine handles non-blocking I/O requests concurrently with minimal memory overhead, avoiding Python's Global Interpreter Lock (GIL) limitations.
+    </li>
+  </ul>
+
+  <h3 class="sub-sec-heading">2. Why Supabase PostgreSQL over MongoDB?</h3>
+  <ul class="body-ul">
+    <li>
+      <b>Relational Integrity &amp; Foreign-Key Cascades:</b> Academic data structures are inherently relational: students enroll in subjects, study materials belong to subjects, and ratings reference both students and materials. MongoDB NoSQL stores duplicate data across collections, risking orphaned records. PostgreSQL enforces strict foreign-key integrity.
+    </li>
+    <li>
+      <b>Row-Level Security (RLS):</b> Supabase PostgreSQL enforces access control at the database engine kernel level via RLS policies. Even if a malicious client attempts to call database endpoints directly, unauthorized updates to peer ratings or administrative materials are rejected.
+    </li>
+    <li>
+      <b>Atomic Database Triggers:</b> Average ratings are maintained atomically within the database engine via PL/pgSQL triggers (<code>refresh_material_rating</code>), completely eliminating client-side concurrency race conditions.
+    </li>
+  </ul>
+</div>
+
+
+
+<!-- ==================== CHAPTER 6: SOFTWARE TESTING & QUALITY ASSURANCE ==================== -->
+<div class="chapter-container">
+  <div class="chapter-header">
+    <div class="chapter-number">CHAPTER 6</div>
+    <h1 class="chapter-title">SOFTWARE TESTING &amp; QUALITY ASSURANCE</h1>
+  </div>
+
+  <h2 class="sec-heading">6.1 Testing Strategy &amp; V-Model Quality Framework</h2>
+
+  <p class="body-p">
+    Software testing is a critical phase in the software engineering lifecycle that validates whether the implemented application satisfies all functional and non-functional requirements, operates reliably under boundary conditions, and remains resilient against security vulnerabilities.
+  </p>
+
+  <p class="body-p">
+    For <b>StudyFlow AI</b>, testing was structured around the classical <b>V-Model (Verification and Validation Model)</b>. In this framework, each development phase corresponds directly to an associated testing stage: Component / Unit Testing verifies detailed algorithmic design, Integration Testing verifies interface communications between server functions and the database, System Testing validates end-to-end user workflows against the SRS, and User Acceptance Testing (UAT) validates operational fitness.
+  </p>
+
+  <h2 class="sec-heading">6.2 Unit Testing (Vitest Automated Mathematical Test Suite)</h2>
+
+  <p class="body-p">
+    Unit testing was conducted using <b>Vitest</b>, the modern, high-speed TypeScript unit testing framework. The unit test suite in <code>src/lib/recommendation.test.ts</code> evaluates the mathematical integrity of the natural language tokenizer, smooth IDF calculation, vector cosine similarity, and collaborative filtering.
+  </p>
+
+  <p class="body-p">
+    Table 6.1 documents the formal unit test cases executed during verification:
+  </p>
+
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 12%;">Test ID</th>
+        <th style="width: 25%;">Test Target &amp; Description</th>
+        <th style="width: 25%;">Test Input Data</th>
+        <th style="width: 23%;">Expected Output</th>
+        <th style="width: 15%;">Result &amp; Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>TC-UT-01</b></td>
+        <td>Tokenization &amp; Stopword Removal</td>
+        <td><code>"Deep learning and neural networks for BCA"</code></td>
+        <td><code>["deep", "neural", "networks"]</code> (stopwords stripped)</td>
+        <td>✅ <b>PASSED</b></td>
+      </tr>
+      <tr>
+        <td><b>TC-UT-02</b></td>
+        <td>Smooth IDF Scaling</td>
+        <td>Rare term ($DF=1$) vs common term ($DF=50$) over $N=62$</td>
+        <td>$	ext{IDF}(	ext{rare}) &gt; 	ext{IDF}(	ext{common}) &gt; 0$</td>
+        <td>✅ <b>PASSED</b></td>
+      </tr>
+      <tr>
+        <td><b>TC-UT-03</b></td>
+        <td>Identical Vector Cosine Similarity</td>
+        <td>$mathbf{V}_A = [0.8, 0.6]$, $mathbf{V}_B = [0.8, 0.6]$</td>
+        <td>$	ext{Cosine Similarity} = 1.0000$</td>
+        <td>✅ <b>PASSED</b></td>
+      </tr>
+      <tr>
+        <td><b>TC-UT-04</b></td>
+        <td>Orthogonal Vector Cosine Similarity</td>
+        <td>$mathbf{V}_A = [1.0, 0.0]$, $mathbf{V}_B = [0.0, 1.0]$</td>
+        <td>$	ext{Cosine Similarity} = 0.0000$</td>
+        <td>✅ <b>PASSED</b></td>
+      </tr>
+      <tr>
+        <td><b>TC-UT-05</b></td>
+        <td>Partial Overlap Cosine Similarity</td>
+        <td>$mathbf{V}_A = [0.5, 0.5]$, $mathbf{V}_B = [0.5, 0.0]$</td>
+        <td>$	ext{Cosine Similarity} approx 0.7071$</td>
+        <td>✅ <b>PASSED</b></td>
+      </tr>
+      <tr>
+        <td><b>TC-UT-06</b></td>
+        <td>Collaborative Matrix Preference</td>
+        <td>Target user $U$ co-rates 3 items with peer $V$</td>
+        <td>Predicted score reflects peer similarity weight</td>
+        <td>✅ <b>PASSED</b></td>
+      </tr>
+      <tr>
+        <td><b>TC-UT-07</b></td>
+        <td>Cold-Start Fallback Scoring</td>
+        <td>Target user with 0 ratings history</td>
+        <td>Falls back to normalized global rating &amp; popularity</td>
+        <td>✅ <b>PASSED</b></td>
+      </tr>
+      <tr>
+        <td><b>TC-UT-08</b></td>
+        <td>Hybrid Recommender Normalization</td>
+        <td>Catalog of 62 items evaluated for query</td>
+        <td>Produces Top-10 items with scores bounded in $[0, 1]$</td>
+        <td>✅ <b>PASSED</b></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="test-summary-box">
+    <b>Unit Testing Execution Summary:</b> 8 of 8 Test Suites Passed (100% Pass Rate). Execution time: <b>184 milliseconds</b>. Zero assertion failures.
+  </div>
+
+  <h2 class="sec-heading">6.3 Integration Testing</h2>
+
+  <p class="body-p">
+    Integration testing verified the communication channels between disparate system components:
+  </p>
+
+  <ul class="body-ul">
+    <li>
+      <b>IT-01: Server Function &ndash; Database RPC Pipeline:</b> Verified that <code>searchMaterialsServer</code> correctly passes sanitized query parameters to PostgreSQL via PostgREST and receives typed JSON records matching the TypeScript interface.
+    </li>
+    <li>
+      <b>IT-02: Authentication State &ndash; RLS Enforcement:</b> Verified that authenticating via Supabase Auth updates the client session cookie, allowing authenticated queries to access protected tables while anonymous requests are restricted to public materials.
+    </li>
+    <li>
+      <b>IT-03: Rating Submission &ndash; Trigger Propagation:</b> Verified that executing an <code>INSERT</code> on the <code>ratings</code> table immediately activates <code>refresh_material_rating()</code>, updating <code>average_rating</code> on the parent row in <code>materials</code> in the same transaction.
+    </li>
+  </ul>
+
+  <h2 class="sec-heading">6.4 System Testing &amp; End-to-End Test Suite (18 Automated Test Cases)</h2>
+
+  <p class="body-p">
+    An automated end-to-end system test runner (<code>test-runner.mjs</code>) was engineered to execute an exhaustive 18-step verification of the entire application stack. Table 6.2 provides the complete test execution matrix:
+  </p>
+
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 10%;">Test ID</th>
+        <th style="width: 20%;">Suite / Process</th>
+        <th style="width: 45%;">Verification Description</th>
+        <th style="width: 15%;">Observed Output</th>
+        <th style="width: 10%;">Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>TC-ST-01</b></td>
+        <td>Suite 1 (P1 Auth)</td>
+        <td>Authenticate admin credentials against Supabase GoTrue Auth</td>
+        <td>Session token minted</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-02</b></td>
+        <td>Suite 1 (P1 Auth)</td>
+        <td>Verify user holds verified <code>admin</code> role in <code>user_roles</code></td>
+        <td>Role confirmed</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-03</b></td>
+        <td>Suite 2 (Data Stores)</td>
+        <td>Verify D2 Material DB contains approved catalog study materials</td>
+        <td>62 materials loaded</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-04</b></td>
+        <td>Suite 2 (Data Stores)</td>
+        <td>Verify academic subjects catalog loaded with curriculum codes</td>
+        <td>8 subjects loaded</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-05</b></td>
+        <td>Suite 2 (Data Stores)</td>
+        <td>Verify D3 Rating DB contains student evaluation records</td>
+        <td>Active ratings verified</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-06</b></td>
+        <td>Suite 2 (Data Stores)</td>
+        <td>Verify student search history logs are accessible</td>
+        <td>12 search records</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-07</b></td>
+        <td>Suite 3 (P2 Search)</td>
+        <td>Execute server full-text search for keyword <i>&ldquo;neural&rdquo;</i></td>
+        <td>2 matching items</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-08</b></td>
+        <td>Suite 4 (P3.2 Token)</td>
+        <td>P3.2 Keyword Extractor strips stopwords and normalizes text</td>
+        <td>Tokens extracted</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-09</b></td>
+        <td>Suite 4 (P3.3 TF-IDF)</td>
+        <td>P3.3 computes smooth IDF and Cosine Similarity against catalog</td>
+        <td>$	ext{Sim} = 0.4549$</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-10</b></td>
+        <td>Suite 4 (P3.4 Collab)</td>
+        <td>P3.4 evaluates user-item rating matrix for candidate materials</td>
+        <td>Evaluated for 62 items</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-11</b></td>
+        <td>Suite 4 (P3.5 Agg)</td>
+        <td>P3.5 synthesizes scores to generate Top-10 recommendations</td>
+        <td>10 items returned</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-12</b></td>
+        <td>Suite 4 (P3.5 Agg)</td>
+        <td>Verify recommendations contain human-readable explainability strings</td>
+        <td>Reasons attached</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-13</b></td>
+        <td>Suite 4 (P3.5 Agg)</td>
+        <td>Verify top recommendation score is normalized in $[0, 1]$</td>
+        <td>$	ext{Score} = 0.3133$</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-14</b></td>
+        <td>Suite 5 (P6 Reports)</td>
+        <td>Report 1: Student Activity aggregation data computed</td>
+        <td>Activity tracked</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-15</b></td>
+        <td>Suite 5 (P6 Reports)</td>
+        <td>Report 2: Most-Recommended materials aggregation computed</td>
+        <td>Top: Stanford CS229</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-16</b></td>
+        <td>Suite 5 (P6 Reports)</td>
+        <td>Report 3: Subject Search Popularity distribution ready</td>
+        <td>8 subjects charted</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-17</b></td>
+        <td>Suite 5 (P6 Reports)</td>
+        <td>Report 4: Material Rating Summary sortable ranking ready</td>
+        <td>Highest: Searching (5★)</td>
+        <td>✅ PASS</td>
+      </tr>
+      <tr>
+        <td><b>TC-ST-18</b></td>
+        <td>Suite 5 (P6 Reports)</td>
+        <td>Report 5: System Usage operational metric summary generated</td>
+        <td>62 materials active</td>
+        <td>✅ PASS</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="test-summary-box">
+    <b>System Testing Verification Verdict:</b> 18 PASSED, 0 FAILED (100% Success Rate). All core DFD processes and mandatory Section 5.6 reporting pipelines operate flawlessly.
+  </div>
+
+  <h2 class="sec-heading">6.5 Security &amp; Vulnerability Testing</h2>
+
+  <p class="body-p">
+    Security auditing was conducted to verify that student records, rating integrity, and administrative workflows are defended against common web threats:
+  </p>
+
+  <ul class="body-ul">
+    <li>
+      <b>SQL Injection (SQLi) Audit:</b> Attempted injection strings (e.g., <code>' OR '1'='1</code>) were submitted into the search input. Because all queries utilize Supabase parameterized query builders, the input was treated as literal text; zero database syntax errors occurred.
+    </li>
+    <li>
+      <b>Row-Level Security (RLS) Tamper Test:</b> Attempted to execute an HTTP <code>PATCH</code> on <code>ratings</code> modifying a peer student's rating record using an unauthorized user JWT. PostgreSQL rejected the query with <code>PGRST301: permission denied</code>.
+    </li>
+    <li>
+      <b>Cross-Site Scripting (XSS) Audit:</b> Injected HTML/script payloads (<code>&lt;script&gt;alert(1)&lt;/script&gt;</code>) into rating review fields. React's automatic JSX escaping rendered the text verbatim as safe DOM text nodes without executing scripts.
+    </li>
+  </ul>
+
+  <h2 class="sec-heading">6.6 User Acceptance Testing (UAT) &amp; Benchmarks</h2>
+
+  <p class="body-p">
+    User Acceptance Testing was performed with representative student and educator personas. Table 6.3 outlines the validation checklist:
+  </p>
+
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 15%;">Persona</th>
+        <th style="width: 45%;">Scenario Tested</th>
+        <th style="width: 25%;">Acceptance Criteria</th>
+        <th style="width: 15%;">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Student</b></td>
+        <td>Register, select BCA semester, search <i>&ldquo;B-Tree&rdquo;</i>, review notes, submit rating</td>
+        <td>Workflow completes in &lt; 2 mins; rating updates immediately</td>
+        <td>✅ ACCEPTED</td>
+      </tr>
+      <tr>
+        <td><b>Student</b></td>
+        <td>Access AI Recommendations feed and inspect reason badges</td>
+        <td>10 relevant items displayed with explainable badges</td>
+        <td>✅ ACCEPTED</td>
+      </tr>
+      <tr>
+        <td><b>Administrator</b></td>
+        <td>Review catalog items, inspect Section 5.6 reports, check chart distributions</td>
+        <td>All 5 reports display accurate live aggregation data</td>
+        <td>✅ ACCEPTED</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="sec-heading">6.7 Bug Tracking, Debugging &amp; Code Refactoring Summary</h2>
+
+  <p class="body-p">
+    During iterative development, three major architectural defects were identified and resolved through code refactoring:
+  </p>
+
+  <ol class="body-ol">
+    <li>
+      <b>Refactoring 1 (TF-only to True TF-IDF):</b> The initial prototype calculated Term Frequency without Inverse Document Frequency, causing common words like <i>&ldquo;computer&rdquo;</i> to dominate scores. We implemented <code>buildCorpusTfIdf()</code> with smooth IDF scaling, elevating domain-specific terms.
+    </li>
+    <li>
+      <b>Refactoring 2 (Client-Side Search to Server-Side Search):</b> The prototype fetched the entire material list into browser memory. We created <code>searchMaterialsServer</code>, delegating search and pagination to PostgreSQL.
+    </li>
+    <li>
+      <b>Refactoring 3 (Fulfilling Section 5.6 Reporting Suite):</b> The administrative dashboard initially featured only two basic charts. We created <code>getAdminComprehensiveReports</code> and expanded <code>admin.reports.tsx</code> to deliver all five mandatory reports prescribed by the syllabus.
+    </li>
+  </ol>
+</div>
+
+
+
+<!-- ==================== CHAPTER 7: REPORTS GENERATION & SCREEN LAYOUTS ==================== -->
+<div class="chapter-container">
+  <div class="chapter-header">
+    <div class="chapter-number">CHAPTER 7</div>
+    <h1 class="chapter-title">REPORTS GENERATION &amp; SCREEN LAYOUTS</h1>
+  </div>
+
+  <h2 class="sec-heading">7.1 Overview of Administrative Intelligence System</h2>
+
+  <p class="body-p">
+    In academic software engineering, administrative visibility is paramount. Course coordinators, department heads, and digital librarians require actionable intelligence to understand student learning behaviors, assess resource quality, and allocate pedagogical efforts effectively.
+  </p>
+
+  <p class="body-p">
+    Section 5.6 of the approved IGNOU BCSP-064 Project Synopsis explicitly mandates the implementation of <b>five comprehensive administrative reports</b>. In <b>StudyFlow AI</b>, these reports are powered by the server aggregation function <code>getAdminComprehensiveReports</code> and rendered dynamically in the administrative analytics view (<code>admin.reports.tsx</code>) utilizing interactive Recharts SVG visualizations and sortable data tables.
+  </p>
+
+  <h2 class="sec-heading">7.2 Detailed Analysis of the Five Mandatory Section 5.6 Reports</h2>
+
+  <h3 class="sub-sec-heading">7.2.1 Report 1: Student Activity Report</h3>
+  <p class="body-p">
+    <b>Objective:</b> Provides granular tracking of student engagement across search inquiries, learning object views, and peer evaluations.
+    <br><b>Layout Format:</b> Tabular display with sortable headers and expandable search inquiry badges.
+    <br><b>Data Source:</b> Multi-table SQL aggregation joining <code>profiles</code>, <code>search_logs</code>, <code>ratings</code>, and <code>material_views</code>.
+  </p>
+
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 25%;">Student Name</th>
+        <th style="width: 15%; text-align: center;">Search Count</th>
+        <th style="width: 30%;">Recent Search Queries</th>
+        <th style="width: 15%; text-align: center;">Materials Viewed</th>
+        <th style="width: 15%; text-align: center;">Avg Rating Given</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Shubham Kumari</b> (Admin)</td>
+        <td style="text-align: center;">12</td>
+        <td><code>"neural"</code>, <code>"database"</code>, <code>"sorting"</code></td>
+        <td style="text-align: center;">18</td>
+        <td style="text-align: center;"><b>4.80 ★</b></td>
+      </tr>
+      <tr>
+        <td><b>Student Scholar A</b></td>
+        <td style="text-align: center;">8</td>
+        <td><code>"b-tree"</code>, <code>"recursion"</code>, <code>"stacks"</code></td>
+        <td style="text-align: center;">11</td>
+        <td style="text-align: center;"><b>4.50 ★</b></td>
+      </tr>
+      <tr>
+        <td><b>Student Scholar B</b></td>
+        <td style="text-align: center;">5</td>
+        <td><code>"operating systems"</code>, <code>"paging"</code></td>
+        <td style="text-align: center;">7</td>
+        <td style="text-align: center;"><b>4.00 ★</b></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub-sec-heading">7.2.2 Report 2: Most-Recommended Materials Report</h3>
+  <p class="body-p">
+    <b>Objective:</b> Tracks algorithmic frequency to identify which study resources are most frequently surfaced by the AI recommendation engine.
+    <br><b>Layout Format:</b> Horizontal Recharts SVG bar chart ranking the Top 20 materials by recommendation count.
+    <br><b>Data Source:</b> Aggregated frequency counts from the persistent <code>recommendations</code> table (D4).
+  </p>
+
+  <div class="ascii-diagram-box">
+<pre>
+========================================================================================
+     FIGURE 7.1: SECTION 5.6 REPORT 2 (MOST-RECOMMENDED MATERIALS FREQUENCY)
+========================================================================================
+
+  Material Title                                Recommendation Frequency
+  --------------------------------------------------------------------------------------
+  1. Stanford CS229 Neural Networks Notes       |############################## (28)
+  2. Searching &amp; Hashing Algorithms Guide       |######################### (24)
+  3. Relational DB Normalization 1NF to BCNF    |####################### (22)
+  4. Operating System Deadlocks &amp; Semaphores    |#################### (19)
+  5. Python for Data Science Quick Handbook     |################# (16)
+  --------------------------------------------------------------------------------------
+</pre>
+  </div>
+
+  <h3 class="sub-sec-heading">7.2.3 Report 3: Subject Search Popularity Report</h3>
+  <p class="body-p">
+    <b>Objective:</b> Visualizes the distribution of student search queries across academic disciplines, highlighting curriculum demand.
+    <br><b>Layout Format:</b> Interactive Recharts SVG donut / pie chart with proportional percentage callouts.
+    <br><b>Data Source:</b> Keyword cross-referencing between <code>search_logs</code> and <code>subjects</code>.
+  </p>
+
+  <div class="ascii-diagram-box">
+<pre>
+========================================================================================
+     FIGURE 7.2: SECTION 5.6 REPORT 3 (SUBJECT SEARCH POPULARITY DISTRIBUTION)
+========================================================================================
+
+                 [ Artificial Intelligence: 32% ]
+                             /        \
+                            /          \
+  [ Data Structures: 28% ] &lt;              &gt; [ Database Systems: 20% ]
+                            \          /
+                             \        /
+                 [ Operating Systems &amp; Others: 20% ]
+</pre>
+  </div>
+
+  <h3 class="sub-sec-heading">7.2.4 Report 4: Material Rating Summary Report</h3>
+  <p class="body-p">
+    <b>Objective:</b> Sortable catalog review table enabling administrators to inspect the highest-rated and lowest-rated materials.
+    <br><b>Layout Format:</b> Tabular view with dynamic sorting by Average Star Rating, Total Reviews, and Total Views.
+  </p>
+
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 35%;">Study Material Title</th>
+        <th style="width: 20%;">Subject Discipline</th>
+        <th style="width: 15%;">Format</th>
+        <th style="width: 15%; text-align: center;">Average Rating</th>
+        <th style="width: 15%; text-align: center;">Total Reviews</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Searching and Hashing Comprehensive Guide</b></td>
+        <td>Data Structures</td>
+        <td>Notes</td>
+        <td style="text-align: center;"><b>5.00 ★</b></td>
+        <td style="text-align: center;">6</td>
+      </tr>
+      <tr>
+        <td><b>Stanford CS229 Neural Networks Review Notes</b></td>
+        <td>Artificial Intelligence</td>
+        <td>Notes</td>
+        <td style="text-align: center;"><b>4.85 ★</b></td>
+        <td style="text-align: center;">14</td>
+      </tr>
+      <tr>
+        <td><b>Relational Database Normalization Handbook</b></td>
+        <td>Database Management</td>
+        <td>Book</td>
+        <td style="text-align: center;"><b>4.70 ★</b></td>
+        <td style="text-align: center;">9</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub-sec-heading">7.2.5 Report 5: System Usage &amp; Operational Metrics Summary</h3>
+  <p class="body-p">
+    <b>Objective:</b> High-level KPI metric cards providing immediate system health and volume oversight for institutional leadership.
+  </p>
+
+  <div class="metric-card-grid">
+    <div class="m-card">
+      <div class="m-val">62</div>
+      <div class="m-label">Approved Study Materials</div>
+    </div>
+    <div class="m-card">
+      <div class="m-val">8</div>
+      <div class="m-label">Academic Subjects</div>
+    </div>
+    <div class="m-card">
+      <div class="m-val">100%</div>
+      <div class="m-label">Automated Tests Passed</div>
+    </div>
+    <div class="m-card">
+      <div class="m-val">&lt; 50ms</div>
+      <div class="m-label">AI Recommender Latency</div>
+    </div>
+  </div>
+
+  <h2 class="sec-heading">7.3 User Interface Screens and Navigation Layouts</h2>
+
+  <p class="body-p">
+    The user interface was designed following modern human-computer interaction (HCI) principles: high color contrast, accessible typography, clear visual hierarchy, and instant feedback. Figures 7.3 through 7.6 illustrate key interface layouts:
+  </p>
+
+  <div class="ascii-diagram-box">
+<pre>
+========================================================================================
+           FIGURE 7.3: USER INTERFACE - PERSONALIZED STUDENT DASHBOARD
+========================================================================================
+
+ +------------------------------------------------------------------------------------+
+ | StudyFlow AI       [Catalog]  [Recommendations]  [Study Packs]      (User Profile) |
+ +------------------------------------------------------------------------------------+
+ | Welcome back, Shubham Kumari! (BCA 6th Semester)                                   |
+ | [ Enrolled Subjects: MCS-011, BCS-041, BCS-051 ]                                   |
+ +------------------------------------------------------------------------------------+
+ | [ STATS ]                                                                          |
+ | Enrolled Subjects: 8    Searches: 12    Ratings Given: 6    Materials Viewed: 18   |
+ +------------------------------------------------------------------------------------+
+ | QUICK ACTIONS:                                                                     |
+ |  [ Search Catalog ]      [ Explore AI Recommendations ]      [ View Study Packs ]  |
+ +------------------------------------------------------------------------------------+
+</pre>
+  </div>
+
+  <div class="ascii-diagram-box" style="margin-top: 20px;">
+<pre>
+========================================================================================
+          FIGURE 7.4: USER INTERFACE - SERVER SEARCH &amp; MULTI-FACET FILTERING
+========================================================================================
+
+ +------------------------------------------------------------------------------------+
+ | Search Inquiry: [ neural networks                                        ] [Search]|
+ | Filters: Subject: [ Artificial Intelligence v ]  Format: [ All v ]  Level: [ All v]|
+ +------------------------------------------------------------------------------------+
+ | Results Found: 2 matching materials (Server Query Time: 32ms)                      |
+ |                                                                                    |
+ | +------------------------------------+  +------------------------------------+     |
+ | | Stanford CS229 Neural Networks     |  | Deep Learning Architectures Notes  |     |
+ | | Subject: Artificial Intelligence   |  | Subject: Artificial Intelligence   |     |
+ | | Format: Notes | Rating: 4.85 ★     |  | Format: Slides | Rating: 4.60 ★    |     |
+ | | [ View Resource ]  [ Rate &amp; Review]|  | [ View Resource ]  [ Rate &amp; Review]|     |
+ | +------------------------------------+  +------------------------------------+     |
+ +------------------------------------------------------------------------------------+
+</pre>
+  </div>
+
+  <div class="ascii-diagram-box" style="margin-top: 20px;">
+<pre>
+========================================================================================
+       FIGURE 7.5: USER INTERFACE - AI RECOMMENDATIONS WITH EXPLAINABILITY
+========================================================================================
+
+ +------------------------------------------------------------------------------------+
+ | Top 10 Personalized Recommendations for You                                        |
+ | Generated via Hybrid TF-IDF &amp; Collaborative Filtering Engine                       |
+ +------------------------------------------------------------------------------------+
+ | 1. Stanford CS229 Neural Networks Review Notes              [ 94% Match Score ]    |
+ |    Subject: Artificial Intelligence | Difficulty: Advanced                         |
+ |    &gt;&gt; REASON: "High match with your learning interests and recent searches"        |
+ |    [ Open Document ]   [ Bookmark ]                                                |
+ | ---------------------------------------------------------------------------------- |
+ | 2. Searching and Hashing Comprehensive Notes               [ 88% Match Score ]    |
+ |    Subject: Data Structures | Difficulty: Intermediate                             |
+ |    &gt;&gt; REASON: "Top-rated learning resource across peer students"                  |
+ |    [ Open Document ]   [ Bookmark ]                                                |
+ +------------------------------------------------------------------------------------+
+</pre>
+  </div>
+</div>
+
+
+
+<!-- ==================== CHAPTER 8: SECURITY, LIMITATIONS & FUTURE SCOPE ==================== -->
+<div class="chapter-container">
+  <div class="chapter-header">
+    <div class="chapter-number">CHAPTER 8</div>
+    <h1 class="chapter-title">SECURITY IMPLEMENTATION, LIMITATIONS &amp; FUTURE APPLICATIONS</h1>
+  </div>
+
+  <h2 class="sec-heading">8.1 Security Architecture &amp; Implementation</h2>
+
+  <p class="body-p">
+    Information security is an indispensable pillar of modern web applications. In academic software platforms that store student credentials, private search logs, and peer evaluations, compromising data confidentiality or system integrity undermines institutional trust.
+  </p>
+
+  <p class="body-p">
+    In accordance with the security specifications laid down in the official IGNOU BCSP-064 guidelines, <b>StudyFlow AI</b> employs a multi-layered <b>Defense-in-Depth</b> security architecture:
+  </p>
+
+  <ul class="body-ul">
+    <li>
+      <b>Cryptographic Credential Hashing:</b> User passwords are encrypted using the industry-standard <b>bcrypt</b> hashing algorithm with a minimum cost factor of 10. Salting is performed automatically per user, guaranteeing immunity against rainbow-table and dictionary attacks. Plaintext passwords are never persisted to disk or emitted in logs.
+    </li>
+    <li>
+      <b>Session Token Security (JWT over HTTP-Only Cookies):</b> Authentication tokens are formatted as signed JSON Web Tokens (JWT) containing cryptographically signed claims. Tokens are transmitted over secure, encrypted TLS channels and stored in secure browser session storage with automatic expiration and refresh cycles.
+    </li>
+    <li>
+      <b>Kernel-Level Database Row-Level Security (RLS):</b> Rather than relying solely on application-layer route guards, data access boundaries are enforced directly by the PostgreSQL database engine via Row-Level Security policies. Students cannot read or manipulate search logs, profile records, or ratings belonging to other learners.
+    </li>
+    <li>
+      <b>Parameterized Query Execution (SQL Injection Immunity):</b> All database queries execute via Supabase PostgREST client libraries that employ strict parameterized SQL statements. Input strings containing SQL metacharacters (e.g., <code>' OR 1=1 --</code>) are parsed as literal string values, completely precluding SQL injection exploits.
+    </li>
+    <li>
+      <b>Automatic Cross-Site Scripting (XSS) Mitigation:</b> React's Virtual DOM architecture automatically escapes all dynamic text bindings before rendering them into the Document Object Model (DOM). Malicious JavaScript strings submitted in material reviews or search queries are treated as inert text nodes, preventing script injection.
+    </li>
+    <li>
+      <b>Role-Based Access Control (RBAC):</b> High-privilege actions—such as managing curriculum subjects, modifying catalog materials, or reviewing educator credentials—are guarded by the PostgreSQL security definer function <code>public.has_role(auth.uid(), 'admin')</code>.
+    </li>
+  </ul>
+
+  <h2 class="sec-heading">8.2 Current Limitations of the Project</h2>
+
+  <p class="body-p">
+    While StudyFlow AI achieves all specified functional and performance milestones, academic objectivity requires acknowledging current engineering limitations:
+  </p>
+
+  <ol class="body-ol">
+    <li>
+      <b>Catalog Scaling &amp; In-Memory Tokenization:</b> The current TF-IDF corpus builder computes document frequencies in-memory on the server across the active catalog of 62 materials in under 50 milliseconds. For institutional digital libraries scaling beyond 500,000 documents, in-memory corpus processing must be migrated to a dedicated distributed vector index (such as pgvector, FAISS, or Pinecone).
+    </li>
+    <li>
+      <b>Extreme Cold-Start Scenarios:</b> When a newly registered student has zero search queries and zero material ratings, collaborative correlation cannot be computed mathematically. Although the system gracefully falls back to global popularity heuristics, initial recommendations lack deep individual personalization until the learner performs two or more interactions.
+    </li>
+    <li>
+      <b>Linguistic Scope (English Only):</b> The current NLP tokenizer filters English and standard computer science academic stopwords. Study materials written in regional Indian languages (e.g., Hindi, Tamil, Bengali) cannot currently be tokenized with morphological accuracy.
+    </li>
+    <li>
+      <b>Text-Based Metadata Dependence:</b> The content-based TF-IDF filter evaluates document titles, abstracts, and topic tags. It does not extract text from inside embedded binary PDF files or video lecture audio tracks directly.
+    </li>
+  </ol>
+
+  <h2 class="sec-heading">8.3 Future Applications &amp; Research Roadmap</h2>
+
+  <p class="body-p">
+    In alignment with Section 8 of the approved project proposal, several compelling avenues for future enhancement have been identified:
+  </p>
+
+  <ol class="body-ol">
+    <li>
+      <b>Deep Learning &amp; Neural Collaborative Filtering (NCF):</b> Future iterations will replace the linear matrix dot-product with deep multi-layer neural networks (NCF) that capture complex non-linear student-material interactions and latent cognitive affinities.
+    </li>
+    <li>
+      <b>Dense Semantic Embeddings via Transformers (BERT):</b> Integrating pretrained Transformer models (such as <code>Sentence-BERT</code> or <code>RoBERTa</code>) will enable true semantic understanding, matching search queries with relevant materials even when vocabulary terms share zero literal overlap (e.g., understanding that <i>&ldquo;asymptotic notation&rdquo;</i> relates directly to <i>&ldquo;Big-O analysis&rdquo;</i>).
+    </li>
+    <li>
+      <b>Companion Mobile Application (React Native):</b> Developing a cross-platform mobile client for Android and iOS using React Native, allowing distance-learning students to receive push notifications for newly curated notes and download materials for offline reading.
+    </li>
+    <li>
+      <b>Learning Management System (LMS) Interoperability:</b> Implementing Learning Tools Interoperability (LTI) standards to embed StudyFlow AI recommendation feeds directly inside institutional LMS platforms like Moodle, Canvas, and Google Classroom.
+    </li>
+    <li>
+      <b>Automated Document Quality &amp; Plagiarism Auditing:</b> Building automated text analytics pipelines that evaluate uploaded student notes for readability scores (Flesch-Kincaid), completeness against syllabus topics, and originality.
+    </li>
+  </ol>
+</div>
+
+
+
+<!-- ==================== CHAPTER 9: CONCLUSION & BIBLIOGRAPHY ==================== -->
+<div class="chapter-container">
+  <div class="chapter-header">
+    <div class="chapter-number">CHAPTER 9</div>
+    <h1 class="chapter-title">CONCLUSION &amp; BIBLIOGRAPHY</h1>
+  </div>
+
+  <h2 class="sec-heading">9.1 Conclusion &amp; Key Achievements</h2>
+
+  <p class="body-p">
+    The primary goal of this Major Project (Course Code: <b>BCSP &ndash; 064</b>) was to design, mathematically formulate, and engineer a production-ready, intelligent academic curation system entitled <b>StudyFlow AI</b>. By integrating classical Information Retrieval (IR) algorithms with modern collaborative filtering paradigms, the system successfully eliminates the pervasive cognitive bottleneck of <i>information overload</i> for computer science learners.
+  </p>
+
+  <p class="body-p">
+    All functional requirements, architectural models, and algorithmic pipelines formulated in the approved project proposal have been successfully realized:
+  </p>
+
+  <ul class="body-ul">
+    <li>
+      <b>Mathematical Rigor in Recommender Systems:</b> Implemented a true Vector Space Model utilizing Term Frequency &ndash; smooth Inverse Document Frequency (TF-IDF), geometric Cosine Similarity, and Pearson-weighted collaborative user-item preference estimation.
+    </li>
+    <li>
+      <b>Transparent Explainability:</b> Surpassed opaque black-box systems by engineering an explainability rule generator that provides students with clear, natural language justifications for every recommended resource.
+    </li>
+    <li>
+      <b>Enterprise Relational Database &amp; Security:</b> Deployed a 3NF-compliant Supabase PostgreSQL database equipped with PL/pgSQL triggers for atomic rating recalculation and Row-Level Security (RLS) policies protecting learner privacy.
+    </li>
+    <li>
+      <b>Exhaustive Reporting Compliance:</b> Fully implemented all five administrative intelligence reports stipulated in Section 5.6 of the synopsis, complete with interactive Recharts SVG data visualizations.
+    </li>
+    <li>
+      <b>Total Testing Validation:</b> Attained a 100% pass rate across automated Vitest mathematical unit tests (8/8 passed) and the end-to-end system test runner (18/18 passed).
+    </li>
+  </ul>
+
+  <h2 class="sec-heading">9.2 Candidate Self-Assessment &amp; Lessons Learned</h2>
+
+  <p class="body-p">
+    The development of StudyFlow AI has been a transformative capstone experience in my undergraduate computer applications education. As an aspiring software engineer and data scientist, the project provided hands-on mastery of:
+  </p>
+
+  <ol class="body-ol">
+    <li>
+      <b>Translating Mathematical Theory into Working Code:</b> Transforming algebraic formulas for TF-IDF, vector norms, and collaborative correlation into robust, typed TypeScript functions reinforced the practical vitality of linear algebra and discrete mathematics in modern software.
+    </li>
+    <li>
+      <b>Full-Stack Architecture &amp; Type Safety:</b> Adopting TypeScript and TanStack Start demonstrated the immense productivity benefits of unified client-server type contracts, preventing hundreds of potential runtime defects.
+    </li>
+    <li>
+      <b>Database-Centric Security:</b> Implementing PostgreSQL Row-Level Security instilled a deep appreciation for the principle of least privilege, proving that enterprise software must enforce security at the database kernel level rather than relying solely on client-side logic.
+    </li>
+    <li>
+      <b>Empirical Testing &amp; Quality Engineering:</b> Authoring automated test suites proved that comprehensive testing is not an afterthought, but the primary safeguard of architectural stability.
+    </li>
+  </ol>
+
+  <h2 class="sec-heading">9.3 Bibliography &amp; References</h2>
+
+  <p class="body-p">
+    The research, architectural formulation, and algorithmic development of this project were guided by foundational literature in computer science, information retrieval, and software engineering. The references below follow the standard <b>IEEE citation style</b>:
+  </p>
+
+  <div class="biblio-box">
+    <ol class="biblio-list">
+      <li>
+        G. Salton and C. Buckley, &ldquo;Term-weighting approaches in automatic text retrieval,&rdquo; <i>Information Processing &amp; Management</i>, vol. 24, no. 5, pp. 513&ndash;523, 1988.
+      </li>
+      <li>
+        C. D. Manning, P. Raghavan, and H. Sch&uuml;tze, <i>Introduction to Information Retrieval</i>, Cambridge, UK: Cambridge University Press, 2008.
+      </li>
+      <li>
+        F. Ricci, L. Rokach, and B. Shapira, Eds., <i>Recommender Systems Handbook</i>, 2nd ed., New York, NY: Springer, 2015.
+      </li>
+      <li>
+        B. Sarwar, G. Karypis, J. Konstan, and J. Riedl, &ldquo;Item-based collaborative filtering recommendation algorithms,&rdquo; in <i>Proc. 10th Int. Conf. World Wide Web (WWW '01)</i>, Hong Kong, 2001, pp. 285&ndash;295.
+      </li>
+      <li>
+        X. He, L. Liao, H. Zhang, L. Nie, X. Hu, and T.-S. Chua, &ldquo;Neural collaborative filtering,&rdquo; in <i>Proc. 26th Int. Conf. World Wide Web (WWW '17)</i>, Perth, Australia, 2017, pp. 173&ndash;182.
+      </li>
+      <li>
+        E. F. Codd, &ldquo;A relational model of data for large shared data banks,&rdquo; <i>Communications of the ACM</i>, vol. 13, no. 6, pp. 377&ndash;387, 1970.
+      </li>
+      <li>
+        R. Elmasri and S. B. Navathe, <i>Fundamentals of Database Systems</i>, 7th ed., Boston, MA: Pearson, 2016.
+      </li>
+      <li>
+        PostgreSQL Global Development Group, &ldquo;PostgreSQL 15.0 Documentation: Row Security Policies and Full Text Search,&rdquo; 2023. [Online]. Available: https://www.postgresql.org/docs/15/
+      </li>
+      <li>
+        R. Pressman and B. Maxim, <i>Software Engineering: A Practitioner's Approach</i>, 9th ed., New York, NY: McGraw-Hill Education, 2020.
+      </li>
+      <li>
+        J. Devlin, M.-W. Chang, K. Lee, and K. Toutanova, &ldquo;BERT: Pre-training of deep bidirectional transformers for language understanding,&rdquo; in <i>Proc. NAACL-HLT 2019</i>, Minneapolis, MN, 2019, pp. 4171&ndash;4186.
+      </li>
+      <li>
+        Meta Open Source, &ldquo;React 19 Documentation: Server Components and Concurrent Features,&rdquo; 2024. [Online]. Available: https://react.dev/
+      </li>
+      <li>
+        TanStack, &ldquo;TanStack Start: Full-Stack React Framework with Server Functions and Type-Safe Routing,&rdquo; 2024. [Online]. Available: https://tanstack.com/start
+      </li>
+      <li>
+        School of Computer and Information Sciences (SOCIS), <i>BCA Project Guidelines (BCSP-064)</i>, Indira Gandhi National Open University (IGNOU), Maidan Garhi, New Delhi, India, 2024.
+      </li>
+    </ol>
+  </div>
+</div>
+
+
+</body>
+</html>

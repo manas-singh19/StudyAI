@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>DFD Compliance & Gap Analysis - StudyFlow AI (BCSP-064)</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 16mm 18mm 16mm;
+
+      @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+        font-size: 8pt;
+        color: #64748b;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1e293b;
+      background-color: #ffffff;
+      font-size: 9.5pt;
+      line-height: 1.45;
+    }
+
+    .cover {
+      page-break-after: always;
+      padding-top: 40px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #e0e7ff;
+      color: #3730a3;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 8.5pt;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    h1.title {
+      font-size: 24pt;
+      color: #0f172a;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    p.subtitle {
+      font-size: 12pt;
+      color: #475569;
+      margin-bottom: 35px;
+    }
+
+    .student-box {
+      margin: 0 auto 35px auto;
+      max-width: 500px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 16px 20px;
+      text-align: left;
+      font-size: 9.5pt;
+    }
+
+    .student-box table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .student-box td {
+      padding: 4px 8px;
+    }
+
+    .student-box td.label {
+      color: #64748b;
+      font-weight: 600;
+      width: 40%;
+    }
+
+    .student-box td.value {
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    .summary-card {
+      background: #f1f5f9;
+      border-left: 4px solid #2563eb;
+      padding: 14px 18px;
+      border-radius: 4px;
+      text-align: left;
+      margin: 0 auto;
+      max-width: 580px;
+      font-size: 9.5pt;
+      color: #334155;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    h2.section-title {
+      font-size: 14pt;
+      color: #0f172a;
+      font-weight: 700;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 6px;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3.subsection-title {
+      font-size: 11pt;
+      color: #1e3a8a;
+      font-weight: 600;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+
+    p {
+      margin-bottom: 8px;
+      text-align: justify;
+    }
+
+    ul,
+    ol {
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 16px 0;
+      font-size: 8.5pt;
+    }
+
+    table.data-table th,
+    table.data-table td {
+      border: 1px solid #cbd5e1;
+      padding: 6px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    table.data-table th {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    table.data-table tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    .status-pass {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #dcfce7;
+      color: #15803d;
+      font-weight: 700;
+      font-size: 7.5pt;
+    }
+
+    .status-partial {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #fef9c3;
+      color: #a16207;
+      font-weight: 700;
+      font-size: 7.5pt;
+    }
+
+    .status-fail {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #fee2e2;
+      color: #b91c1c;
+      font-weight: 700;
+      font-size: 7.5pt;
+    }
+
+    .status-diff {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #e0e7ff;
+      color: #4338ca;
+      font-weight: 700;
+      font-size: 7.5pt;
+    }
+
+    .diagram-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 10px;
+      margin: 10px 0;
+      font-family: monospace;
+      font-size: 8pt;
+      white-space: pre-wrap;
+      line-height: 1.35;
+      color: #0f172a;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+
+    .card-title {
+      font-weight: 700;
+      font-size: 9.5pt;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .action-box {
+      background: #f0fdf4;
+      border-left: 4px solid #16a34a;
+      padding: 10px 14px;
+      margin: 10px 0;
+      border-radius: 4px;
+      font-size: 9pt;
+    }
+
+    .warning-box {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      padding: 10px 14px;
+      margin: 10px 0;
+      border-radius: 4px;
+      font-size: 9pt;
+    }
+
+    .danger-box {
+      background: #fef2f2;
+      border-left: 4px solid #ef4444;
+      padding: 10px 14px;
+      margin: 10px 0;
+      border-radius: 4px;
+      font-size: 9pt;
+    }
+
+    .footer-note {
+      margin-top: 25px;
+      padding-top: 10px;
+      border-top: 1px solid #e2e8f0;
+      font-size: 8pt;
+      color: #64748b;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- COVER PAGE -->
+  <div class="cover">
+    <div class="badge">BCSP-064 Project Technical Audit</div>
+    <h1 class="title">DFD Compliance, Architecture Comparison &amp; Action Plan</h1>
+    <p class="subtitle">AI – Powered Study Material Recommender (StudyFlow AI)</p>
+
+    <div class="student-box">
+      <table>
+        <tr>
+          <td class="label">Candidate Name:</td>
+          <td class="value">Shubham Kumari</td>
+        </tr>
+        <tr>
+          <td class="label">Enrollment No:</td>
+          <td class="value">2400625700</td>
+        </tr>
+        <tr>
+          <td class="label">Course Code:</td>
+          <td class="value">BCSP – 064 (BCA Major Project)</td>
+        </tr>
+        <tr>
+          <td class="label">Target System:</td>
+          <td class="value">StudyFlow AI Web Platform</td>
+        </tr>
+        <tr>
+          <td class="label">Audited Codebase:</td>
+          <td class="value">d:\finalTest (pdf-project-guide)</td>
+        </tr>
+        <tr>
+          <td class="label">Audit Date:</td>
+          <td class="value">September 2026</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="summary-card">
+      <b>Executive Audit Verdict:</b>
+      <p style="margin-top: 6px; margin-bottom: 0;">
+        The active codebase represents a highly sophisticated, production-grade learning platform. However, when
+        strictly compared against the submitted <b>BCSP-064 Proposal &amp; Data Flow Diagrams (DFD Level 0, Level 1,
+          Level 2)</b>, there are <b>critical architectural, data flow, and algorithmic divergences</b>.
+        <br><br>
+        As instructed by the user, <b>no modifications have been made to the source code</b>. This document provides a
+        complete comparative breakdown and a prioritized checklist of <b>things that need to be done</b> to achieve 100%
+        compliance.
+      </p>
+    </div>
+  </div>
+
+  <!-- PAGE 2: EXECUTIVE SUMMARY & DFD LEVEL 0 -->
+  <div class="page-break"></div>
+
+  <h2 class="section-title">1. High-Level Architectural Comparison</h2>
+  <p>
+    The project proposal submitted for <b>BCSP-064</b> describes a traditional <b>MERN Stack</b> (MongoDB, Express.js,
+    React.js, Node.js) with custom REST APIs, JWT authentication, and the <code>natural</code> NLP library. In contrast,
+    the current codebase in <code>d:\finalTest</code> is built on modern <b>TanStack Start (Vite 8 + Nitro)</b> paired
+    with <b>Supabase PostgreSQL</b> as a Backend-as-a-Service (BaaS).
+  </p>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th style="width: 22%;">System Layer</th>
+        <th style="width: 38%;">Synopsis / DFD Specification</th>
+        <th style="width: 40%;">Actual Project Implementation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Database</b></td>
+        <td><b>MongoDB v6+</b> (NoSQL Document Store: collections <code>users</code>, <code>materials</code>,
+          <code>subjects</code>, <code>ratings</code>, <code>searchlogs</code>, <code>recommendations</code>)</td>
+        <td><b>Supabase PostgreSQL</b> (Relational SQL with Row-Level Security, foreign keys, triggers, RPCs, and 24
+          tables)</td>
+      </tr>
+      <tr>
+        <td><b>Backend Framework</b></td>
+        <td><b>Node.js (v18+) with Express.js (v4+)</b> providing traditional REST endpoints (e.g.
+          <code>POST /api/auth/login</code>, <code>GET /api/materials/search</code>)</td>
+        <td><b>TanStack Start</b> fullstack framework with Nitro SSR and RPC-style TypeScript Server Functions
+          (<code>createServerFn</code>)</td>
+      </tr>
+      <tr>
+        <td><b>Authentication</b></td>
+        <td>Custom <b>JWT</b> + <code>bcryptjs</code> password hashing with in-memory token storage and
+          <code>Authorization</code> header</td>
+        <td><b>Supabase Auth (GoTrue)</b> session tokens managed via cookies and client storage, plus OAuth support</td>
+      </tr>
+      <tr>
+        <td><b>AI / NLP Engine</b></td>
+        <td><code>natural</code> (Node.js NLP library) for TF-IDF computation across material descriptions &amp; queries
+        </td>
+        <td>Custom TypeScript string tokenization + TF in <code>src/lib/recommendation.ts</code>; OpenAI SDK for AI
+          Tutor</td>
+      </tr>
+      <tr>
+        <td><b>Analytics &amp; Charts</b></td>
+        <td><b>Chart.js</b> rendering bar &amp; pie charts across 5 admin reports</td>
+        <td><b>Recharts</b> (React SVG charting) rendering 2 charts in <code>admin.reports.tsx</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="section-title">2. DFD Level 0 (Context Diagram) Audit</h2>
+  <div class="diagram-box">
+    [Student (User)] ====(Search Query / Credentials)====> [ AI Study Material ] ====(Material Data / Commands)==== [
+    Admin ]
+    <====(Recommendations / Results)====[ Recommender ] <====(Reports / System Status)====</div>
+
+      <p>
+        <b>Analysis of Level 0 Compliance:</b>
+      </p>
+      <ul>
+        <li><b>Entities &amp; Primary Data Flows:</b> The core interactions exist. Students submit credentials to
+          authenticate, send queries to search resources, and receive ranked recommendations. Administrators input
+          material metadata and access reports and system status.</li>
+        <li><b>Scope Expansion (Superset):</b> The active application includes roles and features far beyond the Level 0
+          boundary:
+          <ul>
+            <li><b>Educator / Teacher Role:</b> Educator access requests, verified educator author accounts, and author
+              linking.</li>
+            <li><b>AI Tutor:</b> Interactive Q&amp;A sessions powered by OpenAI (<code>ai_tutor_sessions</code>).</li>
+            <li><b>Study Groups &amp; Study Packs:</b> Collaborative study spaces, peer notes, and flashcard progress.
+            </li>
+          </ul>
+        </li>
+        <li><b>Verdict:</b> <span class="status-pass">CONCEPTUALLY COMPLIANT</span> at Level 0, but acts as a functional
+          superset.</li>
+      </ul>
+
+      <!-- PAGE 3: DFD LEVEL 1 AUDIT -->
+      <div class="page-break"></div>
+
+      <h2 class="section-title">3. DFD Level 1 (Process Decomposition) Audit</h2>
+      <p>
+        The synopsis Level 1 DFD decomposes the system into six distinct processes (<b>P1 to P6</b>) interacting with
+        three primary data stores (<b>D1 User DB, D2 Material DB, D3 Rating DB</b>). Below is the itemized compliance
+        audit:
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 12%;">Process</th>
+            <th style="width: 25%;">DFD Requirement</th>
+            <th style="width: 45%;">Codebase Reality</th>
+            <th style="width: 18%;">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>P1: User Auth</b></td>
+            <td>Student submits credentials &rarr; P1 queries D1 &rarr; compares password &rarr; returns Auth Token to
+              Student.</td>
+            <td>Handled by Supabase Auth (<code>supabase.auth.signInWithPassword</code>) against Postgres
+              <code>auth.users</code> + <code>profiles</code>. No Express REST endpoint or custom JWT verification code
+              in repo.</td>
+            <td><span class="status-partial">PARTIALLY COMPLIANT</span> (Functional match, mechanism divergence)</td>
+          </tr>
+          <tr>
+            <td><b>P2: Subject &amp; Topic Search</b></td>
+            <td>Student submits query &rarr; P2 performs MongoDB <code>$text</code> index query on D2 &rarr; filters by
+              subject &rarr; returns paginated results.</td>
+            <td><b>Client-side search execution:</b> <code>search.tsx</code> calls <code>getCatalog()</code> to fetch
+              all materials, then filters in-memory via JavaScript <code>.includes()</code>. No server-side text query
+              occurs during search; backend is only invoked to log history (<code>logSearch</code>).</td>
+            <td><span class="status-fail">NON-COMPLIANT FLOW</span> (Executed on client, not database)</td>
+          </tr>
+          <tr>
+            <td><b>P3: Recommend Engine</b></td>
+            <td>Inputs from D1 (User Profile), D2 (Material Metadata), and D3 (Rating Data) &rarr; produces ranked
+              recommendations to Student.</td>
+            <td><b>Client-side execution:</b> React hook <code>useMemo</code> executes <code>rankMaterials()</code> in
+              the browser using loaded catalog and profile preferences, then persists top-10 back to server via
+              <code>saveRecommendations</code>.</td>
+            <td><span class="status-fail">NON-COMPLIANT FLOW</span> (Engine runs in browser thread, not backend)</td>
+          </tr>
+          <tr>
+            <td><b>P4: Material Management</b></td>
+            <td>Admin inputs material data &rarr; P4 writes to D2 (Material DB).</td>
+            <td>Full CRUD in <code>admin.materials.tsx</code> directly updating <code>materials</code> table. Includes
+              approval workflows, educator author linking, and file uploads.</td>
+            <td><span class="status-pass">FULLY COMPLIANT</span></td>
+          </tr>
+          <tr>
+            <td><b>P5: Rating &amp; Review</b></td>
+            <td>Student rates (1-5) &amp; reviews &rarr; P5 writes to D3 (Rating DB) &rarr; updates average rating on
+              D2.</td>
+            <td>Students rate in <code>materials.$id.tsx</code> &rarr; upserts to <code>ratings</code> table &rarr;
+              Postgres trigger <code>refresh_material_rating()</code> atomically recalculates
+              <code>average_rating</code> and <code>rating_count</code> on <code>materials</code>.</td>
+            <td><span class="status-pass">FULLY COMPLIANT</span></td>
+          </tr>
+          <tr>
+            <td><b>P6: Reports &amp; Analytics</b></td>
+            <td>Admin requests reports &rarr; P6 aggregates D3 Rating Stats and logs &rarr; outputs 5 specific reports
+              via Chart.js.</td>
+            <td><code>admin.reports.tsx</code> aggregates subject material counts and ratings using <b>Recharts</b>.
+              Missing 3 out of 5 required reports (Student Activity, Top-20, Search Popularity).</td>
+            <td><span class="status-partial">PARTIALLY COMPLIANT</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="subsection-title">Data Store Comparison (D1 – D3)</h3>
+      <ul>
+        <li><b>D1 (User DB):</b> Specified as MongoDB <code>users</code> collection. In reality, split into Supabase
+          <code>auth.users</code>, <code>profiles</code>, and <code>user_roles</code> tables.</li>
+        <li><b>D2 (Material DB):</b> Specified as MongoDB <code>materials</code> collection. In reality, implemented as
+          PostgreSQL <code>materials</code> table with relational link to <code>subjects</code> and
+          <code>material_authors</code>.</li>
+        <li><b>D3 (Rating DB):</b> Specified as MongoDB <code>ratings</code> collection. In reality, implemented as
+          PostgreSQL <code>ratings</code> table with composite uniqueness constraint
+          <code>(user_id, material_id)</code>.</li>
+        <li><b>D4 (Recommendations DB):</b> Present as PostgreSQL <code>recommendations</code> table with
+          <code>(user_id, material_id, score, reason, generated_at)</code>.</li>
+      </ul>
+
+      <!-- PAGE 4: DFD LEVEL 2 AUDIT -->
+      <div class="page-break"></div>
+
+      <h2 class="section-title">4. DFD Level 2 (Recommendation Engine P3) Deep Dive</h2>
+      <p>
+        Page 7 &amp; 8 of the synopsis details the internal decomposition of Process P3 into five sub-processes (<b>P3.1
+          to P3.5</b>). This represents the mathematical and algorithmic core of the BCSP-064 project.
+      </p>
+
+      <div class="diagram-box">
+        [D1 User Profile DB] =====(User History & Preferences)=====> [ P3.1 Profile Analyzer ] =====(Profile
+        Vector)=====\
+        [Search Query] ======================================> [ P3.2 Keyword Extractor ] =====(Query Keywords)====\
+        [D2 Material DB] =====(Material Metadata)==============> [ P3.3 Content Filter ] =====(Content Score)=====> [
+        P3.5 Score Aggregator ]
+        [D3 Rating DB] =====(User Ratings)===================> [ P3.4 Collab. Filter ] =====(Collab Score)======/ ||
+        || (Top-N)
+        \/
+        [D4 Recommendations DB]
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Sub-Process</th>
+            <th>Synopsis Requirement</th>
+            <th>Codebase Implementation (`src/lib/recommendation.ts`)</th>
+            <th>Audit Finding</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>P3.1 Profile Analyzer</b></td>
+            <td>Analyzes user's enrolled subjects, past search history, and rated materials to construct a mathematical
+              <b>User Profile Vector</b>.</td>
+            <td>Combines static text fields from user preferences:
+              <code>`${preferences.topic ?? ''} ${preferences.goal ?? ''}`</code>. Does not build a vector from
+              historical searches or ratings.</td>
+            <td><span class="status-fail">NON-COMPLIANT</span><br>Profile vector is simply two concatenated string
+              fields.</td>
+          </tr>
+          <tr>
+            <td><b>P3.2 Keyword Extractor</b></td>
+            <td>Extracts keywords and removes noise from search query using the <code>natural</code> NLP library.</td>
+            <td>Uses custom regex: <code>text.toLowerCase().replace(/[^a-z0-9\s-]/g,' ').split(/\s+/)</code> with a
+              hardcoded 15-word stopword list. <code>natural</code> is not installed.</td>
+            <td><span class="status-partial">PARTIALLY COMPLIANT</span><br>Basic tokenization exists, but lacks
+              lemmatization/stemming.</td>
+          </tr>
+          <tr>
+            <td><b>P3.3 Content Filter (TF-IDF)</b></td>
+            <td>Computes <b>TF-IDF</b> (Term Frequency &times; Inverse Document Frequency) across all material
+              descriptions and computes Cosine Similarity with the query/profile vector.</td>
+            <td>Calculates <b>Term Frequency (TF) only</b>: <code>m.set(t, (m.get(t)||0)+1)</code> and runs cosine
+              similarity on raw term frequencies. <b>IDF computation is completely omitted!</b></td>
+            <td><span class="status-fail">MATHEMATICAL GAP</span><br>Term weighting is TF, not TF-IDF. Rare terms are
+              not boosted.</td>
+          </tr>
+          <tr>
+            <td><b>P3.4 Collaborative Filter</b></td>
+            <td>Computes user-item collaborative filtering scores based on ratings from other students with similar
+              profiles.</td>
+            <td><b>No collaborative filtering algorithm exists.</b> Instead, it uses static global popularity scalars:
+              <code>average_rating / 5</code> and <code>rating_count / 25</code>.</td>
+            <td><span class="status-fail">ALGORITHM MISSING</span><br>Global popularity is used in place of
+              collaborative filtering.</td>
+          </tr>
+          <tr>
+            <td><b>P3.5 Score Aggregator</b></td>
+            <td>Combines Content Similarity and Collaborative scores into Top-N ranked items and saves to D4
+              Recommendations DB.</td>
+            <td>Applies
+              formula:<br><code>score = content * 0.5 + (rating * 0.7 + pop * 0.3) * 0.25 + subjectFit * 0.15 + rating * 0.1</code><br>Top-10
+              saved to Supabase <code>recommendations</code> table.</td>
+            <td><span class="status-pass">FUNCTIONAL MATCH</span><br>Aggregates scores and stores Top-10 in D4, though
+              inputs to formula are simplified.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- PAGE 5: GAPS & ACTION PLAN -->
+      <div class="page-break"></div>
+
+      <h2 class="section-title">5. Gap Analysis &amp; Things That Need to Be Done</h2>
+      <p>
+        Based on this thorough technical audit, here is the complete, structured roadmap of <b>"things that need to be
+          done"</b>. The tasks are prioritized based on what is required to pass an IGNOU BCSP-064 viva or achieve 100%
+        adherence to the synopsis.
+      </p>
+
+      <div class="danger-box">
+        <b>CRITICAL NOTE FOR BCSP-064 EVALUATION:</b>
+        <br>
+        In an IGNOU project viva, examiners cross-examine your submitted synopsis against your running code. If the
+        synopsis promises <b>MongoDB, Express REST endpoints, TF-IDF, and Chart.js</b>, but the examiner sees
+        <b>Supabase PostgreSQL, TanStack Server Functions, TF-only ranking, and Recharts</b>, they may penalize for
+        technical discrepancy.
+      </div>
+
+      <h3 class="subsection-title">Phase 1: Recommendation Engine &amp; Algorithm Fixes (High Priority)</h3>
+      <div class="card">
+        <div class="card-title">1. Implement True TF-IDF (Fix P3.3)</div>
+        <p>
+          Currently, <code>src/lib/recommendation.ts</code> only computes Term Frequency (<code>tf</code>). To fulfill
+          the synopsis specification:
+        </p>
+        <ul>
+          <li>Compute Document Frequency <code>df(t)</code> for every term across the entire material catalog.</li>
+          <li>Compute Inverse Document Frequency: <code>idf(t) = log((N + 1) / (df(t) + 1)) + 1</code>, where
+            <code>N</code> is total materials.</li>
+          <li>Calculate the TF-IDF weight vector for each document: <code>tfidf(t, d) = tf(t, d) * idf(t)</code>.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">2. Implement Actual Collaborative Filtering (Fix P3.4)</div>
+        <p>
+          The synopsis specifies collaborative filtering from the <code>Rating DB</code>.
+        </p>
+        <ul>
+          <li>Build a user-item rating matrix from the <code>ratings</code> table.</li>
+          <li>Implement either <b>User-Based Collaborative Filtering</b> (Pearson correlation / Cosine similarity
+            between users) or <b>Item-Based Collaborative Filtering</b> (similarity between materials based on
+            co-ratings).</li>
+          <li>Replace the static <code>rating_count / 25</code> popularity proxy with the genuine collaborative
+            prediction score.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">3. Migrate Recommendation Pipeline to Server Function (Fix P3 Execution)</div>
+        <p>
+          Currently, recommendations are calculated inside the student's browser via React <code>useMemo</code>. Move
+          this calculation entirely to a server function (e.g. <code>generateUserRecommendations</code> in
+          <code>src/lib/activity.functions.ts</code>) so the client only requests recommendations and the server queries
+          the database, executes TF-IDF + Collaborative Filtering, persists to <code>recommendations</code>, and returns
+          the result.
+        </p>
+      </div>
+
+      <h3 class="subsection-title">Phase 2: Search Architecture &amp; Data Flow (Medium Priority)</h3>
+      <div class="card">
+        <div class="card-title">4. Server-Side Database Full-Text Search (Fix P2)</div>
+        <p>
+          Currently, <code>search.tsx</code> downloads the entire catalog and filters in memory with
+          <code>.includes()</code>. To follow DFD Level 1:
+        </p>
+        <ul>
+          <li>Create a dedicated server function / backend endpoint for search:
+            <code>searchMaterials({ query, subjectId, type, page })</code>.</li>
+          <li>Utilize PostgreSQL full-text search (<code>to_tsvector</code> / <code>websearch_to_tsquery</code> on
+            <code>title || ' ' || description</code>) or MongoDB <code>$text</code> index.</li>
+          <li>Return paginated results from the database to the client.</li>
+        </ul>
+      </div>
+
+      <!-- PAGE 6: REPORTS, STACK ALIGNMENT & STRATEGY -->
+      <div class="page-break"></div>
+
+      <h3 class="subsection-title">Phase 3: Reports &amp; Analytics Dashboard (Medium Priority)</h3>
+      <p>
+        Section 5.6 of the synopsis explicitly defines <b>5 mandatory reports</b> for the Administrator. The current
+        <code>admin.reports.tsx</code> only contains 2 charts.
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 25%;">Mandatory Report (Sec 5.6)</th>
+            <th style="width: 25%;">Required Chart / Format</th>
+            <th style="width: 25%;">Current State</th>
+            <th style="width: 25%;">Action Required</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>1. Student Activity Report</b></td>
+            <td>Table/List: search history, viewed materials, average rating per student.</td>
+            <td>Not implemented in admin dashboard.</td>
+            <td>Add query aggregating <code>search_logs</code>, <code>material_views</code>, and <code>ratings</code>
+              grouped by user.</td>
+          </tr>
+          <tr>
+            <td><b>2. Most-Recommended Materials</b></td>
+            <td>Bar-chart of the Top 20 materials recommended by AI engine.</td>
+            <td>Not implemented.</td>
+            <td>Add BarChart aggregating frequency of materials appearing in <code>recommendations</code> table.</td>
+          </tr>
+          <tr>
+            <td><b>3. Subject Popularity Report</b></td>
+            <td>Pie chart showing distribution of searches across subjects.</td>
+            <td>Not implemented (Current pie chart shows average ratings, not searches).</td>
+            <td>Add PieChart aggregating <code>search_logs.subject_id</code> counts.</td>
+          </tr>
+          <tr>
+            <td><b>4. Rating Summary Report</b></td>
+            <td>Average rating per material and per subject, sortable table.</td>
+            <td>Subject average rating shown in pie chart; material breakdown missing.</td>
+            <td>Add sortable table with average rating, rating count, and view count per material.</td>
+          </tr>
+          <tr>
+            <td><b>5. System Usage Report</b></td>
+            <td>Daily/weekly active users, total searches, total recommendations generated.</td>
+            <td>Stat cards show total counts, but no temporal breakdown (daily/weekly).</td>
+            <td>Add time-series chart showing daily active sessions and search volumes.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="subsection-title">Phase 4: Technology Stack Alignment Options</h3>
+      <p>
+        You have two distinct paths forward for your BCSP-064 submission and viva:
+      </p>
+
+      <div class="card">
+        <div class="card-title">Strategy A: Adapt the Project Documentation &amp; Report to Match the Modern Stack
+          (RECOMMENDED)</div>
+        <p>
+          <b>Rationale:</b> The existing application in <code>d:\finalTest</code> is far more advanced, secure, and
+          production-ready than a basic student MERN project. It features Row-Level Security, TypeScript end-to-end
+          typing, Server-Side Rendering, AI Tutor integrations, and Study Groups.
+        </p>
+        <ul>
+          <li>Update your final Project Report (BCSP-064 Project Report) to document:
+            <ul>
+              <li>Frontend: <b>React 19 + TanStack Router + Tailwind CSS</b></li>
+              <li>Backend &amp; Server: <b>TanStack Start SSR + Nitro RPC</b></li>
+              <li>Database: <b>PostgreSQL on Supabase</b> (explain why Relational + RLS is superior to MongoDB for
+                academic records)</li>
+              <li>Charts: <b>Recharts</b></li>
+            </ul>
+          </li>
+          <li>Implement the algorithmic fixes (TF-IDF + Collaborative Filtering server function) so your AI credentials
+            remain 100% solid during viva questioning.</li>
+          <li>Prepare to explain to the examiner: <i>"During the development phase, PostgreSQL with Row-Level Security
+              was chosen over MongoDB to ensure strict academic data integrity and role isolation (Admin vs
+              Student)."</i></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Strategy B: Rewrite Backend to Strict MERN Stack (Only if College Demands It)</div>
+        <p>
+          If your IGNOU project guide insists that the code must <i>strictly</i> run on Express.js and MongoDB as
+          written in the synopsis:
+        </p>
+        <ul>
+          <li>Set up an Express.js server on port 5000 with Mongoose connecting to MongoDB.</li>
+          <li>Re-create the 6 collections: <code>users</code>, <code>materials</code>, <code>subjects</code>,
+            <code>ratings</code>, <code>searchlogs</code>, <code>recommendations</code>.</li>
+          <li>Implement Express routes for <code>/api/auth/*</code>, <code>/api/materials/*</code>,
+            <code>/api/recommend</code>, and <code>/api/admin/*</code>.</li>
+          <li>Install the <code>natural</code> library on Node.js and write the TF-IDF engine.</li>
+          <li>Note: This requires discarding the current Supabase integration and rewriting substantial parts of the
+            data layer.</li>
+        </ul>
+      </div>
+
+      <div class="footer-note">
+        Generated for Shubham Kumari (Enrollment: 2400625700) &bull; IGNOU BCSP-064 Project Compliance Audit &bull;
+        StudyFlow AI
+      </div>
+
+</body>
+
+</html>

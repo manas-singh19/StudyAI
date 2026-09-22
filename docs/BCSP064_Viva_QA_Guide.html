@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BCSP-064 Viva-Voce Q&A Master Guide - StudyFlow AI</title>
+<style>
+  @page {
+    size: A4;
+    margin: 18mm 16mm 18mm 16mm;
+    @bottom-right {
+      content: "Page " counter(page) " of " counter(pages);
+      font-size: 8pt;
+      color: #64748b;
+    }
+    @bottom-left {
+      content: "IGNOU BCSP-064 Viva Guide | Shubham Kumari (2400625700)";
+      font-size: 8pt;
+      color: #64748b;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    background-color: #ffffff;
+    font-size: 9.5pt;
+    line-height: 1.5;
+  }
+
+  .cover {
+    page-break-after: always;
+    padding-top: 50px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: #e0e7ff;
+    color: #3730a3;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 8.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  h1.title {
+    font-size: 24pt;
+    color: #0f172a;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  p.subtitle {
+    font-size: 12pt;
+    color: #475569;
+    margin-bottom: 35px;
+  }
+  .student-box {
+    margin: 0 auto 35px auto;
+    max-width: 500px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 16px 20px;
+    text-align: left;
+    font-size: 9.5pt;
+  }
+  .student-box table { width: 100%; border-collapse: collapse; }
+  .student-box td { padding: 4px 8px; }
+  .student-box td.label { color: #64748b; font-weight: 600; width: 40%; }
+  .student-box td.value { color: #0f172a; font-weight: 700; }
+
+  .summary-card {
+    background: #f1f5f9;
+    border-left: 4px solid #2563eb;
+    padding: 14px 18px;
+    border-radius: 4px;
+    text-align: left;
+    margin: 0 auto;
+    max-width: 580px;
+    font-size: 9.5pt;
+    color: #334155;
+  }
+
+  .page-break { page-break-before: always; }
+
+  h2.section-title {
+    font-size: 14pt;
+    color: #0f172a;
+    font-weight: 700;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 6px;
+    margin-top: 24px;
+    margin-bottom: 14px;
+  }
+
+  .qa-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    page-break-inside: avoid;
+  }
+
+  .q-title {
+    font-size: 10.5pt;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .q-num {
+    background: #2563eb;
+    color: white;
+    font-size: 8pt;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-top: 2px;
+  }
+
+  .answer {
+    color: #334155;
+    text-align: justify;
+    font-size: 9.2pt;
+    line-height: 1.5;
+  }
+
+  .answer p { margin-bottom: 6px; }
+  .answer ul, .answer ol { margin-left: 20px; margin-bottom: 6px; }
+  .answer li { margin-bottom: 3px; }
+
+  .tip-box {
+    background: #f0fdf4;
+    border-left: 3px solid #16a34a;
+    padding: 6px 10px;
+    font-size: 8.5pt;
+    color: #166534;
+    border-radius: 3px;
+    margin-top: 6px;
+  }
+
+  .formula-box {
+    background: #f8fafc;
+    border: 1px dashed #94a3b8;
+    padding: 6px 10px;
+    font-family: monospace;
+    font-size: 8.5pt;
+    color: #0f172a;
+    border-radius: 4px;
+    margin: 6px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <div class="badge">IGNOU BCA 6th Semester &bull; BCSP-064 (8 Credits)</div>
+  <h1 class="title">Viva-Voce Master Preparation<br>&amp; Technical Defense Guide</h1>
+  <p class="subtitle">AI &ndash; Powered Study Material Recommender (StudyFlow AI / studyAI)</p>
+
+  <div class="student-box">
+    <table>
+      <tr><td class="label">Candidate Name:</td><td class="value">Shubham Kumari</td></tr>
+      <tr><td class="label">Enrollment Number:</td><td class="value">2400625700</td></tr>
+      <tr><td class="label">Course Code:</td><td class="value">BCSP &ndash; 064 (Major Project)</td></tr>
+      <tr><td class="label">Viva Weightage:</td><td class="value">50 Marks (Min 50% = 25 Marks to Pass)</td></tr>
+      <tr><td class="label">Project Report Weightage:</td><td class="value">150 Marks (Min 50% = 75 Marks to Pass)</td></tr>
+      <tr><td class="label">Total Project Evaluation:</td><td class="value">200 Marks</td></tr>
+    </table>
+  </div>
+
+  <div class="summary-card">
+    <b>Purpose of this Guide:</b>
+    <p style="margin-top: 6px; margin-bottom: 0;">
+      This guide contains the most critical, high-probability questions asked by IGNOU external examiners during the <b>BCSP-064 Viva-Voce examination</b>. It covers project motivation, SDLC principles, DFD Levels (0, 1, 2), mathematical AI/ML algorithms (TF-IDF, Cosine Similarity, Collaborative Filtering), database integrity, security, and live demonstration defense.
+    </p>
+  </div>
+</div>
+
+<!-- SECTION 1: PROJECT OVERVIEW & SDLC -->
+<div class="page-break"></div>
+
+<h2 class="section-title">Section A: General Overview &amp; SDLC</h2>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q1</span> What is the core problem your project solves, and who are the beneficiaries?</div>
+  <div class="answer">
+    <p><b>Answer:</b> In the digital era, computer science students suffer from <i>information overload</i>. Search engines return thousands of fragmented, unverified, or irrelevant tutorials, notes, and video lectures. Finding high-quality, syllabus-aligned computing study material takes up valuable study time.</p>
+    <p><b>StudyFlow AI</b> provides an intelligent, centralized academic curation platform that combines <b>TF-IDF content-based filtering</b>, <b>collaborative student ratings</b>, and <b>subject enrollments</b> to automatically recommend the Top 10 most relevant, high-quality learning resources with explainable justifications.</p>
+    <div class="tip-box"><b>Key phrase for viva:</b> "It eliminates information overload by combining content relevance and peer ratings into explainable recommendations."</div>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q2</span> Which Software Development Life Cycle (SDLC) model was used, and why?</div>
+  <div class="answer">
+    <p><b>Answer:</b> We used the <b>Iterative / Agile SDLC Model</b>:</p>
+    <ul>
+      <li><b>Phase 1 (Requirements &amp; Analysis):</b> Formulated user stories, DFD Level 0, 1, 2, and database schema.</li>
+      <li><b>Phase 2 (Core Development):</b> Implemented authentication, academic catalog, and CRUD management.</li>
+      <li><b>Phase 3 (AI Pipeline Integration):</b> Developed the TF-IDF mathematical engine, collaborative filtering matrix, and explainability reasoning.</li>
+      <li><b>Phase 4 (Testing &amp; Refinement):</b> Conducted unit testing, database trigger validation, and administrative analytics reporting.</li>
+    </ul>
+    <div class="tip-box"><b>Why Iterative?</b> It allowed us to test and validate mathematical recommendation vectors incrementally without breaking UI stability.</div>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q3</span> What are the functional modules in your system?</div>
+  <div class="answer">
+    <p><b>Answer:</b> The system consists of <b>7 core modules</b> as defined in Section 5.1 of the synopsis:</p>
+    <ol>
+      <li><b>User Registration &amp; Authentication:</b> Role-based access (Student, Admin, Educator).</li>
+      <li><b>Subject &amp; Material Search:</b> Server-side full-text database query with subject filtering and pagination.</li>
+      <li><b>AI Recommendation Engine:</b> Dual-model TF-IDF + Collaborative filtering pipeline.</li>
+      <li><b>Study Material Management (Admin):</b> Review queue, approvals, uploads, and catalog CRUD.</li>
+      <li><b>User Profile &amp; Learning History:</b> Tracks search history, views, and enrolled disciplines.</li>
+      <li><b>Rating &amp; Review System:</b> 1–5 star ratings with atomic trigger recalculation of average scores.</li>
+      <li><b>Reports &amp; Analytics (Admin):</b> Complete 5-part reporting suite conforming to Section 5.6.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- SECTION 2: DFD & ARCHITECTURE -->
+<div class="page-break"></div>
+
+<h2 class="section-title">Section B: Data Flow Architecture (DFD Levels 0, 1, 2)</h2>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q4</span> Explain your DFD Level 0 (Context Diagram).</div>
+  <div class="answer">
+    <p><b>Answer:</b> The Context Diagram abstracts the entire platform into a single central process (<i>"AI Study Material Recommender"</i>) interacting with two external entities:</p>
+    <ul>
+      <li><b>Student (User):</b> Sends <i>Login Credentials</i>, <i>Search Queries</i>, and <i>Ratings</i> into the system; receives <i>Ranked Recommendations</i> and <i>Material Search Results</i>.</li>
+      <li><b>Administrator:</b> Inputs <i>Material Metadata</i> and <i>Management Commands</i>; receives <i>Usage Reports</i> and <i>System Status</i>.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q5</span> Explain how DFD Level 1 decomposes the system.</div>
+  <div class="answer">
+    <p><b>Answer:</b> DFD Level 1 decomposes the system into six sub-processes (<b>P1 to P6</b>) and four persistent data stores (<b>D1 to D4</b>):</p>
+    <ul>
+      <li><b>P1 (User Auth):</b> Validates credentials against <b>D1 (User DB)</b> and issues session tokens.</li>
+      <li><b>P2 (Subject &amp; Topic Search):</b> Parses queries, searches <b>D2 (Material DB)</b> server-side, logs searches, and returns paginated cards.</li>
+      <li><b>P3 (Recommend Engine):</b> Aggregates signals from <b>D1 (User Profile)</b>, <b>D2 (Material Metadata)</b>, and <b>D3 (Rating DB)</b> to output ranked recommendations saved to <b>D4 (Recommendations DB)</b>.</li>
+      <li><b>P4 (Material Management):</b> Allows Admin to insert, update, or approve materials in <b>D2 (Material DB)</b>.</li>
+      <li><b>P5 (Rating &amp; Review):</b> Inserts ratings into <b>D3 (Rating DB)</b> and atomically triggers score updates in <b>D2</b>.</li>
+      <li><b>P6 (Reports &amp; Analytics):</b> Aggregates rating stats, search logs, and recommendation counts to generate 5 admin reports.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q6</span> Walk me through the internal logic of DFD Level 2 (Recommendation Engine).</div>
+  <div class="answer">
+    <p><b>Answer:</b> DFD Level 2 expands Process P3 into five sequential mathematical sub-processes:</p>
+    <ol>
+      <li><b>P3.1 Profile Analyzer:</b> Gathers the student's recent search queries, viewed materials, and enrolled subjects from D1 to construct a rich context profile.</li>
+      <li><b>P3.2 Keyword Extractor:</b> Normalizes text, removes punctuation, and filters standard stopwords.</li>
+      <li><b>P3.3 Content Filter (TF-IDF):</b> Calculates Document Frequency across the catalog, applies smooth Inverse Document Frequency ($IDF$), builds TF-IDF vectors, and computes Cosine Similarity with the student's query vector.</li>
+      <li><b>P3.4 Collaborative Filter:</b> Evaluates the user-item rating matrix from D3, calculating inter-user correlation across co-rated materials to generate a peer preference score.</li>
+      <li><b>P3.5 Score Aggregator:</b> Blends Content (50%) + Collaborative (25%) + Subject Fit (15%) + Quality (10%) to rank Top-10 recommendations, writes them to <b>D4 (Recommendations DB)</b>, and sends them to the student.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- SECTION 3: AI & ALGORITHMS -->
+<div class="page-break"></div>
+
+<h2 class="section-title">Section C: AI &amp; Machine Learning Algorithms</h2>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q7</span> What is the exact mathematical formula for your TF-IDF computation?</div>
+  <div class="answer">
+    <p><b>Answer:</b> TF-IDF (Term Frequency &ndash; Inverse Document Frequency) reflects how important a word is to a material within the entire catalog:</p>
+    <div class="formula-box">
+TF(t, d) = (Count of term t in document d) / (Total terms in document d)<br>
+IDF(t) = ln( (N + 1) / (DF(t) + 1) ) + 1<br>
+TF-IDF(t, d) = TF(t, d) &times; IDF(t)
+    </div>
+    <p>Where $N$ is total catalog documents (62 materials) and $DF(t)$ is Document Frequency (number of materials containing term $t$). Common words like *"computer"* receive a low IDF, while rare technical terms like *"backpropagation"* receive a high IDF weight.</p>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q8</span> How does Cosine Similarity work between two vectors?</div>
+  <div class="answer">
+    <p><b>Answer:</b> Cosine Similarity measures the cosine of the angle between two non-zero multidimensional vectors:</p>
+    <div class="formula-box">
+Cosine Similarity(A, B) = (A &bull; B) / ( ||A|| &times; ||B|| ) = &sum;(A_i &times; B_i) / ( &radic;&sum;(A_i&sup2;) &times; &radic;&sum;(B_i&sup2;) )
+    </div>
+    <p>It yields a score between $0$ (orthogonal / completely unrelated) and $1$ (identical orientation). It is superior to Euclidean distance because it is length-independent—a long textbook chapter and a concise cheat-sheet on the same topic will have high cosine similarity.</p>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q9</span> How is Collaborative Filtering implemented in your code?</div>
+  <div class="answer">
+    <p><b>Answer:</b> Inside <code>computeCollaborativeScores()</code> in <code>src/lib/recommendation.ts</code>:</p>
+    <ul>
+      <li>We construct a user-item matrix from the <code>ratings</code> table.</li>
+      <li>For target student $U$ and target material $M$, we identify other students $V$ who rated $M$.</li>
+      <li>We calculate vector similarity between $U$ and $V$ over materials they have <i>both</i> rated.</li>
+      <li>The predicted rating is the similarity-weighted average of other students' scores:
+        <div class="formula-box">Predicted Score = &sum;(sim(U, V) &times; Rating(V, M)) / &sum;|sim(U, V)|</div>
+      </li>
+      <li>If a student has no rating history (cold-start), the system smoothly defaults to the normalized average rating and popularity.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q10</span> What are your hybrid weighting percentages, and why?</div>
+  <div class="answer">
+    <p><b>Answer:</b> We combine four distinct signals:</p>
+    <ul>
+      <li><b>Content Relevance (50%):</b> Primary signal ensuring the material directly addresses the student's stated topic.</li>
+      <li><b>Collaborative Peer Signals (25%):</b> Recommends resources students with similar academic tastes found helpful.</li>
+      <li><b>Enrolled Subject Fit (15%):</b> Prioritizes materials within the student's active semester curriculum.</li>
+      <li><b>Overall Quality / Rating (10%):</b> General baseline ensuring highly-rated materials get surfaced.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- SECTION 4: DATABASE, SECURITY & TESTING -->
+<div class="page-break"></div>
+
+<h2 class="section-title">Section D: Database Design, Security &amp; Reports</h2>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q11</span> What are the 5 Mandatory Reports required by Section 5.6, and how do they work?</div>
+  <div class="answer">
+    <p><b>Answer:</b> Implemented in <code>admin.reports.tsx</code> and aggregated by <code>getAdminComprehensiveReports</code>:</p>
+    <ol>
+      <li><b>Report 1: Student Activity Report:</b> Tabular display of each student's search count, recent search queries, materials viewed, ratings given, and average rating score.</li>
+      <li><b>Report 2: Most-Recommended Materials Report:</b> Bar chart showing the Top 20 materials most frequently suggested by the AI engine.</li>
+      <li><b>Report 3: Subject Popularity Report:</b> Pie chart displaying the distribution of searches across disciplines.</li>
+      <li><b>Report 4: Rating Summary Report:</b> Sortable table ranking materials by average star rating, review volume, and views.</li>
+      <li><b>Report 5: System Usage Report:</b> Overview stat cards displaying active students, total searches, AI recommendations generated, and catalog items.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q12</span> How is security implemented in the database? What is RLS?</div>
+  <div class="answer">
+    <p><b>Answer:</b> We implemented <b>Row-Level Security (RLS)</b> in PostgreSQL:</p>
+    <ul>
+      <li>Public catalog reads are allowed for approved materials only (<code>approval_status = 'approved'</code>).</li>
+      <li>Private user data (profile, search logs, material views) can only be read or written by the owner (<code>auth.uid() = user_id</code>).</li>
+      <li>Administrative operations (creating subjects, editing materials, reviewing educator accounts) require a verified <code>admin</code> role checked via the security definer function <code>public.has_role(auth.uid(), 'admin')</code>.</li>
+    </ul>
+    <div class="tip-box"><b>Key Defense:</b> Even if someone tries to call the API directly, database-level RLS policies reject unauthorized writes.</div>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q13</span> How does the database atomically update average ratings?</div>
+  <div class="answer">
+    <p><b>Answer:</b> We created a PostgreSQL trigger function <code>refresh_material_rating()</code> attached to the <code>ratings</code> table:</p>
+    <div class="formula-box">
+CREATE TRIGGER ratings_refresh<br>
+AFTER INSERT OR UPDATE OR DELETE ON public.ratings<br>
+FOR EACH ROW EXECUTE FUNCTION public.refresh_material_rating();
+    </div>
+    <p>Whenever a student inserts or changes a rating, the trigger calculates <code>avg(score)</code> and <code>count(*)</code> and atomically updates <code>average_rating</code> and <code>rating_count</code> on the parent row in the <code>materials</code> table. No manual API calculation is needed.</p>
+  </div>
+</div>
+
+<!-- SECTION 5: TOUGH EXAMINER QUESTIONS -->
+<div class="page-break"></div>
+
+<h2 class="section-title">Section E: Tough Questions &amp; Architectural Defenses</h2>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q14</span> "Your proposal mentions MongoDB, but your project uses PostgreSQL. Why?"</div>
+  <div class="answer">
+    <p><b>Answer:</b> <i>"Sir/Ma'am, our project strictly implements every entity, relationship, and DFD Level 0, 1, 2 data flow in our approved synopsis. During implementation, PostgreSQL with Row-Level Security was chosen over MongoDB because academic applications manage student identity, enrollments, ratings, and role permissions. These require strict <b>relational integrity, foreign-key constraints, and ACID compliance</b> to prevent orphaned records or unauthorized writes, which PostgreSQL handles with superior enterprise security."</i></p>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q15</span> "Your proposal lists React.js and Node.js. Why is the codebase in TypeScript?"</div>
+  <div class="answer">
+    <p><b>Answer:</b> <i>"TypeScript is a statically typed superset of JavaScript that compiles directly into standard React.js and Node.js at build time. We chose TypeScript to enforce compile-time type safety across our database schemas, server functions, and mathematical AI algorithms. In machine learning pipelines like TF-IDF and collaborative filtering, static typing guarantees that vector calculations cannot fail from undefined properties or NaN values."</i></p>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q16</span> "How did you test your system?"</div>
+  <div class="answer">
+    <p><b>Answer:</b> We performed multi-level testing:</p>
+    <ul>
+      <li><b>Unit Testing:</b> 8 automated Vitest test cases in <code>recommendation.test.ts</code> verifying tokenization, cosine similarity, TF-IDF ranking, and collaborative filtering.</li>
+      <li><b>Integration &amp; System Testing:</b> Automated test suite (<code>node test-runner.mjs</code>) with 18 comprehensive checks covering authentication, database connectivity, server full-text search, DFD Level 2 pipeline execution, and all 5 admin reports.</li>
+      <li><b>HTTP Endpoint Testing:</b> Verified HTTP 200 responses across all public routes.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q17</span> "What is the Future Scope of your project?"</div>
+  <div class="answer">
+    <p><b>Answer:</b> As stated in Section 8 of our synopsis:</p>
+    <ol>
+      <li><b>Deep Learning Recommendations:</b> Neural Collaborative Filtering (NCF) and Transformer embeddings (BERT) for full semantic understanding.</li>
+      <li><b>Mobile App:</b> Cross-platform React Native companion app for Android and iOS.</li>
+      <li><b>LMS Integration:</b> Integration with Moodle and Google Classroom via LTI standards.</li>
+      <li><b>Multilingual Support:</b> Content curation across regional languages (Hindi, Bengali, Tamil).</li>
+    </ol>
+  </div>
+</div>
+
+<!-- SECTION 5B: ADVANCED EXAMINER PROBING -->
+<div class="page-break"></div>
+
+<h2 class="section-title">Section F: Deep Probing &ndash; AI Agents, Python vs TypeScript, &amp; DFD Theory</h2>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q18</span> Does your project contain an "AI Agent"? How does an AI Agent differ from your Recommender System?</div>
+  <div class="answer">
+    <p><b>Answer:</b> In artificial intelligence, an <b>AI Agent</b> is an autonomous computational entity that operates in an environment through a <b>Perception &rarr; Reasoning &rarr; Action &rarr; Reflection</b> loop to achieve specific goals.</p>
+    <p><b>StudyFlow AI</b> employs a dual-tiered artificial intelligence architecture:</p>
+    <ul>
+      <li><b>Tier 1 &ndash; Deterministic Recommender Engine (Process P3):</b> This is an applied Machine Learning Information Retrieval system. It analyzes text using mathematical vector space models (TF-IDF), computes geometric Cosine Similarity, and estimates user preferences through collaborative filtering matrices. It is fast, mathematically provable, and fully explainable.</li>
+      <li><b>Tier 2 &ndash; Intelligent Pedagogical Tutor Agent (AI Tutor Module):</b> Built using conversational LLM integration (tracked in the <code>ai_tutor_sessions</code> table), this module behaves as an interactive learning agent. It perceives the student's academic difficulty, reasons about missing prerequisites, retrieves targeted study concepts, and provides multi-turn tutoring tailored to the student's mastery level.</li>
+    </ul>
+    <div class="tip-box"><b>Viva Defense Tip:</b> "Our recommendation engine is an explainable mathematical ML system (TF-IDF + Collaborative Filtering), while our AI Tutor module operates as a goal-directed pedagogical agent."</div>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q19</span> Why was the entire project developed in TypeScript rather than pure JavaScript or Python?</div>
+  <div class="answer">
+    <p><b>Answer:</b> We selected <b>TypeScript</b> for three critical software engineering reasons:</p>
+    <ol>
+      <li><b>Mathematical &amp; Vector Type Safety:</b> Recommender algorithms manipulate high-dimensional term-frequency vectors and similarity matrices. TypeScript enforces strict types for vector dimensions and numerical properties, catching <code>NaN</code>, <code>undefined</code>, or dimension mismatch errors at compile time rather than during live runtime.</li>
+      <li><b>Unified End-to-End Contracts:</b> With TanStack Start (SSR), our backend server functions (<code>createServerFn</code>) and frontend React components share the exact same data types directly from the PostgreSQL database schema. If a database column changes, TypeScript immediately flags every impacted component at compile time.</li>
+      <li><b>Asynchronous Concurrency:</b> Running on the V8 engine, TypeScript/Node handles hundreds of concurrent student search and recommendation requests asynchronously with minimal memory footprint, outperforming synchronous runtimes.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q20</span> Is the programming language or technology stack mentioned in the Data Flow Diagram (DFD)?</div>
+  <div class="answer">
+    <p><b>Answer:</b> <b>No, absolutely not.</b> One of the core foundational principles of Structured Systems Analysis &amp; Design (SSAD) is that <b>Data Flow Diagrams are strictly technology-agnostic and implementation-independent</b>.</p>
+    <p>DFDs model the <i>logical flow of data</i> through the system:</p>
+    <ul>
+      <li><b>Entities</b> represent sources and sinks of data (Student, Admin).</li>
+      <li><b>Processes</b> represent transformations of data (P1 Auth, P2 Search, P3 Recommend).</li>
+      <li><b>Data Stores</b> represent repositories of persistent data (D1 User DB, D2 Material DB, D3 Rating DB).</li>
+      <li><b>Data Flows</b> represent the movement of information packets between entities, processes, and stores.</li>
+    </ul>
+    <p>A DFD remains valid whether the system is implemented in TypeScript, Python, Java, or C++, or whether the database is PostgreSQL or MongoDB. Technology choices belong in the <i>System Architecture and Design</i> document, not the DFD.</p>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q21</span> If you were to rewrite this project in Python, what advancements would be possible?</div>
+  <div class="answer">
+    <p><b>Answer:</b> Rewriting the AI recommendation pipeline in Python would unlock advanced scientific and machine learning capabilities:</p>
+    <ul>
+      <li><b>Deep Learning &amp; Neural Collaborative Filtering (NCF):</b> Using <code>PyTorch</code> or <code>TensorFlow</code> to train multi-layer perceptron neural networks that capture non-linear student-material interactions beyond linear cosine similarity.</li>
+      <li><b>Dense Semantic Embeddings (Transformers):</b> Utilizing <code>Hugging Face Transformers</code> and <code>Sentence-BERT</code> to generate 768-dimensional dense semantic vectors, allowing the system to understand that <i>"asymptotic complexity"</i> and <i>"Big-O notation"</i> are identical concepts even with zero overlapping keywords.</li>
+      <li><b>Vector Database Indexing at Scale:</b> Native integration with <code>FAISS</code> (Facebook AI Similarity Search) or <code>ChromaDB</code> for sub-millisecond approximate nearest neighbor (ANN) retrieval across millions of learning objects.</li>
+      <li><b>Advanced NLP Pipelines:</b> Leveraging <code>spaCy</code> or <code>NLTK</code> for sophisticated morphological analysis, lemmatization, and technical entity extraction.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q22</span> What would be the drawbacks and engineering trade-offs of rewriting in Python?</div>
+  <div class="answer">
+    <p><b>Answer:</b> While Python excels in machine learning research, adopting it for this full-stack web application introduces significant architectural trade-offs:</p>
+    <ul>
+      <li><b>Dual-Runtime Architecture &amp; DevOps Overhead:</b> Python cannot natively render modern interactive React browser interfaces. The architecture would have to be split into two separate servers: a Python API backend (FastAPI/Django) and a Node/React frontend. This doubles deployment complexity, hosting costs, and CORS/network hops.</li>
+      <li><b>Loss of Unified Full-Stack SSR:</b> TanStack Start allows seamless Server-Side Rendering (SSR) where the server and client share code, state, and routing. In a Python + React setup, you lose unified SSR unless an additional Node.js rendering middleware is maintained.</li>
+      <li><b>Type Fragmentation:</b> Data models must be duplicated across Python (Pydantic / SQLAlchemy) and frontend TypeScript interfaces, creating API drift and maintenance overhead.</li>
+      <li><b>Memory &amp; Concurrency:</b> Python's Global Interpreter Lock (GIL) limits multi-threaded CPU-bound parallelism, requiring heavy multi-process workers (Gunicorn) that consume considerably more RAM than Node's lightweight event loop.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">Q23</span> Does renaming or moving the project folder from "FinalProject" to "studyAI" cause any errors?</div>
+  <div class="answer">
+    <p><b>Answer:</b> <b>No, it runs completely error-free.</b> The application is architected as an autonomous, self-contained project:</p>
+    <ul>
+      <li>All source code imports utilize relative module paths or TypeScript path aliases (e.g., <code>@/...</code> resolving to <code>src/...</code> as defined in <code>tsconfig.json</code> and <code>vite.config.ts</code>).</li>
+      <li>The application has zero hard-coded absolute filesystem directory paths.</li>
+      <li>The <code>package.json</code> file self-identifies as <code>study-flow-ai</code>, and environment variables are cleanly loaded from the workspace <code>.env</code> file.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- SECTION 7: VIVA DAY CHECKLIST -->
+<div class="page-break"></div>
+
+<h2 class="section-title">Section G: Viva Day Live Demonstration Checklist</h2>
+
+<div class="qa-card">
+  <div class="q-title"><span class="q-num">&#10003;</span> Step-by-Step Live Demo Flow</div>
+  <div class="answer">
+    <p>Follow this exact sequence when the examiner asks for a live demo:</p>
+    <ol>
+      <li><b>Step 1 &ndash; Show Terminal &amp; Server:</b>
+        <br>Open terminal in <code>d:\finalTest\studyAI</code> and run <code>npm run dev</code>. Point out that the server boots on <code>http://localhost:5173/</code> in under 1 second.
+      </li>
+      <li><b>Step 2 &ndash; Login as Admin:</b>
+        <br>Open <code>http://localhost:5173/login</code> and enter:
+        <br><code>kumarishubham177@gmail.com</code> / <code>StudyFlow!2026</code>.
+      </li>
+      <li><b>Step 3 &ndash; Student Experience (Dashboard &amp; Search):</b>
+        <br>Show the personalized Dashboard with activity stats (Subjects, Searches, Ratings, Views).
+        <br>Navigate to <code>/search</code> and search for <i>"neural"</i>. Show instant server-side full-text results, subject filters, and pagination.
+      </li>
+      <li><b>Step 4 &ndash; Explainable Recommendations (P3):</b>
+        <br>Navigate to <code>/recommendations</code>. Show the Top-10 ranked materials with their match percentages and explainable reasons (e.g. <i>"High match with your learning interests"</i>).
+      </li>
+      <li><b>Step 5 &ndash; Rating Submission &amp; Atomic Recalculation (P5):</b>
+        <br>Click any material, submit a 5-star rating with review text, and show how the average rating recalculates immediately.
+      </li>
+      <li><b>Step 6 &ndash; The 5 Mandatory Reports (P6):</b>
+        <br>Navigate to <code>/admin/reports</code>. Walk through the 5 distinct Section 5.6 reports:
+        <ul>
+          <li>Report 1: Student Activity Table</li>
+          <li>Report 2: Most-Recommended Materials Bar Chart</li>
+          <li>Report 3: Subject Search Popularity Pie Chart</li>
+          <li>Report 4: Material Rating Summary Sortable Table</li>
+          <li>Report 5: System Usage Overview Metrics</li>
+        </ul>
+      </li>
+      <li><b>Step 7 &ndash; Automated Test Verification:</b>
+        <br>Open terminal and run <code>node test-runner.mjs</code> to display the <b>18 PASSED, 0 FAILED</b> live validation report.
+      </li>
+    </ol>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+# Roadmap
+
+- [x] Add secure material approval state and visibility rules.
+- [x] Add a student material submission and status experience.
+- [x] Add an admin approval queue with approve/reject actions.
+- [x] Update admin catalog views for approval status.
+- [x] Verify database security, tests, types, and desktop/mobile flows.
+- [x] Add secure file-backed student and administrator submission forms.
+- [x] Seed and exercise realistic approval queue decisions.
+- [x] Add a dedicated student submission history page.
+- [x] Add first-subject, topic, and goal cold-start onboarding.
+- [ ] Send submission and decision emails after sender-domain setup.
+- [ ] Wire submission and decision email alerts after sender-domain setup.
+- [x] Complete first-login onboarding and personalized recommendations.
+- [x] Add admin material preview before review decisions.
+- [x] Submit, approve, and verify a real material in the student catalog.
+- [x] Add educator author profiles and link materials.
+- [x] Expand realistic educator seeds and link approved materials for trustworthy review context.
+- [ ] Configure managed sender domain and send submission/decision alerts end to end.
+- [x] Add subject-based study groups, shared notes, and group progress.
+- [x] Add student material questions/comments and admin feedback reporting.
+- [x] Seed realistic student auth accounts and verify onboarding, recommendations, searches, and ratings persist.
+- [x] Add educator applications, invitations, verified accounts, and a teacher portal.
+- [x] Add group note completion, shared resources, and owner-only member activity.
+- [x] Expand realistic demo learner activity across recommendations and group progress.
+- [x] Add a teacher dashboard with approved materials, top-viewed reach, group activity, and edit requests.
+- [x] Add educator signup with subject expertise leading into the application and portal.
+- [x] Add an admin queue to apply or decline teacher material corrections.
+- [x] Seed more educator profiles with approved materials and realistic view counts.
+- [x] Verify educator signup, teacher dashboard, and correction queue in the live preview.
