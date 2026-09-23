@@ -6,8 +6,8 @@ import { supabase } from '@/integrations/supabase/client'
 import { getCatalog, openMaterial, type Subject } from '@/lib/catalog'
 import { getLearningSignals, type LearningPreferences } from '@/lib/learning-profile'
 import { coldStartSchema } from '@/lib/material-schemas'
-import { rankMaterials, type MaterialDoc } from '@/lib/recommendation'
-import { generateServerRecommendations } from '@/lib/activity.functions'
+import type { MaterialDoc } from '@/lib/recommendation'
+import { getRecommendations } from '@/lib/activity.functions'
 import { useServerFn } from '@tanstack/react-start'
 import { MaterialCard } from '@/components/study/material-card'
 import { Button } from '@/components/ui/button'
@@ -28,7 +28,7 @@ export const Route = createFileRoute('/_authenticated/recommendations')({
 
 function Recommendations() {
   const { user } = Route.useRouteContext()
-  const runServerRecommendations = useServerFn(generateServerRecommendations)
+  const runServerRecommendations = useServerFn(getRecommendations)
   const [ranked, setRanked] = useState<(MaterialDoc & { score: number; reason: string })[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
   const [preferences, setPreferences] = useState<LearningPreferences>({})
@@ -37,6 +37,7 @@ function Recommendations() {
   const [saving, setSaving] = useState(false)
   const [loading, setLoading] = useState(false)
   const [tick, setTick] = useState(0)
+  const [generatedAt, setGeneratedAt] = useState<string | null>(null)
 
   useEffect(() => {
     void Promise.all([getCatalog(), getLearningSignals(user.id)]).then(([catalog, signals]) => {
@@ -56,12 +57,15 @@ function Recommendations() {
   useEffect(() => {
     if (!ready) return
     setLoading(true)
-    runServerRecommendations()
+    // First load reuses the stored Top-N; the Refresh button (tick > 0) is the explicit 'Get Recommendations' trigger.
+    runServerRecommendations({ data: { refresh: tick > 0, trigger: 'manual' } })
       .then((res) => {
-        setRanked(res.items as (MaterialDoc & { score: number; reason: string })[])
+        setRanked(res.items)
+        setGeneratedAt(res.generatedAt)
       })
       .catch((err) => {
         console.error('Failed to run server recommendations:', err)
+        toast.error('Could not generate recommendations')
       })
       .finally(() => setLoading(false))
   }, [ready, tick])
@@ -78,11 +82,11 @@ function Recommendations() {
         const enrollment = await supabase.from('enrollments').insert({ user_id: user.id, subject_id: values.subjectId })
         if (enrollment.error) throw enrollment.error
       }
-      setPreferences(next); setEnrolled((current) => current.includes(values.subjectId) ? current : [...current, values.subjectId]); toast.success('Your recommendations are ready')
+      setPreferences(next); setEnrolled((current) => current.includes(values.subjectId) ? current : [...current, values.subjectId]); setTick((value) => value + 1); toast.success('Your recommendations are ready')
     } catch (error) { toast.error(error instanceof Error ? error.message : 'Could not save your interests') } finally { setSaving(false) }
   }
 
   if (!ready) return <div className="page-wrap narrow"><div className="page-title"><p className="eyebrow"><Target /> First recommendations</p><h1>Tell us where you’re headed</h1><p>Choose one subject, a topic, and your goal so your first recommendations are useful.</p></div><form className="onboarding-form" onSubmit={savePreferences}><div><Label htmlFor="first-subject">First subject</Label><select id="first-subject" value={form.subjectId} onChange={(event) => setForm({ ...form, subjectId: event.target.value })} required><option value="">Choose a subject</option>{subjects.map((subject) => <option key={subject.id} value={subject.id}>{subject.name}</option>)}</select></div><div><Label htmlFor="first-topic">Topic</Label><Input id="first-topic" placeholder="e.g. neural networks" value={form.topic} onChange={(event) => setForm({ ...form, topic: event.target.value })} required /></div><div><Label htmlFor="first-goal">Study goal</Label><Input id="first-goal" placeholder="e.g. prepare for my semester exam" value={form.goal} onChange={(event) => setForm({ ...form, goal: event.target.value })} required /></div><Button size="lg" disabled={saving}><Sparkles />{saving ? 'Personalizing…' : 'Show my recommendations'}</Button></form></div>
 
-  return <div className="page-wrap"><div className="page-title flex-row"><div><p className="eyebrow"><Sparkles />Explainable AI</p><h1>Made for your momentum</h1><p>Focused on {preferences.topic} to help you {preferences.goal}.</p></div><Button variant="outline" onClick={() => setTick((value) => value + 1)}><RefreshCw />Refresh</Button></div><div className="score-note"><b>How ranking works</b><span>Content match 50%</span><span>Peer signals 25%</span><span>Subject fit 15%</span><span>Quality 10%</span></div><div className="card-grid">{ranked.map((material) => <div key={material.id} className="relative"><span className="score-pill">{Math.round(material.score * 100)} match</span><MaterialCard material={material} reason={material.reason} onOpen={(selected) => openMaterial(selected, user.id)} /></div>)}</div></div>
+  return <div className="page-wrap"><div className="page-title flex-row"><div><p className="eyebrow"><Sparkles />Explainable AI</p><h1>Made for your momentum</h1><p>Focused on {preferences.topic} to help you {preferences.goal}.</p></div><Button variant="outline" disabled={loading} onClick={() => setTick((value) => value + 1)}><RefreshCw />{loading ? 'Generating…' : 'Get fresh recommendations'}</Button></div><div className="score-note"><b>How ranking works</b><span>Content match 50%</span><span>Peer signals 25%</span><span>Subject fit 15%</span><span>Quality 10%</span>{generatedAt && <span>Generated {new Date(generatedAt).toLocaleString()}</span>}</div>{!loading && !ranked.length && <div className="empty-state"><Sparkles /><h2>No recommendations yet</h2><p>Search, rate, or update your profile, then generate fresh recommendations.</p></div>}<div className="card-grid">{ranked.map((material) => <div key={material.id} className="relative"><span className="score-pill">{Math.round(material.score * 100)} match</span><MaterialCard material={material} reason={material.reason} onOpen={(selected) => openMaterial(selected, user.id)} /></div>)}</div></div>
 }

@@ -342,6 +342,7 @@ export type Database = {
           rejection_reason: string | null
           reviewed_at: string | null
           reviewed_by: string | null
+          search_vector: string
           subject_id: string
           submitted_at: string
           tags: string[]
@@ -368,6 +369,7 @@ export type Database = {
           rejection_reason?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
+          search_vector?: never
           subject_id: string
           submitted_at?: string
           tags?: string[]
@@ -394,6 +396,7 @@ export type Database = {
           rejection_reason?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
+          search_vector?: never
           subject_id?: string
           submitted_at?: string
           tags?: string[]
@@ -486,6 +489,75 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      recommendation_history: {
+        Row: {
+          generated_at: string
+          id: string
+          material_id: string
+          position: number
+          run_id: string
+          score: number
+          user_id: string
+        }
+        Insert: {
+          generated_at?: string
+          id?: string
+          material_id: string
+          position: number
+          run_id: string
+          score: number
+          user_id: string
+        }
+        Update: {
+          generated_at?: string
+          id?: string
+          material_id?: string
+          position?: number
+          run_id?: string
+          score?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recommendation_history_material_id_fkey"
+            columns: ["material_id"]
+            isOneToOne: false
+            referencedRelation: "materials"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recommendation_history_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "recommendation_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recommendation_runs: {
+        Row: {
+          generated_at: string
+          id: string
+          item_count: number
+          trigger: string
+          user_id: string
+        }
+        Insert: {
+          generated_at?: string
+          id?: string
+          item_count?: number
+          trigger: string
+          user_id: string
+        }
+        Update: {
+          generated_at?: string
+          id?: string
+          item_count?: number
+          trigger?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       recommendations: {
         Row: {
@@ -978,6 +1050,21 @@ export type Database = {
       is_study_group_member: {
         Args: { _group_id: string; _user_id: string }
         Returns: boolean
+      }
+      search_materials: {
+        Args: {
+          _limit?: number
+          _offset?: number
+          _preferred_subjects?: string[]
+          _query?: string | null
+          _subject_id?: string | null
+          _type?: Database["public"]["Enums"]["material_type"] | null
+        }
+        Returns: {
+          material_id: string
+          search_rank: number
+          total_count: number
+        }[]
       }
       owns_study_pack: {
         Args: { _pack_id: string; _user_id: string }

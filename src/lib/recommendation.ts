@@ -7,6 +7,7 @@ export type MaterialDoc = {
   rating_count: number;
   view_count: number;
   created_at: string;
+  updated_at?: string;
   submitted_at: string;
   subject_id: string;
   type: 'PDF' | 'Video' | 'Article';
@@ -133,6 +134,18 @@ export class TfIdfCorpus {
   }
 }
 
+// Synopsis 5.2: TF-IDF vectors are cached and only recomputed when a material is added, edited or removed.
+let cachedCorpus: { key: string; corpus: TfIdfCorpus } | null = null;
+
+export function getCachedCorpus(materials: MaterialDoc[]): TfIdfCorpus {
+  const key = materials
+    .map((m) => `${m.id}:${m.updated_at ?? ''}:${m.title.length}:${m.description.length}:${m.tags.length}`)
+    .sort()
+    .join('|');
+  if (cachedCorpus?.key !== key) cachedCorpus = { key, corpus: new TfIdfCorpus(materials) };
+  return cachedCorpus.corpus;
+}
+
 // Vector Cosine Similarity
 export function cosineSimilarity(a: Map<string, number>, b: Map<string, number>): number {
   if (a.size === 0 || b.size === 0) return 0;
@@ -249,11 +262,11 @@ export function rankMaterials(
   profileText: string,
   enrolled: string[] = [],
   ratings: UserRatingRecord[] = [],
-  userId: string | null = null
+  userId: string | null = null,
+  corpus: TfIdfCorpus = new TfIdfCorpus(materials)
 ) {
   if (!materials.length) return [];
 
-  const corpus = new TfIdfCorpus(materials);
   const queryVector = corpus.vectorForQuery(profileText);
   const collabScores = computeCollaborativeScores(userId, materials, ratings);
 

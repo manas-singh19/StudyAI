@@ -1,33 +1,31 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import { useServerFn } from '@tanstack/react-start'
+import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-} from 'recharts'
-import {
+  ArrowUpDown,
+  BookOpen,
+  CalendarDays,
   Check,
+  ChevronDown,
+  ChevronRight,
   Download,
+  Eye,
   MessageCircleQuestion,
-  Users,
+  RefreshCw,
   Search,
   Sparkles,
   Star,
-  BookOpen,
-  ArrowUpDown,
+  UserCheck,
+  Users,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { AdminGuard } from '@/components/study/admin-guard'
 import { getAdminComprehensiveReports } from '@/lib/activity.functions'
 import { listAdminFeedback, resolveMaterialFeedback } from '@/lib/feedback.functions'
+import type { AdminReports } from '@/lib/reports'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 type Feedback = {
   id: string
@@ -38,52 +36,13 @@ type Feedback = {
   materials: { title: string; subjects: { name: string } | null } | null
 }
 
-type StudentActivity = {
-  id: string
-  name: string
-  email: string
-  searchesCount: number
-  recentQueries: string
-  viewsCount: number
-  ratingsCount: number
-  averageRatingGiven: number
-}
-
-type MostRecommended = {
-  title: string
-  count: number
-  avgScore: number
-}
-
-type SubjectPopularity = {
-  name: string
-  count: number
-}
-
-type RatingSummary = {
-  id: string
-  title: string
-  subjectName: string
-  averageRating: number
-  ratingCount: number
-  viewCount: number
-}
-
-type SystemUsage = {
-  totalUsers: number
-  totalSearches: number
-  totalRecommendations: number
-  totalRatings: number
-  totalMaterials: number
-}
-
 export const Route = createFileRoute('/_authenticated/admin/reports')({
   head: () => ({
     meta: [
-      { title: 'BCSP-064 DFD Reports & Analytics | StudyFlow AI' },
-      { name: 'description', content: 'Comprehensive DFD Level 1 P6 reports: student activity, top recommendations, search popularity, and rating summaries.' },
+      { title: 'Reports & Analytics | StudyFlow AI' },
+      { name: 'description', content: 'Student activity, most-recommended materials, subject popularity, rating summary and system usage reports.' },
       { property: 'og:title', content: 'Reports | StudyFlow AI' },
-      { property: 'og:description', content: 'Live academic reports conforming to BCSP-064 specifications.' },
+      { property: 'og:description', content: 'Live academic reports for StudyFlow administrators.' },
       { property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary_large_image' },
     ],
@@ -91,7 +50,67 @@ export const Route = createFileRoute('/_authenticated/admin/reports')({
   component: Reports,
 })
 
-const PIE_COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#6366f1']
+// Fixed categorical order (validated for colour-blind separation); slices beyond 5 fold into "Other".
+const SERIES = ['var(--report-series-1)', 'var(--report-series-2)', 'var(--report-series-3)', 'var(--report-series-4)', 'var(--report-series-5)']
+const OTHER = 'var(--report-series-other)'
+const AXIS_TICK = { fill: 'var(--muted-foreground)', fontSize: 11 }
+const TOOLTIP_STYLE = { background: 'var(--popover)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--popover-foreground)', fontSize: 12 }
+
+const EMPTY: AdminReports = {
+  studentActivity: [],
+  mostRecommended: [],
+  subjectPopularity: [],
+  ratingSummary: [],
+  ratingBySubject: [],
+  dailyActivity: [],
+  systemUsage: {
+    totalUsers: 0,
+    totalStudents: 0,
+    dailyActiveUsers: 0,
+    weeklyActiveUsers: 0,
+    totalSearches: 0,
+    searchesThisWeek: 0,
+    totalRecommendations: 0,
+    recommendationRuns: 0,
+    recommendationsThisWeek: 0,
+    totalRatings: 0,
+    totalViews: 0,
+    totalMaterials: 0,
+  },
+}
+
+function downloadCsv(filename: string, header: string[], rows: (string | number | null)[][]) {
+  const text = [header, ...rows].map((row) => row.map((value) => `"${String(value ?? '').replaceAll('"', '""')}"`).join(',')).join('\n')
+  const anchor = document.createElement('a')
+  anchor.href = URL.createObjectURL(new Blob([text], { type: 'text/csv' }))
+  anchor.download = filename
+  anchor.click()
+  URL.revokeObjectURL(anchor.href)
+}
+
+const formatDate = (value: string | null) => (value ? new Date(value).toLocaleString() : '—')
+const shortDay = (date: string) => new Date(`${date}T00:00:00Z`).toLocaleDateString(undefined, { month: 'short', day: 'numeric', timeZone: 'UTC' })
+
+function ReportHeading({ number, title, description, onExport }: { number: number; title: string; description: string; onExport?: () => void }) {
+  return (
+    <div className="section-heading flex items-start justify-between gap-3">
+      <div>
+        <p className="eyebrow">Report {number}</p>
+        <h2>{title}</h2>
+        <p className="text-sm text-muted-foreground">{description}</p>
+      </div>
+      {onExport && (
+        <Button variant="outline" size="sm" onClick={onExport}>
+          <Download className="size-3.5" /> CSV
+        </Button>
+      )}
+    </div>
+  )
+}
+
+function EmptyChart({ message }: { message: string }) {
+  return <div className="grid h-full place-items-center text-center text-sm text-muted-foreground">{message}</div>
+}
 
 function Reports() {
   const { user } = Route.useRouteContext()
@@ -99,21 +118,14 @@ function Reports() {
   const resolveFeedback = useServerFn(resolveMaterialFeedback)
   const getReports = useServerFn(getAdminComprehensiveReports)
 
-  const [studentActivity, setStudentActivity] = useState<StudentActivity[]>([])
-  const [mostRecommended, setMostRecommended] = useState<MostRecommended[]>([])
-  const [subjectPopularity, setSubjectPopularity] = useState<SubjectPopularity[]>([])
-  const [ratingSummary, setRatingSummary] = useState<RatingSummary[]>([])
-  const [systemUsage, setSystemUsage] = useState<SystemUsage>({
-    totalUsers: 0,
-    totalSearches: 0,
-    totalRecommendations: 0,
-    totalRatings: 0,
-    totalMaterials: 0,
-  })
-
+  const [reports, setReports] = useState<AdminReports>(EMPTY)
   const [feedback, setFeedback] = useState<Feedback[]>([])
-  const [sortAsc, setSortAsc] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [studentFilter, setStudentFilter] = useState('')
+  const [expanded, setExpanded] = useState<string | null>(null)
+  const [materialSortAsc, setMaterialSortAsc] = useState(false)
+  const [subjectSortAsc, setSubjectSortAsc] = useState(false)
+  const [showAllMaterials, setShowAllMaterials] = useState(false)
 
   async function loadFeedback() {
     try {
@@ -126,14 +138,9 @@ function Reports() {
   async function loadAllReports() {
     try {
       setLoading(true)
-      const data = await getReports()
-      setStudentActivity(data.studentActivity)
-      setMostRecommended(data.mostRecommended)
-      setSubjectPopularity(data.subjectPopularity)
-      setRatingSummary(data.ratingSummary)
-      setSystemUsage(data.systemUsage)
+      setReports(await getReports())
     } catch (err) {
-      console.error('Failed to load comprehensive reports:', err)
+      console.error('Failed to load reports:', err)
       toast.error('Failed to load live database reports')
     } finally {
       setLoading(false)
@@ -145,28 +152,6 @@ function Reports() {
     void loadFeedback()
   }, [])
 
-  function csv() {
-    const text = [
-      'Type,Status,Material,Subject,Message,Date',
-      ...feedback.map((item) =>
-        [
-          item.type,
-          item.status,
-          item.materials?.title ?? '',
-          item.materials?.subjects?.name ?? '',
-          item.message,
-          new Date(item.created_at).toISOString(),
-        ]
-          .map((value) => `"${String(value).replaceAll('"', '""')}"`)
-          .join(',')
-      ),
-    ].join('\n')
-    const anchor = document.createElement('a')
-    anchor.href = URL.createObjectURL(new Blob([text], { type: 'text/csv' }))
-    anchor.download = 'studyflow-feedback-report.csv'
-    anchor.click()
-  }
-
   async function resolve(id: string) {
     try {
       await resolveFeedback({ data: { feedbackId: id, status: 'resolved' } })
@@ -177,170 +162,333 @@ function Reports() {
     }
   }
 
-  const sortedRatingSummary = [...ratingSummary].sort((a, b) =>
-    sortAsc ? a.averageRating - b.averageRating : b.averageRating - a.averageRating
+  const { systemUsage: usage } = reports
+
+  const students = useMemo(() => {
+    const needle = studentFilter.trim().toLowerCase()
+    return needle
+      ? reports.studentActivity.filter((s) => s.name.toLowerCase().includes(needle) || s.email.toLowerCase().includes(needle))
+      : reports.studentActivity
+  }, [reports.studentActivity, studentFilter])
+
+  const subjectSlices = useMemo(() => {
+    const top = reports.subjectPopularity.slice(0, SERIES.length).map((s, i) => ({ ...s, color: SERIES[i]! }))
+    const rest = reports.subjectPopularity.slice(SERIES.length)
+    if (!rest.length) return top
+    const count = rest.reduce((sum, s) => sum + s.count, 0)
+    const percent = Number(rest.reduce((sum, s) => sum + s.percent, 0).toFixed(1))
+    return [...top, { name: `Other (${rest.length} subjects)`, count, percent, color: OTHER }]
+  }, [reports.subjectPopularity])
+
+  const materialRows = useMemo(() => {
+    const sorted = [...reports.ratingSummary].sort((a, b) =>
+      materialSortAsc ? a.averageRating - b.averageRating : b.averageRating - a.averageRating,
+    )
+    return showAllMaterials ? sorted : sorted.slice(0, 15)
+  }, [reports.ratingSummary, materialSortAsc, showAllMaterials])
+
+  const subjectRows = useMemo(
+    () =>
+      [...reports.ratingBySubject].sort((a, b) => {
+        const x = a.averageRating ?? (subjectSortAsc ? Infinity : -Infinity)
+        const y = b.averageRating ?? (subjectSortAsc ? Infinity : -Infinity)
+        return subjectSortAsc ? x - y : y - x
+      }),
+    [reports.ratingBySubject, subjectSortAsc],
   )
 
   const openCount = feedback.filter((item) => item.status === 'open').length
+  const chartHeight = Math.max(240, reports.mostRecommended.length * 30 + 40)
+
+  const usageTiles = [
+    { Icon: UserCheck, value: usage.dailyActiveUsers, label: 'Daily active users (24h)' },
+    { Icon: CalendarDays, value: usage.weeklyActiveUsers, label: 'Weekly active users (7d)' },
+    { Icon: Users, value: usage.totalStudents, label: `Students (${usage.totalUsers} accounts)` },
+    { Icon: Search, value: usage.totalSearches, label: `Searches (${usage.searchesThisWeek} this week)` },
+    { Icon: Sparkles, value: usage.totalRecommendations, label: `Recommendations generated (${usage.recommendationsThisWeek} this week)` },
+    { Icon: Star, value: usage.totalRatings, label: 'Ratings given' },
+    { Icon: Eye, value: usage.totalViews, label: 'Material views' },
+    { Icon: BookOpen, value: usage.totalMaterials, label: 'Published materials' },
+  ]
 
   return (
     <AdminGuard userId={user.id}>
       <div className="page-wrap">
         <div className="page-title flex-row">
           <div>
-            <p className="eyebrow">BCSP-064 Section 5.6 Analytics</p>
-            <h1>System Reports &amp; Intelligence</h1>
-            <p>Full 5-part reporting suite conforming to DFD Level 1 (Process P6).</p>
+            <p className="eyebrow">Reports &amp; analytics</p>
+            <h1>System reports</h1>
+            <p>Five live reports on learner activity, recommendations, subject demand, ratings and system usage.</p>
           </div>
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={csv}>
-              <Download className="size-4" /> Export feedback CSV
-            </Button>
-            <Button variant="default" onClick={() => void loadAllReports()}>
-              Refresh Reports
-            </Button>
-          </div>
+          <Button onClick={() => void loadAllReports()} disabled={loading}>
+            <RefreshCw className="size-4" /> {loading ? 'Loading…' : 'Refresh reports'}
+          </Button>
         </div>
 
-        {/* Report 5: System Usage Report */}
-        <section className="mb-8">
-          <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
-            <Users className="size-5 text-primary" /> Report 5: System Usage Overview
-          </h2>
+        {/* Report 5 – System Usage */}
+        <section className="section-block mb-10">
+          <ReportHeading
+            number={5}
+            title="System Usage Report"
+            description="Daily and weekly active users, total searches and recommendations generated."
+            onExport={() =>
+              downloadCsv(
+                'studyflow-system-usage.csv',
+                ['Date', 'Active users', 'Searches', 'Recommendations generated'],
+                reports.dailyActivity.map((d) => [d.date, d.activeUsers, d.searches, d.recommendations]),
+              )
+            }
+          />
           <div className="stats-grid admin-stats">
-            <article className="stat">
-              <span><Users /></span>
-              <div>
-                <b>{systemUsage.totalUsers}</b>
-                <p>Active Students</p>
-              </div>
-            </article>
-            <article className="stat">
-              <span><Search /></span>
-              <div>
-                <b>{systemUsage.totalSearches}</b>
-                <p>Total Searches</p>
-              </div>
-            </article>
-            <article className="stat">
-              <span><Sparkles /></span>
-              <div>
-                <b>{systemUsage.totalRecommendations}</b>
-                <p>AI Recommendations</p>
-              </div>
-            </article>
-            <article className="stat">
-              <span><Star /></span>
-              <div>
-                <b>{systemUsage.totalRatings}</b>
-                <p>Ratings Given</p>
-              </div>
-            </article>
-            <article className="stat">
-              <span><BookOpen /></span>
-              <div>
-                <b>{systemUsage.totalMaterials}</b>
-                <p>Catalog Materials</p>
-              </div>
-            </article>
+            {usageTiles.map(({ Icon, value, label }) => (
+              <article className="stat" key={label}>
+                <span><Icon /></span>
+                <div>
+                  <b>{value}</b>
+                  <p>{label}</p>
+                </div>
+              </article>
+            ))}
           </div>
+          <article className="chart-card mt-6">
+            <h2>Daily active users – last 14 days</h2>
+            <p>Distinct learners who searched, viewed, rated or received recommendations each day (UTC).</p>
+            <div className="h-64">
+              {reports.dailyActivity.some((d) => d.activeUsers > 0) ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={reports.dailyActivity} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
+                    <CartesianGrid vertical={false} stroke="var(--border)" />
+                    <XAxis dataKey="date" tickFormatter={shortDay} tick={AXIS_TICK} tickLine={false} axisLine={{ stroke: 'var(--border)' }} />
+                    <YAxis allowDecimals={false} tick={AXIS_TICK} tickLine={false} axisLine={false} />
+                    <Tooltip
+                      cursor={{ fill: 'var(--muted)' }}
+                      contentStyle={TOOLTIP_STYLE}
+                      labelFormatter={(date) => shortDay(String(date))}
+                      formatter={(value, _name, item) => [
+                        `${value} active · ${item.payload.searches} searches · ${item.payload.recommendations} recommendations`,
+                        'Activity',
+                      ]}
+                    />
+                    <Bar dataKey="activeUsers" name="Active users" fill="var(--report-series-1)" radius={[4, 4, 0, 0]} maxBarSize={28} />
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <EmptyChart message="No learner activity in the last 14 days." />
+              )}
+            </div>
+          </article>
         </section>
 
-        {/* Charts Grid: Report 2 & Report 3 */}
         <div className="charts-grid mb-10">
-          {/* Report 2: Most-Recommended Materials Report */}
+          {/* Report 2 – Most-Recommended Materials */}
           <article className="chart-card">
-            <h2>Report 2: Most-Recommended Materials</h2>
-            <p>Top learning resources suggested by the AI recommendation engine</p>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={mostRecommended} margin={{ bottom: 25 }}>
-                  <XAxis dataKey="title" fontSize={10} interval={0} angle={-25} textAnchor="end" />
-                  <YAxis allowDecimals={false} />
-                  <Tooltip />
-                  <Bar dataKey="count" name="Times Recommended" fill="var(--chart-1)" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="eyebrow">Report 2</p>
+                <h2>Most-Recommended Materials</h2>
+                <p>Top 20 materials by number of times the AI engine placed them in a learner’s Top-10.</p>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  downloadCsv(
+                    'studyflow-most-recommended.csv',
+                    ['Material', 'Times recommended', 'Students reached', 'Average match score'],
+                    reports.mostRecommended.map((m) => [m.title, m.count, m.students, m.avgScore]),
+                  )
+                }
+              >
+                <Download className="size-3.5" /> CSV
+              </Button>
+            </div>
+            <div style={{ height: reports.mostRecommended.length ? chartHeight : 240 }}>
+              {reports.mostRecommended.length ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={reports.mostRecommended} layout="vertical" margin={{ top: 8, right: 16, bottom: 0, left: 8 }}>
+                    <CartesianGrid horizontal={false} stroke="var(--border)" />
+                    <XAxis type="number" allowDecimals={false} tick={AXIS_TICK} tickLine={false} axisLine={false} />
+                    <YAxis type="category" dataKey="label" width={170} tick={AXIS_TICK} tickLine={false} axisLine={{ stroke: 'var(--border)' }} interval={0} />
+                    <Tooltip
+                      cursor={{ fill: 'var(--muted)' }}
+                      contentStyle={TOOLTIP_STYLE}
+                      labelFormatter={(_label, payload) => payload?.[0]?.payload.title ?? ''}
+                      formatter={(value, _name, item) => [
+                        `${value} times · ${item.payload.students} students · avg match ${Math.round(item.payload.avgScore * 100)}%`,
+                        'Recommended',
+                      ]}
+                    />
+                    <Bar dataKey="count" name="Times recommended" fill="var(--report-series-1)" radius={[0, 4, 4, 0]} maxBarSize={16} />
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <EmptyChart message="No recommendations generated yet. They appear once learners open their dashboards." />
+              )}
             </div>
           </article>
 
-          {/* Report 3: Subject Popularity Report */}
+          {/* Report 3 – Subject Popularity */}
           <article className="chart-card">
-            <h2>Report 3: Subject Popularity Report</h2>
-            <p>Distribution of student queries across subject categories</p>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={subjectPopularity}
-                    dataKey="count"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={55}
-                    outerRadius={95}
-                    paddingAngle={3}
-                    label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
-                  >
-                    {subjectPopularity.map((_, index) => (
-                      <Cell key={index} fill={PIE_COLORS[index % PIE_COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="eyebrow">Report 3</p>
+                <h2>Subject Popularity</h2>
+                <p>Share of searches per subject (subject filter, or the subject of the top results).</p>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  downloadCsv(
+                    'studyflow-subject-popularity.csv',
+                    ['Subject', 'Searches', 'Share %'],
+                    reports.subjectPopularity.map((s) => [s.name, s.count, s.percent]),
+                  )
+                }
+              >
+                <Download className="size-3.5" /> CSV
+              </Button>
             </div>
+            {subjectSlices.length ? (
+              <div className="grid items-center gap-4 sm:grid-cols-2">
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie data={subjectSlices} dataKey="count" nameKey="name" innerRadius="55%" outerRadius="90%" paddingAngle={2} stroke="var(--card)" strokeWidth={2}>
+                        {subjectSlices.map((slice) => (
+                          <Cell key={slice.name} fill={slice.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(value, name, item) => [`${value} searches (${item.payload.percent}%)`, name]} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                <ul className="grid gap-2 text-sm">
+                  {subjectSlices.map((slice) => (
+                    <li key={slice.name} className="flex items-center gap-2">
+                      <span className="size-3 shrink-0 rounded-sm" style={{ background: slice.color }} />
+                      <span className="flex-1 truncate">{slice.name}</span>
+                      <span className="tabular-nums text-muted-foreground">{slice.count} · {slice.percent}%</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <div className="h-64">
+                <EmptyChart message="No searches recorded yet." />
+              </div>
+            )}
           </article>
         </div>
 
-        {/* Report 1: Student Activity Report */}
+        {/* Report 1 – Student Activity */}
         <section className="section-block mb-10">
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">BCSP-064 Mandatory Report 1</p>
-              <h2>Student Activity Report</h2>
-              <p className="text-sm text-muted-foreground">
-                Individual student search histories, material engagements, and rating behavior.
-              </p>
-            </div>
-          </div>
-
+          <ReportHeading
+            number={1}
+            title="Student Activity Report"
+            description="Each student’s search history, viewed materials and average rating given. Select a row for full history."
+            onExport={() =>
+              downloadCsv(
+                'studyflow-student-activity.csv',
+                ['Name', 'Email', 'Joined', 'Searches', 'Search history', 'Materials viewed', 'Viewed materials', 'Ratings given', 'Avg rating given', 'Last active'],
+                reports.studentActivity.map((s) => [
+                  s.name,
+                  s.email,
+                  s.joinedAt,
+                  s.searchesCount,
+                  s.searchHistory.map((h) => h.query).join('; '),
+                  s.viewsCount,
+                  s.viewedMaterials.map((v) => v.title).join('; '),
+                  s.ratingsCount,
+                  s.averageRatingGiven,
+                  s.lastActiveAt,
+                ]),
+              )
+            }
+          />
+          <Input className="mb-3 max-w-sm" placeholder="Filter by name or email" value={studentFilter} onChange={(e) => setStudentFilter(e.target.value)} aria-label="Filter students" />
           <div className="overflow-x-auto rounded-lg border border-border bg-card">
             <table className="w-full text-left text-sm">
               <thead className="border-b border-border bg-muted/40 font-medium text-muted-foreground">
                 <tr>
-                  <th className="p-3">Student Name</th>
-                  <th className="p-3">Email</th>
+                  <th className="p-3">Student</th>
                   <th className="p-3 text-center">Searches</th>
-                  <th className="p-3">Recent Search Queries</th>
-                  <th className="p-3 text-center">Materials Viewed</th>
-                  <th className="p-3 text-center">Ratings Given</th>
-                  <th className="p-3 text-center">Avg Rating Given</th>
+                  <th className="p-3">Latest searches</th>
+                  <th className="p-3 text-center">Viewed</th>
+                  <th className="p-3 text-center">Ratings</th>
+                  <th className="p-3 text-center">Avg rating given</th>
+                  <th className="p-3">Last active</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {studentActivity.map((student) => (
-                  <tr key={student.id} className="hover:bg-muted/20">
-                    <td className="p-3 font-medium">{student.name}</td>
-                    <td className="p-3 text-muted-foreground">{student.email}</td>
-                    <td className="p-3 text-center font-semibold">{student.searchesCount}</td>
-                    <td className="p-3 max-w-xs truncate text-xs text-muted-foreground" title={student.recentQueries}>
-                      {student.recentQueries}
-                    </td>
-                    <td className="p-3 text-center">{student.viewsCount}</td>
-                    <td className="p-3 text-center">{student.ratingsCount}</td>
-                    <td className="p-3 text-center">
-                      <span className="inline-flex items-center gap-1 font-semibold text-amber-600">
-                        <Star className="size-3.5 fill-amber-500 text-amber-500" />
-                        {student.averageRatingGiven || '—'}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-                {!studentActivity.length && (
+                {students.map((student) => {
+                  const open = expanded === student.id
+                  return (
+                    <Fragment key={student.id}>
+                      <tr className="cursor-pointer hover:bg-muted/20" onClick={() => setExpanded(open ? null : student.id)} aria-expanded={open}>
+                        <td className="p-3">
+                          <div className="flex items-center gap-2 font-medium">
+                            {open ? <ChevronDown className="size-4" /> : <ChevronRight className="size-4" />}
+                            <div>
+                              {student.name}
+                              <div className="text-xs font-normal text-muted-foreground">{student.email}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="p-3 text-center font-semibold">{student.searchesCount}</td>
+                        <td className="max-w-xs truncate p-3 text-xs text-muted-foreground">
+                          {student.searchHistory.slice(0, 3).map((h) => h.query).join(', ') || 'None'}
+                        </td>
+                        <td className="p-3 text-center">{student.viewsCount}</td>
+                        <td className="p-3 text-center">{student.ratingsCount}</td>
+                        <td className="p-3 text-center">{student.averageRatingGiven ?? '—'}</td>
+                        <td className="p-3 text-xs text-muted-foreground">{formatDate(student.lastActiveAt)}</td>
+                      </tr>
+                      {open && (
+                        <tr className="bg-muted/10">
+                          <td colSpan={7} className="p-4">
+                            <div className="grid gap-6 md:grid-cols-2">
+                              <div>
+                                <h3 className="mb-2 text-sm font-semibold">Search history</h3>
+                                {student.searchHistory.length ? (
+                                  <ul className="grid gap-1 text-sm">
+                                    {student.searchHistory.map((h, i) => (
+                                      <li key={`${h.at}-${i}`} className="flex justify-between gap-3">
+                                        <span>{h.query}</span>
+                                        <time className="shrink-0 text-xs text-muted-foreground">{formatDate(h.at)}</time>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                ) : (
+                                  <p className="text-sm text-muted-foreground">No searches yet.</p>
+                                )}
+                              </div>
+                              <div>
+                                <h3 className="mb-2 text-sm font-semibold">Viewed materials</h3>
+                                {student.viewedMaterials.length ? (
+                                  <ul className="grid gap-1 text-sm">
+                                    {student.viewedMaterials.map((v, i) => (
+                                      <li key={`${v.at}-${i}`} className="flex justify-between gap-3">
+                                        <span>{v.title}</span>
+                                        <time className="shrink-0 text-xs text-muted-foreground">{formatDate(v.at)}</time>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                ) : (
+                                  <p className="text-sm text-muted-foreground">No materials viewed yet.</p>
+                                )}
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </Fragment>
+                  )
+                })}
+                {!students.length && (
                   <tr>
                     <td colSpan={7} className="p-4 text-center text-muted-foreground">
-                      No student activity recorded yet.
+                      {loading ? 'Loading…' : 'No student activity recorded yet.'}
                     </td>
                   </tr>
                 )}
@@ -349,60 +497,120 @@ function Reports() {
           </div>
         </section>
 
-        {/* Report 4: Rating Summary Report */}
+        {/* Report 4 – Rating Summary */}
         <section className="section-block mb-10">
-          <div className="section-heading flex justify-between items-center">
-            <div>
-              <p className="eyebrow">BCSP-064 Mandatory Report 4</p>
-              <h2>Rating Summary Report</h2>
-              <p className="text-sm text-muted-foreground">
-                Material quality analysis sorted by student rating score and volume.
-              </p>
-            </div>
-            <Button variant="outline" size="sm" onClick={() => setSortAsc(!sortAsc)}>
-              <ArrowUpDown className="size-3.5 mr-1" />
-              Sort: {sortAsc ? 'Lowest First' : 'Highest First'}
+          <ReportHeading
+            number={4}
+            title="Rating Summary Report"
+            description="Average rating per subject and per material, sortable by score."
+            onExport={() =>
+              downloadCsv(
+                'studyflow-rating-summary.csv',
+                ['Level', 'Name', 'Subject', 'Average rating', 'Ratings', 'Views'],
+                [
+                  ...reports.ratingBySubject.map((s) => ['Subject', s.name, s.name, s.averageRating, s.ratingCount, null]),
+                  ...reports.ratingSummary.map((m) => ['Material', m.title, m.subjectName, m.averageRating, m.ratingCount, m.viewCount]),
+                ],
+              )
+            }
+          />
+
+          <div className="mb-3 mt-2 flex items-center justify-between">
+            <h3 className="font-semibold">By subject</h3>
+            <Button variant="outline" size="sm" onClick={() => setSubjectSortAsc(!subjectSortAsc)}>
+              <ArrowUpDown className="mr-1 size-3.5" /> {subjectSortAsc ? 'Lowest first' : 'Highest first'}
             </Button>
           </div>
-
-          <div className="overflow-x-auto rounded-lg border border-border bg-card">
+          <div className="mb-8 overflow-x-auto rounded-lg border border-border bg-card">
             <table className="w-full text-left text-sm">
               <thead className="border-b border-border bg-muted/40 font-medium text-muted-foreground">
                 <tr>
-                  <th className="p-3">Material Title</th>
                   <th className="p-3">Subject</th>
-                  <th className="p-3 text-center">Average Rating</th>
-                  <th className="p-3 text-center">Review Count</th>
-                  <th className="p-3 text-center">Views</th>
+                  <th className="p-3 text-center">Average rating</th>
+                  <th className="p-3 text-center">Ratings</th>
+                  <th className="p-3 text-center">Materials rated</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {sortedRatingSummary.slice(0, 15).map((mat) => (
-                  <tr key={mat.id} className="hover:bg-muted/20">
-                    <td className="p-3 font-medium">{mat.title}</td>
-                    <td className="p-3 text-muted-foreground">{mat.subjectName}</td>
+                {subjectRows.map((s) => (
+                  <tr key={s.subjectId} className="hover:bg-muted/20">
+                    <td className="p-3 font-medium">{s.name}</td>
                     <td className="p-3 text-center">
-                      <span className="inline-flex items-center gap-1 font-semibold text-amber-600">
-                        <Star className="size-3.5 fill-amber-500 text-amber-500" />
-                        {mat.averageRating.toFixed(1)}
-                      </span>
+                      {s.averageRating === null ? '—' : (
+                        <span className="inline-flex items-center gap-1 font-semibold">
+                          <Star className="size-3.5 fill-current text-rating" /> {s.averageRating.toFixed(2)}
+                        </span>
+                      )}
                     </td>
-                    <td className="p-3 text-center">{mat.ratingCount}</td>
-                    <td className="p-3 text-center">{mat.viewCount}</td>
+                    <td className="p-3 text-center">{s.ratingCount}</td>
+                    <td className="p-3 text-center">{s.materialsRated}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="font-semibold">By material</h3>
+            <Button variant="outline" size="sm" onClick={() => setMaterialSortAsc(!materialSortAsc)}>
+              <ArrowUpDown className="mr-1 size-3.5" /> {materialSortAsc ? 'Lowest first' : 'Highest first'}
+            </Button>
+          </div>
+          <div className="overflow-x-auto rounded-lg border border-border bg-card">
+            <table className="w-full text-left text-sm">
+              <thead className="border-b border-border bg-muted/40 font-medium text-muted-foreground">
+                <tr>
+                  <th className="p-3">Material</th>
+                  <th className="p-3">Subject</th>
+                  <th className="p-3 text-center">Average rating</th>
+                  <th className="p-3 text-center">Ratings</th>
+                  <th className="p-3 text-center">Views</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {materialRows.map((m) => (
+                  <tr key={m.id} className="hover:bg-muted/20">
+                    <td className="p-3 font-medium">{m.title}</td>
+                    <td className="p-3 text-muted-foreground">{m.subjectName}</td>
+                    <td className="p-3 text-center">
+                      <span className="inline-flex items-center gap-1 font-semibold">
+                        <Star className="size-3.5 fill-current text-rating" /> {m.averageRating.toFixed(2)}
+                      </span>
+                    </td>
+                    <td className="p-3 text-center">{m.ratingCount}</td>
+                    <td className="p-3 text-center">{m.viewCount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {reports.ratingSummary.length > 15 && (
+            <Button variant="ghost" size="sm" className="mt-2" onClick={() => setShowAllMaterials(!showAllMaterials)}>
+              {showAllMaterials ? 'Show top 15' : `Show all ${reports.ratingSummary.length} materials`}
+            </Button>
+          )}
         </section>
 
-        {/* Learner Feedback Section */}
+        {/* Learner feedback */}
         <section className="section-block">
-          <div className="section-heading">
+          <div className="section-heading flex items-start justify-between gap-3">
             <div>
               <p className="eyebrow"><MessageCircleQuestion /> Learner feedback</p>
               <h2>{openCount} open questions and comments</h2>
             </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                downloadCsv(
+                  'studyflow-feedback-report.csv',
+                  ['Type', 'Status', 'Material', 'Subject', 'Message', 'Date'],
+                  feedback.map((item) => [item.type, item.status, item.materials?.title ?? '', item.materials?.subjects?.name ?? '', item.message, new Date(item.created_at).toISOString()]),
+                )
+              }
+            >
+              <Download className="size-3.5" /> CSV
+            </Button>
           </div>
           <div className="feedback-list">
             {feedback.map((item) => (

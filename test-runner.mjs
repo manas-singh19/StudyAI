@@ -1,7 +1,15 @@
 import { createClient } from '@supabase/supabase-js';
 
-const url = 'https://zcselumficemtngqgioq.supabase.co';
-const key = 'sb_publishable_R0OGhkFIu2Hu8IArM9KPIw_S1AiqTyD';
+// Run with: npm run test:e2e  (credentials come from the environment, never from source control)
+const url = process.env.VITE_SUPABASE_URL ?? process.env.SUPABASE_URL;
+const key = process.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_PUBLISHABLE_KEY;
+const email = process.env.STUDYAI_TEST_EMAIL;
+const password = process.env.STUDYAI_TEST_PASSWORD;
+
+if (!url || !key || !email || !password) {
+  console.error('Set VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY, STUDYAI_TEST_EMAIL and STUDYAI_TEST_PASSWORD to run the end-to-end test.');
+  process.exit(1);
+}
 
 const client = createClient(url, key);
 
@@ -28,8 +36,8 @@ async function runTests() {
   // ----------------------------------------------------
   console.log('--- Test Suite 1: Authentication & Role Check (Process P1) ---');
   const authRes = await client.auth.signInWithPassword({
-    email: 'kumarishubham177@gmail.com',
-    password: 'StudyFlow!2026',
+    email,
+    password,
   });
 
   assert('User credentials authenticate against Supabase Auth', !authRes.error, authRes.data?.user?.email);

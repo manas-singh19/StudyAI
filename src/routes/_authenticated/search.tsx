@@ -12,8 +12,9 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
 export const Route = createFileRoute('/_authenticated/search')({
-  validateSearch: (s: Record<string, unknown>) => ({
+  validateSearch: (s: Record<string, unknown>): { subject: string; q?: string } => ({
     subject: typeof s['subject'] === 'string' ? s['subject'] : '',
+    ...(typeof s['q'] === 'string' && s['q'] ? { q: s['q'] } : {}),
   }),
   head: () => ({
     meta: [
@@ -37,7 +38,7 @@ function Explore() {
   const [materials, setMaterials] = useState<MaterialDoc[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [subjects, setSubjects] = useState<Subject[]>([]);
-  const [q, setQ] = useState('');
+  const [q, setQ] = useState(initial.q ?? '');
   const [type, setType] = useState('All');
   const [subject, setSubject] = useState(initial.subject);
   const [page, setPage] = useState(1);
@@ -55,16 +56,19 @@ function Explore() {
         data: {
           query: queryText,
           subjectId: subjectId || '',
-          type: materialType,
+          type: materialType as 'All' | 'PDF' | 'Video' | 'Article',
           page: pageNumber,
           limit: 12,
         },
       });
-      setMaterials(res.materials as unknown as MaterialDoc[]);
+      setMaterials(res.materials as MaterialDoc[]);
       setTotalCount(res.totalCount);
       setTotalPages(res.totalPages || 1);
+      return res;
     } catch (err) {
       console.error('Search failed:', err);
+      toast.error('Search failed. Please try again.');
+      return null;
     } finally {
       setLoading(false);
     }
@@ -84,13 +88,15 @@ function Explore() {
       return;
     }
     setPage(1);
-    await executeSearch(q, subject, type, 1);
+    const res = await executeSearch(q, subject, type, 1);
+    if (!res) return;
     try {
+      // Log the fresh result count; when no subject filter is set, classify by the top results' subject.
       await logSearchFn({
         data: {
-          query: q,
-          resultCount: totalCount,
-          subjectId: subject || null,
+          query: q.trim(),
+          resultCount: res.totalCount,
+          subjectId: subject || res.topSubjectId,
         },
       });
       toast.success('Search saved to your learning history');

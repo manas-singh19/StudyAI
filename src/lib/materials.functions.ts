@@ -2,6 +2,8 @@ import { createServerFn } from '@tanstack/react-start'
 import { z } from 'zod'
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware'
 import { materialReviewSchema, materialSubmissionSchema } from './material-schemas'
+import type { MaterialDoc } from './recommendation'
+import { buildPrefixTsQuery, dominantSubject } from './search'
 
 async function requireAdmin(context: { supabase: any; userId: string }) {
   const { data, error } = await context.supabase.rpc('has_role', { _user_id: context.userId, _role: 'admin' })
@@ -75,43 +77,42 @@ export const reviewMaterial = createServerFn({ method: 'POST' })
 export const searchMaterialsServer = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({
-    query: z.string().default(''),
-    subjectId: z.string().default(''),
-    type: z.string().default('All'),
-    page: z.number().int().default(1),
-    limit: z.number().int().default(12),
+    query: z.string().max(200).default(''),
+    subjectId: z.union([z.string().uuid(), z.literal('')]).default(''),
+    type: z.enum(['All', 'PDF', 'Video', 'Article']).default('All'),
+    page: z.number().int().min(1).max(1000).default(1),
+    limit: z.number().int().min(1).max(50).default(12),
   }).parse(input))
   .handler(async ({ data, context }) => {
-    let query = context.supabase
-      .from('materials')
-      .select('*, subjects(name), material_authors(*)', { count: 'exact' })
-      .eq('approval_status', 'approved')
-
-    if (data.subjectId) {
-      query = query.eq('subject_id', data.subjectId)
-    }
-    if (data.type === 'PDF' || data.type === 'Video' || data.type === 'Article') {
-      query = query.eq('type', data.type)
-    }
-
-    if (data.query.trim()) {
-      const q = data.query.trim()
-      query = query.or(`title.ilike.%${q}%,description.ilike.%${q}%`)
-    }
-
-    const from = (data.page - 1) * data.limit
-    const to = from + data.limit - 1
-
-    const { data: results, error, count } = await query
-      .order('average_rating', { ascending: false })
-      .range(from, to)
-
+    const { data: enrollments } = await context.supabase.from('enrollments').select('subject_id').eq('user_id', context.userId)
+    const { data: hits, error } = await context.supabase.rpc('search_materials', {
+      _query: buildPrefixTsQuery(data.query) || null,
+      _subject_id: data.subjectId || null,
+      _type: data.type === 'All' ? null : data.type,
+      _preferred_subjects: (enrollments ?? []).map((row) => row.subject_id),
+      _limit: data.limit,
+      _offset: (data.page - 1) * data.limit,
+    })
     if (error) throw new Error(error.message)
 
+    const ids = (hits ?? []).map((hit) => hit.material_id)
+    const totalCount = Number(hits?.[0]?.total_count ?? 0)
+    let materials: MaterialDoc[] = []
+    if (ids.length) {
+      const { data: rows, error: rowsError } = await context.supabase
+        .from('materials')
+        .select('*, subjects(name), material_authors(*)')
+        .in('id', ids)
+      if (rowsError) throw new Error(rowsError.message)
+      const byId = new Map((rows as unknown as MaterialDoc[]).map((row) => [row.id, row]))
+      materials = ids.map((id) => byId.get(id)).filter((row): row is MaterialDoc => Boolean(row))
+    }
+
     return {
-      materials: results || [],
-      totalCount: count ?? 0,
+      materials,
+      totalCount,
       page: data.page,
-      totalPages: Math.ceil((count ?? 0) / data.limit),
+      totalPages: Math.max(1, Math.ceil(totalCount / data.limit)),
+      topSubjectId: dominantSubject(materials),
     }
   })

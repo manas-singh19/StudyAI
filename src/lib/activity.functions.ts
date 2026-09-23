@@ -1,6 +1,25 @@
 import { createServerFn } from '@tanstack/react-start'
 import { z } from 'zod'
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware'
+import type { MaterialDoc, UserRatingRecord } from '@/lib/recommendation'
+import { buildAdminReports } from '@/lib/reports'
+
+type RankedMaterial = MaterialDoc & { score: number; reason: string }
+
+// Stored Top-N (D4) is reused on the dashboard until it is this old; explicit triggers always recompute.
+const RECOMMENDATION_TTL_MS = 6 * 60 * 60 * 1000
+const PAGE_SIZE = 1000
+
+// PostgREST caps responses at 1000 rows, so report queries page through everything.
+async function fetchAll<T>(page: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>): Promise<T[]> {
+  const rows: T[] = []
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await page(from, from + PAGE_SIZE - 1)
+    if (error) throw new Error(error.message)
+    rows.push(...(data ?? []))
+    if (!data || data.length < PAGE_SIZE) return rows
+  }
+}
 
 export const getMyActivityStats = createServerFn({ method: 'GET' })
   .middleware([requireSupabaseAuth])
@@ -23,60 +42,80 @@ export const logSearch = createServerFn({ method: 'POST' })
     return { ok: true }
   })
 
-export const saveRecommendations = createServerFn({ method: 'POST' })
+export const getRecommendations = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) => z.object({ items: z.array(z.object({ materialId: z.string().uuid(), score: z.number().min(0).max(1), reason: z.string().min(2).max(300) })).max(10) }).parse(input))
-  .handler(async ({ data, context }) => {
-    const { error: clearError } = await context.supabase.from('recommendations').delete().eq('user_id', context.userId)
-    if (clearError) throw new Error(clearError.message)
-    if (!data.items.length) return { ok: true }
-    const { error } = await context.supabase.from('recommendations').insert(data.items.map((item) => ({ user_id: context.userId, material_id: item.materialId, score: item.score, reason: item.reason })))
-    if (error) throw new Error(error.message)
-    return { ok: true }
-  })
+  .inputValidator((input) => z.object({
+    refresh: z.boolean().default(false),
+    trigger: z.enum(['login', 'manual', 'profile_update', 'rating']).default('login'),
+  }).parse(input ?? {}))
+  .handler(async ({ data, context }): Promise<{ items: RankedMaterial[]; generatedAt: string | null; cached: boolean }> => {
+    if (!data.refresh) {
+      const { data: stored, error } = await context.supabase
+        .from('recommendations')
+        .select('score, reason, generated_at, materials(*, subjects(name), material_authors(*))')
+        .eq('user_id', context.userId)
+        .order('score', { ascending: false })
+      if (error) throw new Error(error.message)
+      const items = (stored ?? [])
+        .filter((row) => (row.materials as unknown as MaterialDoc | null)?.approval_status === 'approved')
+        .map((row) => ({ ...(row.materials as unknown as MaterialDoc), score: Number(row.score), reason: row.reason }))
+      const generatedAt = stored?.[0]?.generated_at ?? null
+      if (items.length && generatedAt && Date.now() - new Date(generatedAt).getTime() < RECOMMENDATION_TTL_MS) {
+        return { items, generatedAt, cached: true }
+      }
+    }
 
-export const generateServerRecommendations = createServerFn({ method: 'POST' })
-  .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
+    // P3 Recommendation Engine
     const materialsRes = await context.supabase
       .from('materials')
       .select('*, subjects(name), material_authors(*)')
       .eq('approval_status', 'approved')
-
     if (materialsRes.error) throw new Error(materialsRes.error.message)
-    const materials = (materialsRes.data || []) as unknown as import('@/lib/recommendation').MaterialDoc[]
+    const materials = (materialsRes.data || []) as unknown as MaterialDoc[]
 
-    const [profileRes, searchesRes, enrollmentsRes, ratingsRes] = await Promise.all([
-      context.supabase.from('profiles').select('*').eq('id', context.userId).single(),
+    const [profileRes, searchesRes, enrollmentsRes, viewsRes, allRatings] = await Promise.all([
+      context.supabase.from('profiles').select('preferences').eq('id', context.userId).single(),
       context.supabase.from('search_logs').select('query').eq('user_id', context.userId).order('created_at', { ascending: false }).limit(10),
       context.supabase.from('enrollments').select('subject_id').eq('user_id', context.userId),
-      context.supabase.from('ratings').select('user_id, material_id, score'),
+      context.supabase.from('material_views').select('materials(title)').eq('user_id', context.userId).order('viewed_at', { ascending: false }).limit(10),
+      fetchAll<UserRatingRecord>((from, to) => context.supabase.from('ratings').select('user_id, material_id, score').order('id').range(from, to)),
     ])
 
+    // P3.1 Profile Analyzer: preferences + recent searches + recently viewed materials
     const preferences = (profileRes.data?.preferences as Record<string, string> | undefined) || {}
     const enrolled = (enrollmentsRes.data || []).map((e) => e.subject_id)
     const recentQueries = (searchesRes.data || []).map((s) => s.query)
-    const allRatings = (ratingsRes.data || []) as import('@/lib/recommendation').UserRatingRecord[]
-
+    const viewedTitles = [...new Set((viewsRes.data || []).map((v) => (v.materials as { title: string } | null)?.title).filter((t): t is string => Boolean(t)))]
     const baseProfileText = `${preferences['topic'] ?? ''} ${preferences['goal'] ?? ''}`.trim()
-    const { buildProfileSearchText, rankMaterials } = await import('@/lib/recommendation')
-    const profileText = buildProfileSearchText(baseProfileText, recentQueries)
 
-    const ranked = rankMaterials(materials, profileText, enrolled, allRatings, context.userId)
+    const { buildProfileSearchText, getCachedCorpus, rankMaterials } = await import('@/lib/recommendation')
+    const profileText = buildProfileSearchText(baseProfileText, recentQueries, viewedTitles)
+    const ranked = rankMaterials(materials, profileText, enrolled, allRatings, context.userId, getCachedCorpus(materials))
 
-    if (ranked.length > 0) {
-      await context.supabase.from('recommendations').delete().eq('user_id', context.userId)
-      await context.supabase.from('recommendations').insert(
-        ranked.map((item) => ({
-          user_id: context.userId,
-          material_id: item.id,
-          score: item.score,
-          reason: item.reason,
-        }))
+    // Store the Top-N in D4 and log the run for the reports.
+    const generatedAt = new Date().toISOString()
+    const { error: clearError } = await context.supabase.from('recommendations').delete().eq('user_id', context.userId)
+    if (clearError) throw new Error(clearError.message)
+    if (ranked.length) {
+      const { error } = await context.supabase.from('recommendations').insert(
+        ranked.map((item) => ({ user_id: context.userId, material_id: item.id, score: item.score, reason: item.reason, generated_at: generatedAt })),
       )
+      if (error) throw new Error(error.message)
+    }
+    const { data: run, error: runError } = await context.supabase
+      .from('recommendation_runs')
+      .insert({ user_id: context.userId, trigger: data.refresh ? data.trigger : 'login', item_count: ranked.length, generated_at: generatedAt })
+      .select('id')
+      .single()
+    if (runError) throw new Error(runError.message)
+    if (ranked.length) {
+      const { error } = await context.supabase.from('recommendation_history').insert(
+        ranked.map((item, index) => ({ run_id: run.id, user_id: context.userId, material_id: item.id, position: index + 1, score: item.score, generated_at: generatedAt })),
+      )
+      if (error) throw new Error(error.message)
     }
 
-    return { items: ranked, profileText, enrolled }
+    return { items: ranked, generatedAt, cached: false }
   })
 
 export const getAdminComprehensiveReports = createServerFn({ method: 'GET' })
@@ -85,120 +124,18 @@ export const getAdminComprehensiveReports = createServerFn({ method: 'GET' })
     const { data: isAdmin } = await context.supabase.rpc('has_role', { _user_id: context.userId, _role: 'admin' })
     if (!isAdmin) throw new Error('Forbidden: Admin access required')
 
-    const [
-      profilesRes,
-      searchesRes,
-      viewsRes,
-      ratingsRes,
-      recsRes,
-      materialsRes,
-      subjectsRes,
-    ] = await Promise.all([
-      context.supabase.from('profiles').select('id, name, email, created_at'),
-      context.supabase.from('search_logs').select('id, user_id, query, subject_id, created_at'),
-      context.supabase.from('material_views').select('id, user_id, material_id'),
-      context.supabase.from('ratings').select('id, user_id, material_id, score, review, created_at'),
-      context.supabase.from('recommendations').select('id, user_id, material_id, score, materials(title, subject_id)'),
-      context.supabase.from('materials').select('id, title, average_rating, rating_count, view_count, subject_id, subjects(name)'),
-      context.supabase.from('subjects').select('id, name'),
+    const db = context.supabase
+    const [profiles, roles, searches, views, ratings, runs, history, materials, subjects] = await Promise.all([
+      fetchAll((from, to) => db.from('profiles').select('id, name, email, created_at').order('id').range(from, to)),
+      fetchAll((from, to) => db.from('user_roles').select('user_id, role').order('id').range(from, to)),
+      fetchAll((from, to) => db.from('search_logs').select('user_id, query, subject_id, created_at').order('id').range(from, to)),
+      fetchAll((from, to) => db.from('material_views').select('user_id, material_id, viewed_at').order('id').range(from, to)),
+      fetchAll((from, to) => db.from('ratings').select('user_id, material_id, score, created_at, updated_at').order('id').range(from, to)),
+      fetchAll((from, to) => db.from('recommendation_runs').select('user_id, item_count, generated_at').order('id').range(from, to)),
+      fetchAll((from, to) => db.from('recommendation_history').select('user_id, material_id, score').order('id').range(from, to)),
+      fetchAll((from, to) => db.from('materials').select('id, title, average_rating, rating_count, view_count, subject_id, approval_status').order('id').range(from, to)),
+      fetchAll((from, to) => db.from('subjects').select('id, name').order('name').range(from, to)),
     ])
 
-    const profiles = profilesRes.data || []
-    const searches = searchesRes.data || []
-    const views = viewsRes.data || []
-    const ratings = ratingsRes.data || []
-    const recommendations = recsRes.data || []
-    const materials = materialsRes.data || []
-    const subjects = subjectsRes.data || []
-
-    const subjectMap = new Map(subjects.map((s) => [s.id, s.name]))
-
-    const studentActivity = profiles.map((p) => {
-      const userSearches = searches.filter((s) => s.user_id === p.id)
-      const userViews = views.filter((v) => v.user_id === p.id)
-      const userRatings = ratings.filter((r) => r.user_id === p.id)
-      const avgScore = userRatings.length
-        ? Number((userRatings.reduce((sum, r) => sum + r.score, 0) / userRatings.length).toFixed(1))
-        : 0
-      const recentQueries = userSearches
-        .slice(-3)
-        .map((s) => s.query)
-        .join(', ')
-
-      return {
-        id: p.id,
-        name: p.name,
-        email: p.email,
-        searchesCount: userSearches.length,
-        recentQueries: recentQueries || 'None',
-        viewsCount: userViews.length,
-        ratingsCount: userRatings.length,
-        averageRatingGiven: avgScore,
-      }
-    })
-
-    const recFrequency = new Map<string, { title: string; count: number; avgScore: number; sumScore: number }>()
-    for (const r of recommendations) {
-      const title = (r.materials as any)?.title || 'Unknown Material'
-      const entry = recFrequency.get(r.material_id) || { title, count: 0, avgScore: 0, sumScore: 0 }
-      entry.count += 1
-      entry.sumScore += Number(r.score)
-      entry.avgScore = Number((entry.sumScore / entry.count).toFixed(2))
-      recFrequency.set(r.material_id, entry)
-    }
-    const mostRecommended = Array.from(recFrequency.values())
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 20)
-
-    if (!mostRecommended.length) {
-      materials.slice(0, 10).forEach((m) => {
-        mostRecommended.push({
-          title: m.title.length > 20 ? m.title.slice(0, 20) + '…' : m.title,
-          count: m.rating_count || 1,
-          avgScore: Number((Number(m.average_rating) / 5).toFixed(2)),
-          sumScore: Number(m.average_rating),
-        })
-      })
-    }
-
-    const subjectSearchCounts = new Map<string, number>()
-    for (const s of searches) {
-      const sName = s.subject_id ? subjectMap.get(s.subject_id) || 'General' : 'General'
-      subjectSearchCounts.set(sName, (subjectSearchCounts.get(sName) || 0) + 1)
-    }
-    const subjectPopularity = Array.from(subjectSearchCounts.entries()).map(([name, count]) => ({
-      name,
-      count,
-    }))
-    if (!subjectPopularity.length) {
-      subjects.forEach((s) => {
-        subjectPopularity.push({ name: s.name.split(' ')[0] ?? s.name, count: 1 })
-      })
-    }
-
-    const ratingSummary = materials.map((m) => ({
-      id: m.id,
-      title: m.title,
-      subjectName: (m.subjects as any)?.name || 'General',
-      averageRating: Number(Number(m.average_rating).toFixed(1)),
-      ratingCount: m.rating_count,
-      viewCount: m.view_count,
-    })).sort((a, b) => b.averageRating - a.averageRating)
-
-    const systemUsage = {
-      totalUsers: profiles.length,
-      totalSearches: searches.length,
-      totalRecommendations: recommendations.length,
-      totalRatings: ratings.length,
-      totalMaterials: materials.length,
-    }
-
-    return {
-      studentActivity,
-      mostRecommended,
-      subjectPopularity,
-      ratingSummary,
-      systemUsage,
-    }
+    return buildAdminReports({ profiles, roles, searches, views, ratings, runs, history, materials, subjects })
   })
-

@@ -87,6 +87,13 @@
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
+  /* Admin report series: fixed categorical order, validated for colour-blind separation */
+  --report-series-1: #2a78d6;
+  --report-series-2: #eb6834;
+  --report-series-3: #1baf7a;
+  --report-series-4: #eda100;
+  --report-series-5: #e87ba4;
+  --report-series-other: #b4b2aa;
   --sidebar: oklch(0.984 0.003 247.858);
   --sidebar-foreground: oklch(0.129 0.042 264.695);
   --sidebar-primary: oklch(0.208 0.042 265.755);
@@ -122,6 +129,12 @@
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
+  --report-series-1: #3987e5;
+  --report-series-2: #d95926;
+  --report-series-3: #199e70;
+  --report-series-4: #c98500;
+  --report-series-5: #d55181;
+  --report-series-other: #6b6a64;
   --sidebar: oklch(0.208 0.042 265.755);
   --sidebar-foreground: oklch(0.984 0.003 247.858);
   --sidebar-primary: oklch(0.488 0.243 264.376);

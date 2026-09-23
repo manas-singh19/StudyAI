@@ -120,6 +120,13 @@
       "when": 1789998063307,
       "tag": "0016_set_primary_admin_email_kumarishubham177",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1790170000000,
+      "tag": "0017_synopsis_compliance",
+      "breakpoints": true
     }
   ]
 }
